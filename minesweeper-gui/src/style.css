@@ -1,0 +1,41 @@
+container {
+  border-radius: 50px;
+}
+
+button.cell {
+  border-radius: 50px;
+  padding-left: 10;
+  padding-right: 10;
+
+}
+
+button.cell.open {
+  background-color: whitesmoke;
+}
+
+button.cell.exposed {
+  background-color: whitesmoke;
+}
+
+button.cell.flagged {
+  background-color: lightgray;
+}
+
+button.cell.closed {
+  background-color: slategray;
+}
+
+label.win {
+  font-weight: bold;
+  color: darkgreen;
+}
+
+label.lose {
+  font-weight: bold;
+  color: darkred;
+}
+
+grid {
+  padding: 15px 15px 15px 15px;
+  background-color: whitesmoke;
+}
