@@ -1,0 +1,66 @@
+#root {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 14px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 5px;
+    background-color: whitesmoke;
+    padding: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.gameOver {
+    opacity: 50%;
+}
+
+.buttons {
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px slategray;
+    font-size: 14px;
+    opacity: .8;
+    margin-right: 20px;
+    padding: 5px;
+}
+
+.buttons:hover {
+    opacity: 1;
+}
+
+.newGame:hover {
+    opacity: 1;
+}
+
+.newGame:active {
+    box-shadow: none;
+}
+
+span {
+    margin-left: 5px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-image: linear-gradient(to right, black, slategray, black);
+    color: white;
+    padding: 5px;
+}
+
+.boardContainer {
+    /* min-height: 615px; */
+    height: 100%;
+    flex: 1;
+}
+
+.buttonBar {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+}

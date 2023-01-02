@@ -1,0 +1,123 @@
+.container {
+    /* width: 25px; */
+    /* height: 25px; */
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    justify-content: start;
+    font-size: 0.8em;
+    box-shadow: -2px -2px rgba(255, 255, 255, 0.856), 2px 2px gray;
+}
+
+.container:active {
+    box-shadow: none;
+}
+
+.container:hover {
+    opacity: .8;
+}
+
+.closed {
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    box-shadow: 2px 2px gray;
+}
+
+.flagged {
+    background-image: linear-gradient(45deg, orange, wheat);
+    box-shadow: 2px 2px gray;
+    color: darkorange;
+    font-weight: bold;
+    animation-name: flagged;
+    animation-duration: 250ms;
+}
+
+.open {
+    background-color: white;
+    box-shadow: none;
+    font-weight: bold;
+    font-size: 14px;
+    animation-name: opened;
+    animation-duration: 250ms;
+}
+
+.exposed {
+    background-color: red;
+    animation-name: exposed;
+    animation-duration: 2s;
+    /* animation-iteration-count: 3; */
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .open {
+    background-color: #242424;
+  }
+
+  .container {
+    color: white;
+  }
+} */
+
+.one {
+    color: blue
+}
+
+.two {
+    color: green
+}
+
+.three {
+    color: purple
+}
+
+.four {
+    color: red
+}
+
+@keyframes exposed {
+    0% {
+        background-image: image(red);
+        color: yellow;
+        transform: scale(0.5);
+    }
+
+    25% {
+        background-image: image(darkred);
+        color: yellow;
+        transform: rotate(180deg) scale(1.2);
+    }
+
+    75% {
+        background-image: image(red);
+        color: yellow;
+        transform: scale(0.5);
+    }
+
+    100% {
+        background-image: image(whitesmoke);
+        color: red;
+        transform: rotate(90deg) scale(1.2);
+    }
+}
+
+@keyframes opened {
+    from {
+        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        transform: scale(0.75);
+    }
+
+    to {
+        background-image: image(white);
+        transform: scale(0.25);
+    }
+}
+
+@keyframes flagged {
+    from {
+        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        transform: scale(0.75);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}

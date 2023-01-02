@@ -1,0 +1,98 @@
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 35%;
+    top: 30%;
+    width: 250px;
+    height: 140px;
+    overflow: auto;
+    background-color: white;
+    opacity: .95;
+    border-radius: 8px;
+    box-shadow: 10px 10px 15px gray;
+    animation-name: opened;
+    animation-duration: 250ms;
+    animation-iteration-count: 3;
+}
+
+.container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+}
+
+.closeButton {
+    align-self: flex-end;
+    margin-right: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.closeButton:hover {
+    background-color: lightgray;
+    border-radius: 8px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.emoji {
+    animation-name: emoji;
+    animation-duration: 250ms;
+    animation-delay: 350ms;
+    animation-iteration-count: 4;
+    align-self: center;
+    margin-right: 10px;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+}
+
+.text {
+    align-self: center;
+    margin-left: 5px;
+    text-shadow: 1px 1px 2px black, 0 0 25px rgb(180, 39, 48), 0 0 5px rgb(189, 27, 121);
+    color: white;
+}
+
+.closing {
+    animation-name: closing;
+    animation-duration: 300ms;
+}
+
+@keyframes closing {
+    to {
+        transform: scale(0.1);
+    }
+}
+
+@keyframes opened {
+    0% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(.95);
+    }
+
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes emoji {
+    to {
+        transform: rotate(180deg);
+    }
+}

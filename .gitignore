@@ -1,0 +1,4 @@
+target/
+dist/
+iced-minesweeper/
+.DS_Store

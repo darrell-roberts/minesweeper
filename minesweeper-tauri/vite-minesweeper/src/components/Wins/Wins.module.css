@@ -1,0 +1,127 @@
+.win {
+    padding: 5px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1;
+}
+
+.rank {
+    font-size: 16px;
+    min-width: 50px;
+    text-align: end;
+    font-weight: bold;
+}
+
+.duration {
+    background-image: linear-gradient(to right, rgb(104, 107, 25), rgb(54, 56, 18));
+    padding: 5px;
+    border-radius: 4px;
+    color: white;
+    box-shadow: 5px 5px 10px gray;
+}
+
+.date {
+    background-image: linear-gradient(to right, rgb(20, 20, 83), rgb(110, 11, 144));
+    color: white;
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 5px 5px 10px gray;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 10px;
+    top: 50px;
+    overflow: auto;
+    background-color: rgb(236, 236, 200);
+    opacity: .95;
+    border-radius: 8px;
+    box-shadow: 10px 10px 15px gray;
+    width: 95%;
+    height: 70%;
+    visibility: hidden;
+}
+
+.modalReady {
+    visibility: visible;
+    animation-name: opening;
+    animation-duration: 250ms;
+}
+
+.container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.noWins {
+    font-size: 20px;
+}
+
+.winComponent {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    flex-direction: row;
+    background-color: rgb(198, 216, 219);
+    border-radius: 4px;
+    border: solid 1px black;
+    margin-top: 5px;
+    opacity: 1;
+}
+
+.closeButton {
+    align-self: flex-end;
+    margin-right: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.closeButton:hover {
+    background-color: lightgray;
+    border-radius: 8px;
+}
+
+.title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px black, 0 0 25px rgb(180, 39, 48), 0 0 5px rgb(189, 27, 121);
+    color: wheat;
+}
+
+.closing {
+    animation: closing;
+    animation-duration: 500ms;
+    visibility: hidden;
+}
+
+@keyframes closing {
+    from {
+        visibility: visible;
+    }
+
+    to {
+        /* transform: scale(0.1); */
+        visibility: hidden;
+        top: var(--wins-height);
+    }
+}
+
+@keyframes opening {
+    0% {
+        transform: scale(0.1);
+        top: var(--wins-height);
+    }
+
+    100% {
+        top: 5%;
+        transform: scale(1);
+    }
+}

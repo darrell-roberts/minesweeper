@@ -1,0 +1,12 @@
+[package]
+name = "minesweeper-relm4"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0 OR MIT"
+
+[dependencies]
+relm4 = "0.6"
+relm4-components = "0.6"
+minesweeper = { path = "../minesweeper" }
+serde = { version = "1.0", features = ["derive"] }
+chrono = { version = "0.4", features = ["serde"] }
