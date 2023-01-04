@@ -39,3 +39,10 @@ grid {
   padding: 15px 15px 15px 15px;
   background-color: whitesmoke;
 }
+
+status_dialog {
+  padding: 15px 15px 15px 15px;
+  background-color: darkslategray;
+  color: white;
+  border-radius: 20px;
+}

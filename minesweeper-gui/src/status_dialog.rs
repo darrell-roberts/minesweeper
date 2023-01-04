@@ -58,6 +58,9 @@ impl Widgets<StatusDialogModel, AppModel> for StatusDialogWidgets {
       .modal(true)
       .visible(false)
       .message_type(gtk::MessageType::Info)
+      .css_name("status_dialog")
+      .decorated(true)
+      // .title("Game Over")
       .build();
 
     dialog.add_button("Close", gtk::ResponseType::Close);

@@ -77,6 +77,13 @@ impl Board {
 
   /// Open a cell and adjacent cells that have no mine counts.
   pub fn open_cell(&mut self, pos: Pos) -> Vec<(Pos, Cell)> {
+    if self.state == GameState::New {
+      // This is the first move in the game. We will mine the
+      // board now and avoid mining the position being opened.
+      self.mine_board(&pos);
+      self.state = GameState::Active;
+    }
+
     let mut opened_positions = vec![];
     if let Some(c) = self.cells.get_mut(&pos) {
       match c.state {
@@ -85,25 +92,15 @@ impl Board {
           flagged: false,
         } => {
           self.expose_mines();
-          self.state = GameState::Loss
+          self.state = GameState::Loss;
         }
         CellState::Closed {
           mined: false,
           flagged: false,
         } => {
-          let am = c.adjacent_mines;
           c.state = CellState::Open;
           opened_positions.push((pos, *c));
-          if self.is_win() {
-            self.state = GameState::Win;
-          } else if am == 0 {
-            if self.state == GameState::New {
-              // This is the first move in the game. We will mine the
-              // board now and avoid mining the position being opened.
-              self.mine_board(&pos);
-              self.state = GameState::Active;
-            }
-
+          if c.adjacent_mines == 0 {
             for open_pos in self.expand(pos) {
               opened_positions.push(open_pos);
             }
@@ -113,6 +110,9 @@ impl Board {
       }
     }
     self.opened += opened_positions.len();
+    if self.is_win() {
+      self.state = GameState::Win;
+    }
     opened_positions
   }
 
