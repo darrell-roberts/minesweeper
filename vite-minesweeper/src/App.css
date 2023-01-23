@@ -1,0 +1,12 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 5px;
+}

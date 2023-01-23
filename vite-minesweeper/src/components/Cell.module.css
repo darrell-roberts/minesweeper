@@ -1,0 +1,18 @@
+.container {
+  border-radius: 20px;
+  width: 50px;
+  /* padding: 1rem; */
+  justify-content: center;
+}
+
+.closed {
+  background-color: lightgray;
+}
+
+.open {
+  background-color: antiquewhite;
+}
+
+.exposed {
+  background-color: red;
+}
