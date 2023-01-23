@@ -3,7 +3,7 @@
     "beforeBuildCommand": "cd vite-minesweeper && npm run build",
     "beforeDevCommand": "cd vite-minesweeper && npm run dev",
     "devPath": "http://localhost:5173",
-    "distDir": "../dist"
+    "distDir": "../vite-minesweeper/dist"
   },
   "package": {
     "productName": "tauri-minesweeper",
@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.dr.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -55,10 +55,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
-        "resizable": true,
+        "height": 1300,
+        "resizable": false,
         "title": "minesweeper",
-        "width": 800
+        "width": 1200
       }
     ]
   }

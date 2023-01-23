@@ -10,3 +10,11 @@
   grid-template-columns: repeat(20, 1fr);
   gap: 5px;
 }
+
+.gameOver {
+    background-color: lightgray;
+}
+
+.newGame {
+    margin-top: 20px;
+}
