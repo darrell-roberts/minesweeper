@@ -3,7 +3,7 @@ import './App.css'
 import { invoke } from '@tauri-apps/api'
 import { GameState, OpenResult, Position } from "./common/types";
 import CellComp from "./components/Cell/Cell";
-import Modal from "./components/Modal/Modal";
+import { message } from '@tauri-apps/api/dialog';
 
 function App() {
     const [board, setBoard] = useState<Position[]>([]);
@@ -14,6 +14,13 @@ function App() {
             .then(setBoard)
             .catch(err => console.error("failed to get positions", err));
     }, []);
+
+    useEffect(() => {
+        if (gameState === "Win" || gameState === "Loss") {
+            message(gameState, "Game Status")
+                .catch((err) => console.error("Failed to open dialog", err));
+        }
+    }, [gameState]);
 
     async function openCell(position: Position) {
         if (position.cell.state.type === "Closed") {
@@ -38,9 +45,6 @@ function App() {
 
     return (
         <div className="App">
-            {gameState === "Loss" || gameState === "Win" &&
-                <Modal message={gameState} />
-            }
             {board.length > 0 &&
                 <div className={`board ${gameState === "Loss" ? ".gameOver" : ""}`}>
                     {board.map(cell => <CellComp position={cell} open={openCell} />)}

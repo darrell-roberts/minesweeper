@@ -7,6 +7,14 @@
       "args": ["dev"],
       "problemMatcher": ["$rustc"],
       "label": "tauri dev"
+    },
+    {
+      "type": "cargo",
+      "command": "tauri",
+      "args": ["build"],
+      "problemMatcher": ["$rustc"],
+      "group": "build",
+      "label": "Tauri Build"
     }
   ]
 }
