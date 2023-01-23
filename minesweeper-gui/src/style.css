@@ -2,14 +2,30 @@ container {
   border-radius: 50px;
 }
 
-button.cell {
-  /* border-radius: 50px; */
+.cell {
+  border-radius: 50px;
   padding-left: 10;
   padding-right: 10;
   margin: 2px 2px 2px 2px;
 }
 
-button.cell.open {
+.open {
+  background-color: whitesmoke;  
+}
+
+.exposed {
+  background-color: whitesmoke;  
+}
+
+.flagged {
+  background-color: lightgray;  
+}
+
+.closed {
+  background-color: slategray;  
+}
+
+/* button.cell.open {
   background-color: whitesmoke;
 }
 
@@ -23,7 +39,7 @@ button.cell.flagged {
 
 button.cell.closed {
   background-color: slategray;
-}
+} */
 
 label.win {
   font-weight: bold;
