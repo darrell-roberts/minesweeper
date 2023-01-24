@@ -13,11 +13,6 @@ mod game;
 type WrappedGame = Arc<Mutex<Game>>;
 
 #[tauri::command]
-fn get_positions(game: State<WrappedGame>) -> Vec<Position> {
-  game.lock().unwrap().positions()
-}
-
-#[tauri::command]
 fn open(position: Position, game: State<WrappedGame>) -> OpenResult {
   let mut g = game.lock().unwrap();
   let opened_cells = g.open_cell(position);
@@ -54,12 +49,7 @@ fn main() {
   let game: WrappedGame = Arc::new(Mutex::new(Game::default()));
   tauri::Builder::default()
     .manage(game)
-    .invoke_handler(tauri::generate_handler![
-      get_positions,
-      open,
-      new_game,
-      flag
-    ])
+    .invoke_handler(tauri::generate_handler![open, new_game, flag])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
