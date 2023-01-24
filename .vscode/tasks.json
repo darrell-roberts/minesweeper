@@ -33,6 +33,15 @@
       ],
       "group": "build",
       "label": "Tauri Build"
+    },
+    {
+      "type": "cargo",
+      "command": "fmt",
+      "problemMatcher": [
+        "$rustc"
+      ],
+      "group": "build",
+      "label": "rust: cargo format"
     }
   ]
 }

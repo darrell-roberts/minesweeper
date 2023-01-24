@@ -7,7 +7,6 @@ export type Position = {
   cell: Cell,
 }
 
-
 export type Cell = {
   adjacentMines: number,
   state: State
@@ -19,13 +18,13 @@ export type State =
   { type: "ExposedMine" }
 
 export type ModifiedPosition = {
-    pos: {x: number, y: number},
-    cell: Cell
+  pos: { x: number, y: number },
+  cell: Cell
 }
 
 export type OpenResult = {
-    openedCells: Position[],
-    gameState: GameState
+  openedCells: Position[],
+  gameState: GameState
 }
 
 export type GameState = "New" | "Active" | "Win" | "Loss";
