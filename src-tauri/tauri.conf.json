@@ -57,10 +57,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 800,
+        "height": 900,
         "resizable": false,
         "title": "minesweeper",
-        "width": 1000
+        "width": 850
       }
     ]
   }

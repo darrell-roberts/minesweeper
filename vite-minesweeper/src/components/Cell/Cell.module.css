@@ -1,9 +1,9 @@
 .container {
   border-radius: 20px;
-  width: 30px;
-  height: 30px;
-  /* padding: 1rem; */
-  justify-content: center;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  justify-content: start;
   font-size: 0.8em;
 }
 
