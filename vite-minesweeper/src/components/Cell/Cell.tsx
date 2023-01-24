@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 type CellProps = {
     position: Position,
     open: (position: Position) => void,
+    gameActive: boolean,
 }
 
-export default function CellComp({ position, open }: CellProps) {
+export default function CellComp({ position, open, gameActive }: CellProps) {
     const [localPos, setLocalPos] = useState(position);
 
     useEffect(() => {
@@ -49,7 +50,8 @@ export default function CellComp({ position, open }: CellProps) {
                 } else {
                     open(position);
                 }
-            }}>
+            }}
+            disabled={!gameActive}>
             {renderCell()}
         </button>
     )

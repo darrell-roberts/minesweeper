@@ -10,13 +10,11 @@ function App() {
     const [gameState, setGameState] = useState<GameState>("New");
 
     useEffect(() => {
-        invoke<Position[]>("get_positions")
-            .then(setBoard)
-            .catch(err => console.error("failed to get positions", err));
+        newGame()
     }, []);
 
     useEffect(() => {
-        if (gameState === "Win" || gameState === "Loss") {
+        if (!gameActive) {
             message(gameState, "Game Status")
                 .catch((err) => console.error("Failed to open dialog", err));
         }
@@ -38,17 +36,20 @@ function App() {
     function newGame() {
         invoke<Position[]>("new_game")
             .then(setBoard)
+            .then(() => setGameState("New"))
             .catch(err => console.error("Failed to start game", err));
     }
+
+    const gameActive = gameState === "Active" || gameState === "New";
 
     return (
         <div className="App">
             {board.length > 0 &&
-                <div className={`board ${gameState === "Loss" ? ".gameOver" : ""}`}>
-                    {board.map(cell => <CellComp position={cell} open={openCell} />)}
+                <div className={`board ${!gameActive ? "gameOver" : ""}`}>
+                    {board.map(cell => <CellComp position={cell} open={openCell} gameActive={gameActive} />)}
                 </div>
             }
-            <button className="newGame" onClick={() => newGame()}>
+            <button className="newGame" onClick={() => newGame()} >
                 New Game
             </button>
         </div>

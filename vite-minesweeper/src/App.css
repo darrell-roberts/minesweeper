@@ -12,9 +12,10 @@
 }
 
 .gameOver {
-    background-color: lightgray;
+  /* background-color: lightgray; */
+  opacity: 50%;
 }
 
 .newGame {
-    margin-top: 20px;
+  margin-top: 20px;
 }

@@ -1,8 +1,6 @@
-use minesweeper::model::{Board, GameState};
-use minesweeper::model::{Cell, Pos};
+use minesweeper::model::{Board, Cell, GameState, Pos};
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::num::NonZeroU8;
+use std::{collections::HashMap, num::NonZeroU8};
 
 #[derive(Debug, Copy, Clone, Serialize, Deserialize)]
 pub struct Position {
