@@ -1,5 +1,7 @@
 import { Position } from "../../common/types"
 import classes from "./Cell.module.css";
+import { invoke } from '@tauri-apps/api'
+import { useEffect, useState } from "react";
 
 type CellProps = {
     position: Position,
@@ -7,34 +9,47 @@ type CellProps = {
 }
 
 export default function CellComp({ position, open }: CellProps) {
+    const [localPos, setLocalPos] = useState(position);
+
+    useEffect(() => {
+        setLocalPos(position);
+    }, [position])
 
     function renderCell() {
-        switch (position.cell.state.type) {
-            case "Closed": return position.cell.state.content.flagged
+        switch (localPos.cell.state.type) {
+            case "Closed": return localPos.cell.state.content.flagged
                 ? "🚩"
                 : ""
             case "ExposedMine": return "💣"
-            case "Open": return position.cell.adjacentMines > 0
-                ? position.cell.adjacentMines
+            case "Open": return localPos.cell.adjacentMines > 0
+                ? localPos.cell.adjacentMines
                 : ""
 
         }
     }
 
     function getClassName() {
-        switch (position.cell.state.type) {
+        switch (localPos.cell.state.type) {
             case "Closed": return classes.closed;
             case "ExposedMine": return classes.exposed;
             case "Open": return classes.open;
         }
     }
 
-    //   console.log("rendering CellComp");
-
     return (
         <button
             className={`${classes.container} ${getClassName()}`}
-            onClick={() => open(position)}>
+            onClick={event => {
+                if (event.button == 2) {
+                    invoke<Position | undefined>("flag", { position }).then(pos => {
+                        if (pos) {
+                            setLocalPos(pos);
+                        }
+                    })
+                } else {
+                    open(position);
+                }
+            }}>
             {renderCell()}
         </button>
     )
