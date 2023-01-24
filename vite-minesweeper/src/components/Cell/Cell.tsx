@@ -41,7 +41,7 @@ export default function CellComp({ position, open, gameActive }: CellProps) {
         <button
             className={`${classes.container} ${getClassName()}`}
             onClick={event => {
-                if (event.button == 2) {
+                if (event.altKey) {
                     invoke<Position | undefined>("flag", { position }).then(pos => {
                         if (pos) {
                             setLocalPos(pos);
