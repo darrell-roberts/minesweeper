@@ -29,8 +29,6 @@ function App() {
         if (position.cell.state.type === "Closed") {
             try {
                 const result = await invoke<OpenResult>("open", { position });
-                console.log("opened cells", result.openedCells.length);
-
                 const updatedBoard = [...gameState.board];
                 for (const opened of result.openedCells) {
                     updatedBoard[opened.index].cell = opened.cell
