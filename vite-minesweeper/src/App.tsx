@@ -27,16 +27,21 @@ function App() {
 
     async function openCell(position: Position) {
         if (position.cell.state.type === "Closed") {
-            const result = await invoke<OpenResult>("open", { position });
+            try {
+                const result = await invoke<OpenResult>("open", { position });
+                console.log("opened cells", result.openedCells.length);
 
-            const updatedBoard = [...gameState.board];
-            for (const opened of result.openedCells) {
-                updatedBoard[opened.index].cell = opened.cell
+                const updatedBoard = [...gameState.board];
+                for (const opened of result.openedCells) {
+                    updatedBoard[opened.index].cell = opened.cell
+                }
+                setGameState({
+                    board: updatedBoard,
+                    state: result.gameState
+                });
+            } catch (e) {
+                console.error("failed to open cell", e);
             }
-            setGameState({
-                board: updatedBoard,
-                state: result.gameState
-            });
         }
     }
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 type CellProps = {
     position: Position,
-    open: (position: Position) => void,
+    open: (position: Position) => Promise<void>,
     gameActive: boolean,
 }
 
@@ -48,7 +48,7 @@ export default function CellComp({ position, open, gameActive }: CellProps) {
                         }
                     })
                 } else {
-                    open(position);
+                    open(position).then(() => setLocalPos(position));
                 }
             }}
             disabled={!gameActive}>
