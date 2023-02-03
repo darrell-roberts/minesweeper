@@ -2,6 +2,7 @@
 mod game;
 
 use rand::prelude::*;
+use serde::{Deserialize, Serialize};
 use std::{
   cmp::Ordering,
   collections::{BTreeMap, HashSet},
@@ -10,7 +11,8 @@ use std::{
 };
 
 /// Board cell.
-#[derive(Debug, Copy, Clone, Default)]
+#[derive(Debug, Copy, Clone, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Cell {
   pub state: CellState,
   pub adjacent_mines: u8,
@@ -23,7 +25,7 @@ impl Cell {
 }
 
 /// Cell position on the board.
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Pos {
   pub x: NonZeroU8,
   pub y: NonZeroU8,
@@ -59,7 +61,8 @@ impl From<(NonZeroU8, NonZeroU8)> for Pos {
 }
 
 /// State of the cell.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "type", content = "content")]
 pub enum CellState {
   Open,
   Closed { flagged: bool, mined: bool },
@@ -101,7 +104,7 @@ impl Display for Cell {
 }
 
 /// State of the game.
-#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone, Serialize)]
 pub enum GameState {
   New,
   Active,

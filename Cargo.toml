@@ -1,2 +1,2 @@
 [workspace]
-members = ["minesweeper", "minesweeper-gui"]
+members = ["minesweeper", "minesweeper-gui", "src-tauri"]

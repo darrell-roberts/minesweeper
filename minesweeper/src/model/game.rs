@@ -101,9 +101,7 @@ impl Board {
           c.state = CellState::Open;
           opened_positions.push((pos, *c));
           if c.adjacent_mines == 0 {
-            for open_pos in self.expand(pos) {
-              opened_positions.push(open_pos);
-            }
+            opened_positions.extend(self.expand(pos));
           }
         }
         _ => (),
