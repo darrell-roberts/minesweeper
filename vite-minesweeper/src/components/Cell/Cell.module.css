@@ -1,0 +1,20 @@
+.container {
+  border-radius: 20px;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  justify-content: start;
+  font-size: 0.8em;
+}
+
+.closed {
+  background-color: lightgray;
+}
+
+.open {
+  background-color: white;
+}
+
+.exposed {
+  background-color: red;
+}
