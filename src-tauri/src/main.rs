@@ -24,6 +24,7 @@ fn open(position: Position, game: State<WrappedGame>) -> OpenResult {
   OpenResult {
     opened_cells,
     game_state,
+    total_mines: g.board.total_mines(),
   }
 }
 

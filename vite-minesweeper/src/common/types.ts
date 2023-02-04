@@ -24,7 +24,8 @@ export type ModifiedPosition = {
 
 export type OpenResult = {
   openedCells: Position[],
-  gameState: GameState
+  gameState: GameState,
+  totalMines: number,
 }
 
 export type GameState = "New" | "Active" | "Win" | "Loss";

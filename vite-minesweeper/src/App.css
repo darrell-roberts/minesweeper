@@ -18,3 +18,12 @@
   background-color: darkcyan;
   color: white;
 }
+
+span {
+  margin-left: 5px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}

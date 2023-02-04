@@ -16,6 +16,7 @@ impl Board {
       rows,
       state: GameState::New,
       opened: 0,
+      mined: 0,
     }
   }
 
@@ -32,6 +33,8 @@ impl Board {
       Pos::random_positions(self.columns.get(), self.rows.get(), *exclude_pos)
         .take(total_mined_cells);
 
+    let mut total_mined = 0;
+
     // Update cell status for mined positions and mined counts.
     for pos in mined_positions {
       if let Some(mined) =
@@ -45,24 +48,19 @@ impl Board {
           })
       {
         *mined = true;
+        total_mined += 1;
         for adj in pos.adjacent(self.rows.get(), self.columns.get()) {
           self.cells.entry(adj).and_modify(|c| c.adjacent_mines += 1);
         }
       }
     }
+
+    self.mined = total_mined;
   }
 
   /// Get the total number of mined cells.
   pub fn total_mines(&self) -> usize {
-    self
-      .cells
-      .values()
-      .filter(|&&cell| match cell.state {
-        CellState::Closed { mined, .. } => mined,
-        CellState::ExposedMine => true,
-        _ => false,
-      })
-      .count()
+    self.mined
   }
 
   /// Return an iterator of all positions that are safe to open and have been opened.

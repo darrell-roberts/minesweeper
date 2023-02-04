@@ -120,6 +120,7 @@ pub struct Board {
   rows: NonZeroU8,
   state: GameState,
   opened: usize,
+  mined: usize,
 }
 
 impl Board {

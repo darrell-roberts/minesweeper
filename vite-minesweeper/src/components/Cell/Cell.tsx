@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 type CellProps = {
     position: Position,
     open: (position: Position) => Promise<void>,
+    flag: (flagged: boolean) => void,
     gameActive: boolean,
 }
 
-export default function CellComp({ position, open, gameActive }: CellProps) {
+export default function CellComp({ position, open, gameActive, flag }: CellProps) {
     const [localPos, setLocalPos] = useState(position);
 
     useEffect(() => {
@@ -45,6 +46,9 @@ export default function CellComp({ position, open, gameActive }: CellProps) {
                     invoke<Position | undefined>("flag", { position }).then(pos => {
                         if (pos) {
                             setLocalPos(pos);
+                            if (pos.cell.state.type == "Closed") {
+                                flag(pos.cell.state.content.flagged)
+                            }
                         }
                     })
                 } else {

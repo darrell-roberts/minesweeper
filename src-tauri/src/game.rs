@@ -21,6 +21,7 @@ pub struct Game {
 pub struct OpenResult {
   pub opened_cells: Vec<Position>,
   pub game_state: GameState,
+  pub total_mines: usize,
 }
 
 impl Game {
