@@ -29,7 +29,7 @@ impl Widgets<AppModel, ()> for AppWidgets {
                 set_label: "Opened: ",
               },
               append = opened = &gtk::Label {
-                set_label: "0",
+                set_label: watch! { &format!("{}", model.board.opened()) },
               }
             },
 
@@ -38,7 +38,7 @@ impl Widgets<AppModel, ()> for AppWidgets {
                 set_label: "Flagged: ",
               },
               append = flagged = &gtk::Label {
-                set_label: "0",
+                set_label: watch! { &format!("{}", model.board.flagged()) },
               }
             },
 
@@ -47,7 +47,7 @@ impl Widgets<AppModel, ()> for AppWidgets {
                 set_label: "Mined: ",
               },
               append = mined = &gtk::Label {
-                set_label: "0: ",
+                set_label: watch! { &format!("{}", model.board.total_mines()) },
               }
             },
           },
@@ -60,6 +60,16 @@ impl Widgets<AppModel, ()> for AppWidgets {
             set_hexpand: true,
             set_valign: gtk::Align::Fill,
             set_vexpand: true,
+            set_sensitive: watch! {
+              match model.board.state() {
+                GameState::Win | GameState::Loss => {
+                  false
+                },
+                GameState::New | GameState::Active => {
+                  true
+                }
+              }
+            },
             factory!(model.positions)
           },
 
@@ -72,22 +82,6 @@ impl Widgets<AppModel, ()> for AppWidgets {
             }
           }
       },
-    }
-  }
-
-  fn pre_view() {
-    opened.set_label(&format!("{}", model.board.opened()));
-    flagged.set_label(&format!("{}", model.board.flagged()));
-    mined.set_label(&format!("{}", model.board.total_mines()));
-
-    match model.board.state() {
-      GameState::Win | GameState::Loss => {
-        board.set_sensitive(false);
-      }
-      GameState::New => {
-        board.set_sensitive(true);
-      }
-      _ => (),
     }
   }
 }
