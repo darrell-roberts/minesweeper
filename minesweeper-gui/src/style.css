@@ -1,14 +1,9 @@
 container {
-  border-radius: 80%;
+  border-radius: 50%;
 }
 
 .cell {
-  border-radius: 80%;
-  /* padding-left: 10; */
-  /* padding-right: 10; */
-  /* margin: 2px 2px 2px 2px; */
-  /* min-height: 35px; */
-  /* min-width: 35px; */
+  border-radius: 50%;
 }
 
 .open {

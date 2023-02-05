@@ -148,16 +148,15 @@ impl Board {
   pub fn flagged(&self) -> usize {
     self.flagged
   }
+
+  pub fn mined(&self) -> usize {
+    self.mined
+  }
 }
 
 impl Display for Board {
   fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-    writeln!(
-      f,
-      "board: {}, mines: {}",
-      self.board_size(),
-      self.total_mines()
-    )?;
+    writeln!(f, "board: {}, mines: {}", self.board_size(), self.mined)?;
     write!(f, "   ")?;
     for c in 1..=self.columns.get() {
       write!(f, "{c:<3}")?;

@@ -47,7 +47,7 @@ impl Widgets<AppModel, ()> for AppWidgets {
                 set_label: "Mined: ",
               },
               append = mined = &gtk::Label {
-                set_label: watch! { &format!("{}", model.board.total_mines()) },
+                set_label: watch! { &format!("{}", model.board.mined()) },
               }
             },
           },
@@ -61,14 +61,7 @@ impl Widgets<AppModel, ()> for AppWidgets {
             set_valign: gtk::Align::Fill,
             set_vexpand: true,
             set_sensitive: watch! {
-              match model.board.state() {
-                GameState::Win | GameState::Loss => {
-                  false
-                },
-                GameState::New | GameState::Active => {
-                  true
-                }
-              }
+              !matches!(model.board.state(), GameState::Win | GameState::Loss)
             },
             factory!(model.positions)
           },

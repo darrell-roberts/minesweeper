@@ -59,11 +59,6 @@ impl Board {
     self.mined = total_mined;
   }
 
-  /// Get the total number of mined cells.
-  pub fn total_mines(&self) -> usize {
-    self.mined
-  }
-
   /// Return an iterator of all positions that are safe to open and have been opened.
   fn expand(&mut self, pos: Pos) -> impl Iterator<Item = (Pos, Cell)> + '_ {
     CellExpandIter::new(
@@ -152,7 +147,7 @@ impl Board {
       .values()
       .filter(|&&cell| matches!(cell.state, CellState::Open))
       .count();
-    let total_open_for_win = self.cells.len() - self.total_mines();
+    let total_open_for_win = self.cells.len() - self.mined;
     total_open_for_win == opened_cells || self.all_mines_flagged()
   }
 
@@ -171,7 +166,7 @@ impl Board {
       })
       .count();
 
-    self.total_mines() > 0 && flagged_mines == self.total_mines()
+    self.mined > 0 && flagged_mines == self.mined
   }
 }
 
@@ -198,6 +193,6 @@ mod test {
     let mut board = Board::new(board_max, board_max);
     board.mine_board(&(1, 1).try_into().unwrap());
     dbg!(&board);
-    assert!(board.total_mines() > 0);
+    assert!(board.mined > 0);
   }
 }
