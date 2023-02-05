@@ -120,6 +120,7 @@ pub struct Board {
   rows: NonZeroU8,
   state: GameState,
   opened: usize,
+  flagged: usize,
   mined: usize,
 }
 
@@ -142,6 +143,10 @@ impl Board {
 
   pub fn opened(&self) -> usize {
     self.opened
+  }
+
+  pub fn flagged(&self) -> usize {
+    self.flagged
   }
 }
 

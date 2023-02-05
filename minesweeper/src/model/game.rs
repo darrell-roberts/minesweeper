@@ -16,6 +16,7 @@ impl Board {
       rows,
       state: GameState::New,
       opened: 0,
+      flagged: 0,
       mined: 0,
     }
   }
@@ -124,6 +125,11 @@ impl Board {
     self.cells.entry(pos).and_modify(|c| {
       if let CellState::Closed { flagged, .. } = &mut c.state {
         *flagged = !*flagged;
+        if *flagged {
+          self.flagged += 1;
+        } else {
+          self.flagged -= 1;
+        }
       }
     });
     self.cells.get(&pos).map(|&cell| (pos, cell))
