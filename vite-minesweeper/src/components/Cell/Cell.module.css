@@ -18,3 +18,13 @@
 .exposed {
   background-color: red;
 }
+
+@media (prefers-color-scheme: dark) {
+  .open {
+    background-color: #242424;
+  }
+
+  .container {
+    color: white;
+  }
+}
