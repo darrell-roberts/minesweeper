@@ -6,7 +6,7 @@
     "distDir": "../vite-minesweeper/dist"
   },
   "package": {
-    "productName": "tauri-minesweeper",
+    "productName": "Minesweeper",
     "version": "0.1.0"
   },
   "tauri": {
@@ -17,7 +17,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Game",
       "copyright": "",
       "deb": {
         "depends": []
@@ -57,10 +57,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 910,
+        "height": 720,
         "resizable": false,
-        "title": "minesweeper",
-        "width": 850
+        "title": "Minesweeper",
+        "width": 620
       }
     ]
   }

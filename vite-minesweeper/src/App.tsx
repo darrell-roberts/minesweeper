@@ -12,10 +12,11 @@ type GameAppState = {
     mined: number,
     flagged: number,
     active: boolean,
+    duration: string,
 }
 
 type GameAction = { type: "open", result: OpenResult }
-    | { type: "restart", board: Position[] }
+    | { type: "restart", board: Position[], }
     | { type: "flag", flagged: boolean };
 
 function gameReducer(state: GameAppState, action: GameAction): GameAppState {
@@ -31,12 +32,13 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
                 state: action.result.gameState,
                 active: action.result.gameState == "Active",
                 opened: state.opened + action.result.openedCells.length,
-                mined: action.result.totalMines
+                mined: action.result.totalMines,
+                duration: action.result.duration
             }
         };
         case "restart": return {
             ...INITIAL_STATE,
-            board: action.board
+            board: action.board,
         };
         case "flag": return {
             ...state,
@@ -54,13 +56,14 @@ const INITIAL_STATE: GameAppState = {
     mined: 0,
     flagged: 0,
     active: true,
+    duration: "0 Seconds"
 }
 
 function App() {
     const [gameState, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
     useEffect(() => {
-        newGame()
+        newGame();
     }, []);
 
 
@@ -84,13 +87,14 @@ function App() {
 
     function newGame() {
         invoke<Position[]>("new_game")
-            .then(board => dispatch({ type: "restart", board }))
+            .then(board => dispatch({ type: "restart", board, }))
             .catch(err => console.error("Failed to start game", err));
     }
 
     return (
         <div className="App">
             <div className="header">
+                <span>Duration: {gameState.duration}</span>
                 <span>Opened Cells: {gameState.opened}</span>
                 <span>Flagged Cells: {gameState.flagged}</span>
                 <span>Mined Cells: {gameState.mined}</span>

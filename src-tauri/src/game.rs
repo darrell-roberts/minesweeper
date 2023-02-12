@@ -1,6 +1,6 @@
 use minesweeper::model::{Board, Cell, GameState, Pos};
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, num::NonZeroU8};
+use std::{collections::HashMap, num::NonZeroU8, time::Instant};
 
 #[derive(Debug, Copy, Clone, Serialize, Deserialize)]
 pub struct Position {
@@ -14,6 +14,7 @@ pub struct Game {
   pub board: Board,
   pub pos_map: HashMap<Pos, usize>,
   pub positions: Vec<Position>,
+  pub start_time: Instant,
 }
 
 #[derive(Debug, Serialize)]
@@ -22,6 +23,7 @@ pub struct OpenResult {
   pub opened_cells: Vec<Position>,
   pub game_state: GameState,
   pub total_mines: usize,
+  pub duration: String,
 }
 
 impl Game {
@@ -78,6 +80,7 @@ impl Default for Game {
       board,
       positions,
       pos_map,
+      start_time: Instant::now(),
     }
   }
 }

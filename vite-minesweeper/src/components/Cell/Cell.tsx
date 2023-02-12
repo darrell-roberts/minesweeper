@@ -52,7 +52,11 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
                         }
                     })
                 } else {
-                    open(position).then(() => setLocalPos(position));
+                    if (localPos.cell.state.type == "Closed") {
+                        if (!localPos.cell.state.content.flagged) {
+                            open(position).then(() => setLocalPos(position));
+                        }
+                    }
                 }
             }}
             disabled={!gameActive}>

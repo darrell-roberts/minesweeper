@@ -21,10 +21,23 @@ fn open(position: Position, game: State<WrappedGame>) -> OpenResult {
     GameState::Loss | GameState::Win => g.positions(),
     _ => opened_cells,
   };
+  let seconds = g.start_time.elapsed().as_secs();
+
+  let duration_str = match seconds {
+    0..=59 => format!("{} seconds", seconds),
+    60..=3599 => format!(
+      "{} minute(s) {} seconds",
+      seconds.div_euclid(60),
+      seconds.rem_euclid(60)
+    ),
+    3600.. => format!("{} hours", seconds.div_euclid(3600)),
+  };
+
   OpenResult {
     opened_cells,
     game_state,
     total_mines: g.board.mined(),
+    duration: duration_str,
   }
 }
 
