@@ -5,11 +5,22 @@ import { MouseEvent, useEffect, useState } from "react";
 type CellProps = {
     position: Position,
     open: (position: Position) => Promise<void>,
-    // flag: (flagged: boolean) => void,
     flag: (position: Position) => Promise<Position | undefined>,
     gameActive: boolean,
 }
 
+function mineCountStyle(count: number): string {
+    switch (count) {
+        case 1: return classes.one;
+        case 2: return classes.two;
+        case 3: return classes.three;
+        default: return classes.four;
+    }
+}
+
+/**
+ * A Cell component.
+ */
 export default function CellComp({ position, open, gameActive, flag }: CellProps) {
     const [localPos, setLocalPos] = useState(position);
 
@@ -30,11 +41,11 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
         }
     }
 
-    function getClassName() {
+    function getClassName(): string {
         switch (localPos.cell.state.type) {
             case "Closed": return classes.closed;
             case "ExposedMine": return classes.exposed;
-            case "Open": return classes.open;
+            case "Open": return `${classes.open} ${mineCountStyle(localPos.cell.adjacentMines)}`
         }
     }
 

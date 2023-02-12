@@ -8,6 +8,7 @@
   display: grid;
   grid-template-columns: repeat(20, 1fr);
   gap: 5px;
+  background-color: whitesmoke;
 }
 
 .gameOver {
