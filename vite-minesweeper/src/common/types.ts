@@ -26,7 +26,14 @@ export type OpenResult = {
   openedCells: Position[],
   gameState: GameState,
   totalMines: number,
-  duration: string,
+}
+
+export type FlagResult = {
+    position?: Position,
+}
+
+export type TimeEvent = {
+    duration: string,
 }
 
 export type GameState = "New" | "Active" | "Win" | "Loss";

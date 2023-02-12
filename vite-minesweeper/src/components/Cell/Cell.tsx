@@ -1,12 +1,12 @@
 import { Position } from "../../common/types"
 import classes from "./Cell.module.css";
-import { invoke } from '@tauri-apps/api'
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 type CellProps = {
     position: Position,
     open: (position: Position) => Promise<void>,
-    flag: (flagged: boolean) => void,
+    // flag: (flagged: boolean) => void,
+    flag: (position: Position) => Promise<Position | undefined>,
     gameActive: boolean,
 }
 
@@ -38,27 +38,34 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
         }
     }
 
+    async function handleClick(event: MouseEvent) {
+        if (event.altKey) {
+            try {
+                const pos = await flag(position);
+                if (pos) {
+                    setLocalPos(pos);
+                }
+            } catch (err) {
+                console.error("failed to flag cell", err)
+            }
+        } else {
+            if (localPos.cell.state.type == "Closed") {
+                if (!localPos.cell.state.content.flagged) {
+                    try {
+                        await open(position);
+                        setLocalPos(position);
+                    } catch (err) {
+                        console.error("failed to open cell", err);
+                    }
+                }
+            }
+        }
+    }
+
     return (
         <button
             className={`${classes.container} ${getClassName()}`}
-            onClick={event => {
-                if (event.altKey) {
-                    invoke<Position | undefined>("flag", { position }).then(pos => {
-                        if (pos) {
-                            setLocalPos(pos);
-                            if (pos.cell.state.type == "Closed") {
-                                flag(pos.cell.state.content.flagged)
-                            }
-                        }
-                    })
-                } else {
-                    if (localPos.cell.state.type == "Closed") {
-                        if (!localPos.cell.state.content.flagged) {
-                            open(position).then(() => setLocalPos(position));
-                        }
-                    }
-                }
-            }}
+            onClick={handleClick}
             disabled={!gameActive}>
             {renderCell()}
         </button>

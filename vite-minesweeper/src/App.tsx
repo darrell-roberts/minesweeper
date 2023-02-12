@@ -1,9 +1,10 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, } from 'react'
 import './App.css'
 import { invoke } from '@tauri-apps/api'
-import { GameState, OpenResult, Position } from "./common/types";
+import { FlagResult, GameState, OpenResult, Position, TimeEvent } from "./common/types";
 import CellComp from "./components/Cell/Cell";
 import { message } from '@tauri-apps/api/dialog';
+import { WebviewWindow } from "@tauri-apps/api/window";
 
 type GameAppState = {
     board: Position[],
@@ -17,7 +18,8 @@ type GameAppState = {
 
 type GameAction = { type: "open", result: OpenResult }
     | { type: "restart", board: Position[], }
-    | { type: "flag", flagged: boolean };
+    | { type: "flag", data: FlagResult }
+    | { type: "duration", event: TimeEvent };
 
 function gameReducer(state: GameAppState, action: GameAction): GameAppState {
     switch (action.type) {
@@ -33,7 +35,6 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
                 active: action.result.gameState == "Active",
                 opened: state.opened + action.result.openedCells.length,
                 mined: action.result.totalMines,
-                duration: action.result.duration
             }
         };
         case "restart": return {
@@ -42,8 +43,14 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
         };
         case "flag": return {
             ...state,
-            flagged: action.flagged ? state.flagged + 1 : state.flagged - 1,
+            flagged: action.data.position
+                ? state.flagged + 1
+                : state.flagged - 1,
 
+        }
+        case "duration": return {
+            ...state,
+            duration: action.event.duration,
         }
         default: return state;
     }
@@ -64,8 +71,11 @@ function App() {
 
     useEffect(() => {
         newGame();
+        new WebviewWindow("main")
+            .listen<TimeEvent>("time-event", event => dispatch({ type: "duration", event: event.payload }))
+            .then(handle => console.info("registered listener"))
+            .catch(err => console.error("Failed to listen to time-event", err));
     }, []);
-
 
     useEffect(() => {
         if (!gameState.active) {
@@ -83,6 +93,16 @@ function App() {
                 console.error("failed to open cell", e);
             }
         }
+    }
+
+    async function flagCell(position: Position): Promise<Position | undefined> {
+        const result = await invoke<FlagResult>("flag", { position });
+        if (result.position) {
+            if (result.position.cell.state.type == "Closed") {
+                dispatch({ type: "flag", data: result })
+            }
+        }
+        return result.position;
     }
 
     function newGame() {
@@ -106,7 +126,7 @@ function App() {
                             position={cell}
                             open={openCell}
                             gameActive={gameState.active}
-                            flag={flagged => dispatch({ type: "flag", flagged })}
+                            flag={flagCell}
                         />)
                     }
                 </div>

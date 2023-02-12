@@ -23,7 +23,14 @@ pub struct OpenResult {
   pub opened_cells: Vec<Position>,
   pub game_state: GameState,
   pub total_mines: usize,
-  pub duration: String,
+  //   pub duration: String,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FlagResult {
+  pub position: Option<Position>,
+  //   pub duration: String,
 }
 
 impl Game {
