@@ -3,7 +3,7 @@ import { WebviewWindow } from "@tauri-apps/api/window";
 import { TimeEvent } from "../../common/types";
 
 function DurationCounter() {
-    const [duration, setDuration] = useState("0 Seconds");
+    const [duration, setDuration] = useState("0 seconds");
     useEffect(() => {
         new WebviewWindow("main")
             .listen<TimeEvent>("time-event", event => setDuration(event.payload.duration))
