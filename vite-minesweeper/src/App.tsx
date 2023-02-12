@@ -1,10 +1,10 @@
 import { useEffect, useReducer, } from 'react'
 import './App.css'
 import { invoke } from '@tauri-apps/api'
-import { FlagResult, GameState, OpenResult, Position, TimeEvent } from "./common/types";
+import { FlagResult, GameState, OpenResult, Position, } from "./common/types";
 import CellComp from "./components/Cell/Cell";
 import { message } from '@tauri-apps/api/dialog';
-import { WebviewWindow } from "@tauri-apps/api/window";
+import DurationCounter from './components/DurationCounter/DurationCounter';
 
 type GameAppState = {
     board: Position[],
@@ -13,13 +13,11 @@ type GameAppState = {
     mined: number,
     flagged: number,
     active: boolean,
-    duration: string,
 }
 
 type GameAction = { type: "open", result: OpenResult }
     | { type: "restart", board: Position[], }
-    | { type: "flag", data: FlagResult }
-    | { type: "duration", event: TimeEvent };
+    | { type: "flag", data: FlagResult };
 
 function gameReducer(state: GameAppState, action: GameAction): GameAppState {
     switch (action.type) {
@@ -48,10 +46,7 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
                 : state.flagged - 1,
 
         }
-        case "duration": return {
-            ...state,
-            duration: action.event.duration,
-        }
+
         default: return state;
     }
 }
@@ -63,7 +58,6 @@ const INITIAL_STATE: GameAppState = {
     mined: 0,
     flagged: 0,
     active: true,
-    duration: "0 Seconds"
 }
 
 function App() {
@@ -71,10 +65,6 @@ function App() {
 
     useEffect(() => {
         newGame();
-        new WebviewWindow("main")
-            .listen<TimeEvent>("time-event", event => dispatch({ type: "duration", event: event.payload }))
-            .then(handle => console.info("registered listener"))
-            .catch(err => console.error("Failed to listen to time-event", err));
     }, []);
 
     useEffect(() => {
@@ -114,7 +104,7 @@ function App() {
     return (
         <div className="App">
             <div className="header">
-                <span>Duration: {gameState.duration}</span>
+                <DurationCounter />
                 <span>Opened Cells: {gameState.opened}</span>
                 <span>Flagged Cells: {gameState.flagged}</span>
                 <span>Mined Cells: {gameState.mined}</span>

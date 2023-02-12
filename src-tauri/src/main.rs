@@ -81,14 +81,17 @@ fn main() {
       let main_window = app.get_window("main").unwrap();
       let game_copy = game.clone();
       std::thread::spawn(move || loop {
-        main_window
-          .emit(
-            "time-event",
-            TimeEvent {
-              duration: get_elapased(&*game_copy.read().unwrap()),
-            },
-          )
-          .unwrap();
+        let (state, duration) = {
+          game_copy
+            .read()
+            .map(|g| (*g.board.state(), get_elapased(&*g)))
+            .unwrap()
+        };
+        if matches!(state, GameState::Active | GameState::New) {
+          main_window
+            .emit("time-event", TimeEvent { duration })
+            .unwrap();
+        }
         std::thread::sleep(Duration::from_secs(1));
       });
       Ok(())
