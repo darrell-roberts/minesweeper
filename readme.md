@@ -7,7 +7,7 @@ A Relm4/Gtk4 UI for the minesweeper game.
 # minesweeper-tauri
 
 A Tauri UI for the minesweeper game.
-<img width="962" alt="image" src="https://user-images.githubusercontent.com/33698065/216786344-929dda3f-225c-4f05-9e75-967d8b561ce8.png">
+<img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218323494-4f6bc94b-ef65-4bf1-96ff-168aa8da3b8e.png">
 
 # minesweeper
 
