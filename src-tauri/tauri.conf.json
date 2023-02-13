@@ -57,7 +57,7 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 720,
+        "height": 730,
         "resizable": false,
         "title": "Minesweeper",
         "width": 620
