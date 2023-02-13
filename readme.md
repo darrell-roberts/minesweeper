@@ -24,7 +24,7 @@ cd ../minesweeper
 cargo tauri build
 ```
 
-<img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218477605-3ec74bdb-9499-49a3-a5e7-ea78306432fa.png">
+<img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218481069-72467dd9-cb91-4db7-bf6c-e260434b655c.png">
 
 # minesweeper-gui
 

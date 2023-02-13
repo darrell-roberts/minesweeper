@@ -105,9 +105,9 @@ function App() {
         <div className="App">
             <div className="header">
                 <DurationCounter />
-                <span>Opened Cells: {gameState.opened}</span>
-                <span>Flagged Cells: {gameState.flagged}</span>
-                <span>Mined Cells: {gameState.mined}</span>
+                <span>Opened: {gameState.opened}</span>
+                <span>Flagged: {gameState.flagged}</span>
+                <span>Mined: {gameState.mined}</span>
             </div>
             {gameState.board.length > 0 &&
                 <div className={`board ${!gameState.active ? "gameOver" : ""}`}>
