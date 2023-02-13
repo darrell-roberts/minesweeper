@@ -17,8 +17,21 @@
 
 .newGame {
   margin-top: 20px;
-  background-color: darkcyan;
+  background-image: linear-gradient(to right, darkcyan, rgb(18, 79, 79));
   color: white;
+  border-radius: 8px;
+  box-shadow: 2px 2px slategray;
+  /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); */
+  font-size: 14px;
+  opacity: .6;
+}
+
+.newGame:hover {
+    opacity: 1;
+}
+
+.newGame:active {
+    box-shadow: none;
 }
 
 span {
