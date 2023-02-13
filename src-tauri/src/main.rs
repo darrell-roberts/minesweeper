@@ -6,7 +6,7 @@
 use app::{
   commands::{flag, new_game, open},
   game::Game,
-  TimeEvent, WrappedGame, __cmd__flag, __cmd__new_game, __cmd__open,
+  AppGame, TimeEvent, __cmd__flag, __cmd__new_game, __cmd__open,
 };
 use minesweeper::model::GameState;
 use std::{
@@ -30,7 +30,7 @@ fn get_elapased(game: &Game) -> String {
 }
 
 fn main() {
-  let game: WrappedGame = Arc::new(RwLock::new(Game::default()));
+  let game: AppGame = Arc::new(RwLock::new(Game::default()));
   tauri::Builder::default()
     .manage(game.clone())
     .setup(move |app| {

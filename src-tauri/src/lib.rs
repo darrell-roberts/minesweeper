@@ -10,4 +10,4 @@ pub struct TimeEvent {
   pub duration: String,
 }
 
-pub type WrappedGame = Arc<RwLock<Game>>;
+pub type AppGame = Arc<RwLock<Game>>;
