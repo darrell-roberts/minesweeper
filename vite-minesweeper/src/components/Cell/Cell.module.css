@@ -12,6 +12,10 @@
     box-shadow: none;
 }
 
+.container:hover {
+    opacity: .8;
+}
+
 .closed {
   background-color: lightgray;
 }
