@@ -46,7 +46,7 @@ fn main() {
         if matches!(state, GameState::Active | GameState::New) {
           main_window
             .emit("time-event", TimeEvent { duration })
-            .unwrap();
+            .unwrap_or_else(|e| eprintln!("Failed to emit time event {e}"));
         }
         std::thread::sleep(Duration::from_secs(1));
       });
