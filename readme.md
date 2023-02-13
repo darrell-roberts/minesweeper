@@ -1,14 +1,36 @@
+# minesweeper-tauri
+
+A Tauri UI for the minesweeper game.
+
+## Build from source
+
+### Clone Repo
+
+```
+git clone https://github.com/darrell-roberts/minesweeper.git
+```
+
+### Install npm dependencies
+
+```
+cd vite-minesweeper
+npm install
+```
+
+### Build Tauri App
+
+```
+cd ../minesweeper
+cargo tauri build
+```
+
+<img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218477605-3ec74bdb-9499-49a3-a5e7-ea78306432fa.png">
+
 # minesweeper-gui
 
 A Relm4/Gtk4 UI for the minesweeper game.
 
 <img src="https://user-images.githubusercontent.com/33698065/216826865-5495416b-1ebf-482e-b748-e52c64da3a36.png" />
-
-# minesweeper-tauri
-
-A Tauri UI for the minesweeper game.
-
-<img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218342198-1e578689-809d-4cae-a0fe-3fc6e19942d2.png">
 
 # minesweeper
 
