@@ -17,7 +17,7 @@ type GameAppState = {
 
 type GameAction = { type: "open", result: OpenResult }
     | { type: "restart", board: Position[], }
-    | { type: "flag", data: FlagResult };
+    | { type: "flag", flagged: boolean };
 
 function gameReducer(state: GameAppState, action: GameAction): GameAppState {
     switch (action.type) {
@@ -41,7 +41,7 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
         };
         case "flag": return {
             ...state,
-            flagged: action.data.position
+            flagged: action.flagged
                 ? state.flagged + 1
                 : state.flagged - 1,
 
@@ -89,7 +89,7 @@ function App() {
         const result = await invoke<FlagResult>("flag", { position });
         if (result.position) {
             if (result.position.cell.state.type == "Closed") {
-                dispatch({ type: "flag", data: result })
+                dispatch({ type: "flag", flagged: result.position.cell.state.content.flagged })
             }
         }
         return result.position;

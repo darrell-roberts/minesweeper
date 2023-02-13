@@ -117,17 +117,26 @@ impl Board {
 
   /// Flag the cell as being potentially mined.
   pub fn flag_cell(&mut self, pos: Pos) -> Option<(Pos, Cell)> {
-    self.cells.entry(pos).and_modify(|c| {
-      if let CellState::Closed { flagged, .. } = &mut c.state {
-        *flagged = !*flagged;
-        if *flagged {
-          self.flagged += 1;
+    match self.cells.get_mut(&pos) {
+      Some(Cell {
+        state: CellState::Closed { flagged, .. },
+        ..
+      }) => {
+        if (self.flagged < self.mined) || *flagged {
+          *flagged = !*flagged;
+          if *flagged {
+            self.flagged += 1;
+          } else {
+            self.flagged -= 1;
+          }
+          //   Some((pos, c.clone()))
+          self.cells.get(&pos).map(|&cell| (pos, cell))
         } else {
-          self.flagged -= 1;
+          None
         }
       }
-    });
-    self.cells.get(&pos).map(|&cell| (pos, cell))
+      _ => None,
+    }
   }
 
   /// Get the state of the board.

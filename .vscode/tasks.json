@@ -4,89 +4,58 @@
     {
       "type": "cargo",
       "command": "run",
-      "args": [
-        "--bin",
-        "minesweeper-gui"
-      ],
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "args": ["--bin", "minesweeper-gui"],
+      "problemMatcher": ["$rustc"],
       "label": "minesweeper-gui"
     },
     {
       "type": "cargo",
       "command": "install",
-      "args": [
-        "--bin",
-        "minesweeper-gui",
-        "--path",
-        "minesweeper-gui",
-      ],
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "args": ["--bin", "minesweeper-gui", "--path", "minesweeper-gui"],
+      "problemMatcher": ["$rustc"],
       "label": "install minesweeper-gui"
     },
     {
       "command": "check",
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "problemMatcher": ["$rustc"],
       "group": "build",
       "label": "rust: cargo check"
     },
     {
       "type": "cargo",
       "command": "tauri",
-      "args": [
-        "dev"
-      ],
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "args": ["dev"],
+      "problemMatcher": ["$rustc"],
       "group": "build",
       "label": "Tauri Dev"
     },
     {
       "type": "cargo",
       "command": "tauri",
-      "args": [
-        "build"
-      ],
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "args": ["build"],
+      "problemMatcher": ["$rustc"],
       "group": "build",
       "label": "Tauri Build"
     },
     {
       "type": "cargo",
       "command": "fmt",
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "problemMatcher": ["$rustc"],
       "group": "build",
       "label": "rust: cargo format"
     },
     {
       "type": "cargo",
       "command": "check",
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "problemMatcher": ["$rustc"],
       "group": "build",
       "label": "rust: cargo check"
     },
     {
       "type": "cargo",
       "command": "run",
-      "args": [
-        "--bin",
-        "minesweeper-gui"
-      ],
-      "problemMatcher": [
-        "$rustc"
-      ],
+      "args": ["--bin", "minesweeper-gui"],
+      "problemMatcher": ["$rustc"],
       "label": "minesweeper-gui"
     }
   ]
