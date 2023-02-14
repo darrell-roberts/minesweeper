@@ -1,5 +1,4 @@
 .container {
-  /* border-radius: 20px; */
   width: 25px;
   height: 25px;
   padding: 0;
@@ -9,11 +8,11 @@
 }
 
 .container:active {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .container:hover {
-    opacity: .8;
+  opacity: .8;
 }
 
 .closed {
@@ -31,7 +30,7 @@
   background-color: red;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   .open {
     background-color: #242424;
   }
@@ -39,20 +38,20 @@
   .container {
     color: white;
   }
-}
+} */
 
 .one {
-    color: blue
+  color: blue
 }
 
 .two {
-    color: green
+  color: green
 }
 
 .three {
-    color: purple
+  color: purple
 }
 
 .four {
-    color: red
+  color: red
 }

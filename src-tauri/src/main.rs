@@ -19,7 +19,7 @@ fn get_elapased(game: &Game) -> String {
   let seconds = game.start_time.elapsed().as_secs();
 
   match seconds {
-    0..=59 => format!("{} seconds", seconds),
+    0..=59 => format!("{seconds} seconds"),
     60..=3599 => format!(
       "{} minute(s) {} seconds",
       seconds.div_euclid(60),
@@ -35,12 +35,11 @@ fn main() {
     .manage(game.clone())
     .setup(move |app| {
       let main_window = app.get_window("main").unwrap();
-      let game_copy = game.clone();
       std::thread::spawn(move || loop {
         let (state, duration) = {
-          game_copy
+          game
             .read()
-            .map(|g| (*g.board.state(), get_elapased(&*g)))
+            .map(|g| (*g.board.state(), get_elapased(&g)))
             .unwrap()
         };
         if matches!(state, GameState::Active | GameState::New) {
