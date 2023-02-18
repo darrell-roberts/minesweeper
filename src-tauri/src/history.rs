@@ -57,6 +57,26 @@ const SAVE_FILE_PATH: &str = ".local/share/minesweeper/";
 #[cfg(not(test))]
 const HOME: &str = env!("HOME");
 
+#[cfg(not(test))]
+fn get_full_save_file_path() -> String {
+  [HOME, "/", SAVE_FILE_PATH, SAVE_FILE].concat()
+}
+
+#[cfg(test)]
+fn get_full_save_file_path() -> String {
+  [SAVE_FILE_PATH, SAVE_FILE].concat()
+}
+
+#[cfg(not(test))]
+fn get_full_save_path() -> String {
+  [HOME, "/", SAVE_FILE_PATH].concat()
+}
+
+#[cfg(test)]
+fn get_full_save_path() -> String {
+  SAVE_FILE_PATH.into()
+}
+
 const SAVE_FILE: &str = "stats.bin";
 
 pub fn save_win(game: &Game) -> Result<()> {
@@ -69,16 +89,6 @@ pub fn save_win(game: &Game) -> Result<()> {
   Ok(())
 }
 
-#[cfg(not(test))]
-fn get_full_save_file_path() -> String {
-  [HOME, "/", SAVE_FILE_PATH, SAVE_FILE].concat()
-}
-
-#[cfg(test)]
-fn get_full_save_file_path() -> String {
-  [SAVE_FILE_PATH, SAVE_FILE].concat()
-}
-
 pub fn load_wins() -> Option<WinHistoryView> {
   OpenOptions::new()
     .read(true)
@@ -89,7 +99,7 @@ pub fn load_wins() -> Option<WinHistoryView> {
 }
 
 fn persist_win(win: Win) -> Result<(), anyhow::Error> {
-  create_dir_all(SAVE_FILE_PATH)?;
+  create_dir_all(get_full_save_path())?;
   let mut stats_file = OpenOptions::new()
     .write(true)
     .read(true)
