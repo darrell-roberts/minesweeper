@@ -42,7 +42,7 @@ impl From<WinHistory> for WinHistoryView {
 impl From<Win> for WinView {
   fn from(win: Win) -> Self {
     Self {
-      date: format!("{}", win.date.format("%v %r")),
+      date: format!("{}", win.date.format("%b %e / %G %R")),
       duration: format_elapsed(Duration::from_secs(win.duration)),
     }
   }

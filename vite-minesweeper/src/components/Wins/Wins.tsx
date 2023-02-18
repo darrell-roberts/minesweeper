@@ -35,8 +35,8 @@ const WinComponent = ({ win, rank }: WinComponentProps) => (
   <div className={classes.container}>
     <span className={classes.rank}>{rank}.</span>
     <div className={classes.win}>
-      <span>{win.date}</span>
-      <span>{win.duration}</span>
+      <div className={classes.duration}>{win.duration}</div>
+      <div className={classes.date}>{win.date}</div>
     </div>
   </div>
 );

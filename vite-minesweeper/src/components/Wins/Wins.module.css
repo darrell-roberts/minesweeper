@@ -1,29 +1,31 @@
 .win {
   padding: 10px;
-  background-image: linear-gradient(to right, lightblue, blue, black);
-  color: white;
-  font-weight: bold;
   font-size: 16px;
-  border-radius: 20px;
-  margin: 0 10px 0 10px;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
 }
 
-span.rank {
-  padding: 10px;
-  border-radius: 100%;
-  color: white;
-  background-color: black;
+.rank {
   font-size: 16px;
   margin-left: 10px;
 }
 
-.container {
-  margin-top: 10px;
-  display: flex;
+.date {
+  background-image: linear-gradient(to right, blue, black);
+  color: white;
+  border-radius: 20px;
+  padding: 10px 10px 10px 10px;
+  opacity: .6;
 }
 
-span.noWins {
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.noWins {
   font-size: 20px;
 }
