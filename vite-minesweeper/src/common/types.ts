@@ -29,11 +29,21 @@ export type OpenResult = {
 }
 
 export type FlagResult = {
-    position?: Position,
+  position?: Position,
 }
 
 export type TimeEvent = {
-    duration: string,
+  duration: string,
 }
 
 export type GameState = "New" | "Active" | "Win" | "Loss";
+
+export type WinHistory = {
+  wins: Win[],
+}
+
+export type Win = {
+  date: string,
+  duration: string,
+}
+

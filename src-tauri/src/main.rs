@@ -4,9 +4,10 @@
 )]
 
 use app::{
-  commands::{flag, new_game, open},
+  commands::{flag, get_win_history, new_game, open},
   game::Game,
-  AppGame, TimeEvent, __cmd__flag, __cmd__new_game, __cmd__open,
+  AppGame, TimeEvent, __cmd__flag, __cmd__get_win_history, __cmd__new_game,
+  __cmd__open, format_elapsed,
 };
 use minesweeper::model::GameState;
 use std::{
@@ -16,17 +17,7 @@ use std::{
 use tauri::Manager;
 
 fn get_elapased(game: &Game) -> String {
-  let seconds = game.start_time.elapsed().as_secs();
-
-  match seconds {
-    0..=59 => format!("{seconds} seconds"),
-    60..=3599 => format!(
-      "{} minute(s) {} seconds",
-      seconds.div_euclid(60),
-      seconds.rem_euclid(60)
-    ),
-    3600.. => format!("{} hours", seconds.div_euclid(3600)),
-  }
+  format_elapsed(game.start_time.elapsed())
 }
 
 fn main() {
@@ -51,7 +42,12 @@ fn main() {
       });
       Ok(())
     })
-    .invoke_handler(tauri::generate_handler![open, new_game, flag])
+    .invoke_handler(tauri::generate_handler![
+      open,
+      new_game,
+      flag,
+      get_win_history
+    ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

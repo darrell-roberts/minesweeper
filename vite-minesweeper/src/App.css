@@ -17,7 +17,7 @@
   opacity: 50%;
 }
 
-.newGame {
+.buttons {
   margin-top: 20px;
   background-image: linear-gradient(to right, darkcyan, rgb(18, 79, 79));
   color: white;
@@ -47,4 +47,16 @@ span {
   color: white;
   padding: 5px;
   border-radius: 8px;
+  min-width: 605px;
+}
+
+.boardContainer {
+  min-height: 615px;
+  flex: 1;
+  /* min-width: 810px; */
+}
+
+.buttonBar {
+  display: flex;
+  justify-content: space-around;
 }

@@ -5,6 +5,7 @@ import { FlagResult, GameState, OpenResult, Position, } from "./common/types";
 import CellComp from "./components/Cell/Cell";
 import { message } from '@tauri-apps/api/dialog';
 import DurationCounter from './components/DurationCounter/DurationCounter';
+import Wins from './components/Wins/Wins';
 
 type GameAppState = {
     board: Position[],
@@ -13,11 +14,14 @@ type GameAppState = {
     mined: number,
     flagged: number,
     active: boolean,
+    showWins: boolean,
 }
 
 type GameAction = { type: "open", result: OpenResult }
     | { type: "restart", board: Position[], }
-    | { type: "flag", flagged: boolean };
+    | { type: "flag", flagged: boolean }
+    | { type: "showWins" }
+    ;
 
 function gameReducer(state: GameAppState, action: GameAction): GameAppState {
     switch (action.type) {
@@ -46,6 +50,10 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
                 : state.flagged - 1,
 
         }
+        case "showWins": return {
+            ...state,
+            showWins: !state.showWins
+        }
 
         default: return state;
     }
@@ -58,6 +66,7 @@ const INITIAL_STATE: GameAppState = {
     mined: 0,
     flagged: 0,
     active: true,
+    showWins: false,
 }
 
 function App() {
@@ -109,21 +118,33 @@ function App() {
                 <span>Flagged: {gameState.flagged}</span>
                 <span>Mined: {gameState.mined}</span>
             </div>
-            {gameState.board.length > 0 &&
-                <div className={`board ${!gameState.active ? "gameOver" : ""}`}>
-                    {gameState.board.map(cell =>
-                        <CellComp
-                            position={cell}
-                            open={openCell}
-                            gameActive={gameState.active}
-                            flag={flagCell}
-                        />)
-                    }
-                </div>
-            }
-            <button className="newGame" onClick={() => newGame()} >
-                New Game
-            </button>
+            <div className='boardContainer'>
+                {
+                    gameState.showWins && <Wins />
+                }
+                {gameState.board.length > 0 && !gameState.showWins &&
+                    <div className={`board ${!gameState.active ? "gameOver" : ""}`}>
+                        {gameState.board.map(cell =>
+                            <CellComp
+                                position={cell}
+                                open={openCell}
+                                gameActive={gameState.active}
+                                flag={flagCell}
+                            />)
+                        }
+                    </div>
+                }
+            </div>
+
+            <div className="buttonBar">
+                <button className="buttons" onClick={() => dispatch({ type: "showWins" })}>
+                    {gameState.showWins ? "Hide Top Scores" : "Show Top Scores"}
+                </button>
+                <button className="buttons" onClick={() => newGame()} >
+                    New Game
+                </button>
+            </div>
+
         </div>
     )
 }

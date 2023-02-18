@@ -13,6 +13,11 @@
     "allowlist": {
       "dialog": {
         "all": true
+      },
+      "fs": {
+        "scope": [
+          "$HOME/.local/share/minesweeper"
+        ]
       }
     },
     "bundle": {
@@ -58,7 +63,7 @@
       {
         "fullscreen": false,
         "height": 730,
-        "resizable": false,
+        "resizable": true,
         "title": "Minesweeper",
         "width": 620
       }

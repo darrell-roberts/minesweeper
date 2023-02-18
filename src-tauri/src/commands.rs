@@ -1,5 +1,6 @@
 use crate::{
   game::{FlagResult, Game, OpenResult, Position},
+  history::{load_wins, save_win, WinHistoryView},
   AppGame,
 };
 use minesweeper::model::GameState;
@@ -14,6 +15,15 @@ pub fn open(position: Position, game: State<AppGame>) -> OpenResult {
     GameState::Loss | GameState::Win => g.positions(),
     _ => opened_cells,
   };
+
+  if game_state == GameState::Win {
+    save_win(&g)
+      .map_err(|e| {
+        eprintln!("Failed to save game state {e}");
+        e
+      })
+      .unwrap_or_default();
+  }
 
   OpenResult {
     opened_cells,
@@ -41,4 +51,9 @@ pub fn new_game(game: State<AppGame>) -> Vec<Position> {
     .collect();
   *game.write().unwrap() = new_game;
   positions
+}
+
+#[tauri::command]
+pub fn get_win_history() -> Option<WinHistoryView> {
+  load_wins()
 }
