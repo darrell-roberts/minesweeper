@@ -16,10 +16,6 @@ use std::{
 };
 use tauri::Manager;
 
-fn get_elapased(game: &Game) -> String {
-  format_elapsed(game.start_time.elapsed())
-}
-
 fn main() {
   let game: AppGame = Arc::new(RwLock::new(Game::default()));
   tauri::Builder::default()
@@ -30,7 +26,7 @@ fn main() {
         let (state, duration) = {
           game
             .read()
-            .map(|g| (*g.board.state(), get_elapased(&g)))
+            .map(|g| (*g.board.state(), format_elapsed(g.start_time.elapsed())))
             .unwrap()
         };
         if matches!(state, GameState::Active | GameState::New) {

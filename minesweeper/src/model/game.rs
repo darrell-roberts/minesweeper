@@ -23,6 +23,11 @@ impl Board {
 
   /// Randomly mine the board with a difficulty ratio. Exclude mining the provided position.
   fn mine_board(&mut self, exclude_pos: &Pos) {
+    let mut avoid_cells = exclude_pos
+      .adjacent(self.rows.get(), self.columns.get())
+      .collect::<Vec<_>>();
+    avoid_cells.push(*exclude_pos);
+
     // Set the total amount of mined cells based on
     // difficulty level.
     let total_mined_cells = (f64::from(self.rows.get())
@@ -31,7 +36,7 @@ impl Board {
 
     // Iterator yielding mined positions.
     let mined_positions =
-      Pos::random_positions(self.columns.get(), self.rows.get(), *exclude_pos)
+      Pos::random_positions(self.columns.get(), self.rows.get(), avoid_cells)
         .take(total_mined_cells);
 
     let mut total_mined = 0;

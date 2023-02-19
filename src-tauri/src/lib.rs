@@ -16,6 +16,7 @@ pub struct TimeEvent {
 
 pub type AppGame = Arc<RwLock<Game>>;
 
+/// Displayable elapsed time.
 pub fn format_elapsed(elapsed: Duration) -> String {
   let seconds = elapsed.as_secs();
 

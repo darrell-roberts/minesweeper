@@ -250,9 +250,9 @@ struct RandomPosIter {
 }
 
 impl RandomPosIter {
-  fn new(columns: u8, rows: u8, exclude: Pos) -> Self {
+  fn new(columns: u8, rows: u8, exclude: Vec<Pos>) -> Self {
     Self {
-      used_positions: HashSet::from([exclude]),
+      used_positions: HashSet::from_iter(exclude.into_iter()),
       rng: Default::default(),
       rows,
       columns,
@@ -288,7 +288,7 @@ impl Pos {
   fn random_positions(
     columns: u8,
     rows: u8,
-    exclude: Pos,
+    exclude: Vec<Pos>,
   ) -> impl Iterator<Item = Pos> {
     RandomPosIter::new(columns, rows, exclude)
   }

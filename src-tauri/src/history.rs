@@ -80,13 +80,10 @@ fn get_full_save_path() -> String {
 const SAVE_FILE: &str = "stats.bin";
 
 pub fn save_win(game: &Game) -> Result<()> {
-  let duration = game.start_time.elapsed().as_secs();
-  let date = Local::now();
-  let win = Win { date, duration };
-
-  persist_win(win)?;
-
-  Ok(())
+  persist_win(Win {
+    duration: game.start_time.elapsed().as_secs(),
+    date: Local::now(),
+  })
 }
 
 pub fn load_wins() -> Option<WinHistoryView> {
