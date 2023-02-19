@@ -1,5 +1,5 @@
 use crate::{format_elapsed, game::Game};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use chrono::{DateTime, Local};
 use rmp_serde::{encode::write_named, from_read};
 use serde::{Deserialize, Serialize};
@@ -55,26 +55,29 @@ const SAVE_FILE_PATH: &str = "/tmp/minesweeper/";
 const SAVE_FILE_PATH: &str = ".local/share/minesweeper/";
 
 #[cfg(not(test))]
-const HOME: &str = env!("HOME");
-
-#[cfg(not(test))]
-fn get_full_save_file_path() -> String {
-  [HOME, "/", SAVE_FILE_PATH, SAVE_FILE].concat()
+fn get_save_file() -> Result<String> {
+  std::env::var("HOME")
+    .with_context(|| "Could not lookup $HOME environment variable")
+    .map(|home| [&home, "/", SAVE_FILE_PATH, SAVE_FILE].concat())
+    .map(Ok)?
 }
 
 #[cfg(test)]
-fn get_full_save_file_path() -> String {
-  [SAVE_FILE_PATH, SAVE_FILE].concat()
+fn get_save_file() -> Result<String> {
+  Ok([SAVE_FILE_PATH, SAVE_FILE].concat())
 }
 
 #[cfg(not(test))]
-fn get_full_save_path() -> String {
-  [HOME, "/", SAVE_FILE_PATH].concat()
+fn get_full_save_path() -> Result<String> {
+  std::env::var("HOME")
+    .with_context(|| "Could not lookup up $HOME environment variable")
+    .map(|home| [&home, "/", SAVE_FILE_PATH].concat())
+    .map(Ok)?
 }
 
 #[cfg(test)]
-fn get_full_save_path() -> String {
-  SAVE_FILE_PATH.into()
+fn get_full_save_path() -> Result<String> {
+  Ok(SAVE_FILE_PATH.into())
 }
 
 const SAVE_FILE: &str = "stats.bin";
@@ -89,19 +92,20 @@ pub fn save_win(game: &Game) -> Result<()> {
 pub fn load_wins() -> Option<WinHistoryView> {
   OpenOptions::new()
     .read(true)
-    .open(get_full_save_file_path())
+    .open(get_save_file().ok()?)
     .ok()
     .and_then(|stats_file| from_read::<_, WinHistory>(&stats_file).ok())
     .map(WinHistoryView::from)
 }
 
-fn persist_win(win: Win) -> Result<(), anyhow::Error> {
-  create_dir_all(get_full_save_path())?;
+fn persist_win(win: Win) -> anyhow::Result<()> {
+  create_dir_all(get_full_save_path()?)
+    .with_context(|| "Could not create folder for stats file")?;
   let mut stats_file = OpenOptions::new()
     .write(true)
     .read(true)
     .create(true)
-    .open(get_full_save_file_path())?;
+    .open(get_save_file()?)?;
   let mut history: WinHistory = from_read(&stats_file).unwrap_or_else(|err| {
     eprintln!("Failed to read stats file: {err}. Creating new WinHistory");
     WinHistory::default()
