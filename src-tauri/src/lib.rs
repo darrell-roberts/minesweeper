@@ -15,8 +15,6 @@ pub type AppGame = Arc<RwLock<Game>>;
 
 /// Displayable elapsed time.
 pub fn format_elapsed(seconds: u64) -> String {
-  //   let seconds = elapsed.as_secs();
-
   match seconds {
     0..=59 => format!("{seconds} seconds"),
     60..=3599 => format!(

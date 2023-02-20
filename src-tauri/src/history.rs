@@ -6,7 +6,6 @@ use serde::{Deserialize, Serialize};
 use std::{
   fs::{create_dir_all, OpenOptions},
   io::{BufWriter, Seek},
-  time::Duration,
 };
 
 #[derive(Serialize, Deserialize, Debug)]
