@@ -4,41 +4,42 @@ import { WinHistory, Win } from "../../common/types";
 import classes from "./Wins.module.css";
 
 function Wins() {
-  const [wins, setWins] = useState<WinHistory>();
+    const [wins, setWins] = useState<WinHistory>();
 
-  useEffect(() => {
-    invoke<WinHistory>("get_win_history")
-      .then(setWins)
-      .catch(err => console.error("failed to get win history", err));
-  }, []);
+    useEffect(() => {
+        invoke<WinHistory>("get_win_history")
+            .then(setWins)
+            .catch(err => console.error("failed to get win history", err));
+        return () => {
+            invoke("resume").catch(err => console.error("Failed to resume clock", err));
+        }
+    }, []);
 
-  console.info("wins", wins);
-
-  return (
-    <div>
-      {wins?.wins &&
-        wins.wins.map((win, index) => <WinComponent win={win} rank={index + 1} />)
-      }
-      {
-        !wins && <span className={classes.noWins}>No wins yet.</span>
-      }
-    </div>
-  )
+    return (
+        <div>
+            {wins?.wins &&
+                wins.wins.map((win, index) => <WinComponent win={win} rank={index + 1} />)
+            }
+            {
+                !wins && <span className={classes.noWins}>No wins yet.</span>
+            }
+        </div>
+    )
 }
 
 type WinComponentProps = {
-  win: Win,
-  rank: number
+    win: Win,
+    rank: number
 }
 
 const WinComponent = ({ win, rank }: WinComponentProps) => (
-  <div className={classes.container}>
-    <span className={classes.rank}>{rank}.</span>
-    <div className={classes.win}>
-      <div className={classes.duration}>{win.duration}</div>
-      <div className={classes.date}>{win.date}</div>
+    <div className={classes.container}>
+        <span className={classes.rank}>{rank}.</span>
+        <div className={classes.win}>
+            <div className={classes.duration}>{win.duration}</div>
+            <div className={classes.date}>{win.date}</div>
+        </div>
     </div>
-  </div>
 );
 
 export default Wins;

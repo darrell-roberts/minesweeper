@@ -43,7 +43,7 @@ impl From<Win> for WinView {
   fn from(win: Win) -> Self {
     Self {
       date: format!("{}", win.date.format("%b %e / %G %R")),
-      duration: format_elapsed(Duration::from_secs(win.duration)),
+      duration: format_elapsed(win.duration),
     }
   }
 }
@@ -84,7 +84,7 @@ const SAVE_FILE: &str = "stats.bin";
 
 pub fn save_win(game: &Game) -> Result<()> {
   persist_win(Win {
-    duration: game.start_time.elapsed().as_secs(),
+    duration: game.start_time.elapsed().as_secs() - game.paused_time,
     date: Local::now(),
   })
 }

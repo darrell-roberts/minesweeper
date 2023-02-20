@@ -4,6 +4,7 @@ use crate::{
   AppGame,
 };
 use minesweeper::model::GameState;
+use std::time::Instant;
 use tauri::State;
 
 #[tauri::command]
@@ -54,6 +55,18 @@ pub fn new_game(game: State<AppGame>) -> Vec<Position> {
 }
 
 #[tauri::command]
-pub fn get_win_history() -> Option<WinHistoryView> {
+pub fn get_win_history(game: State<AppGame>) -> Option<WinHistoryView> {
+  {
+    let mut g = game.write().unwrap();
+    g.paused = Some(Instant::now());
+  }
   load_wins()
+}
+
+#[tauri::command]
+pub fn resume(game: State<AppGame>) {
+  let mut g = game.write().unwrap();
+  if let Some(p) = g.paused.take() {
+    g.paused_time += p.elapsed().as_secs();
+  }
 }

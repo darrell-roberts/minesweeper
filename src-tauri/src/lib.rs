@@ -1,9 +1,6 @@
 use game::Game;
 use serde::Serialize;
-use std::{
-  sync::{Arc, RwLock},
-  time::Duration,
-};
+use std::sync::{Arc, RwLock};
 
 pub mod commands;
 pub mod game;
@@ -17,8 +14,8 @@ pub struct TimeEvent {
 pub type AppGame = Arc<RwLock<Game>>;
 
 /// Displayable elapsed time.
-pub fn format_elapsed(elapsed: Duration) -> String {
-  let seconds = elapsed.as_secs();
+pub fn format_elapsed(seconds: u64) -> String {
+  //   let seconds = elapsed.as_secs();
 
   match seconds {
     0..=59 => format!("{seconds} seconds"),
