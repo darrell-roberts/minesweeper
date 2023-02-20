@@ -27,6 +27,10 @@
   opacity: .6;
 }
 
+.buttons:hover {
+ opacity: 1;
+}
+
 .newGame:hover {
   opacity: 1;
 }
