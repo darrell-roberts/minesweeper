@@ -81,6 +81,7 @@ fn get_full_save_path() -> Result<String> {
 
 const SAVE_FILE: &str = "stats.bin";
 
+/// Save the win to the win history.
 pub fn save_win(game: &Game) -> Result<()> {
   let duration = game
     .start_time
@@ -92,6 +93,7 @@ pub fn save_win(game: &Game) -> Result<()> {
   })
 }
 
+/// Load win history.
 pub fn load_wins() -> Option<WinHistoryView> {
   OpenOptions::new()
     .read(true)
@@ -101,6 +103,7 @@ pub fn load_wins() -> Option<WinHistoryView> {
     .map(WinHistoryView::from)
 }
 
+// Save the best 10 results as a MessagePack format.
 fn persist_win(win: Win) -> anyhow::Result<()> {
   create_dir_all(get_full_save_path()?)
     .with_context(|| "Could not create folder for stats file")?;

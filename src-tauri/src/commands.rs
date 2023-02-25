@@ -10,17 +10,23 @@ use tauri::State;
 #[tauri::command]
 pub fn open(position: Position, game: State<AppGame>) -> OpenResult {
   let mut g = game.write().unwrap();
-  if g.board.state() == &GameState::New {
+  // The first move will start the clock.
+  if matches!(g.board.state(), GameState::New) {
     g.start_time = Some(Instant::now());
   }
   let opened_cells = g.open_cell(position);
   let game_state = *g.board.state();
+
+  // If the opened position results in a win or loss then
+  // we'll return all positions on the board otherwise
+  // just the opened cells.
   let opened_cells = match game_state {
     GameState::Loss | GameState::Win => g.positions(),
     _ => opened_cells,
   };
 
-  if game_state == GameState::Win {
+  // Save the win history.
+  if matches!(game_state, GameState::Win) {
     save_win(&g)
       .map_err(|e| {
         eprintln!("Failed to save game state {e}");
