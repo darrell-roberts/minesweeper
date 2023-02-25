@@ -129,6 +129,7 @@ function App() {
                     <div className={`board ${!gameState.active ? "gameOver" : ""}`}>
                         {gameState.board.map(cell =>
                             <CellComp
+                                key={cell.index}
                                 position={cell}
                                 open={openCell}
                                 gameActive={gameState.active}

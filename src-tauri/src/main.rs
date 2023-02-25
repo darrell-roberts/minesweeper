@@ -37,7 +37,7 @@ fn main() {
             })
             .unwrap()
         };
-        if matches!(state, GameState::Active | GameState::New) && !paused {
+        if !paused && matches!(state, GameState::Active | GameState::New) {
           main_window
             .emit("time-event", TimeEvent { duration })
             .unwrap_or_else(|e| eprintln!("Failed to emit time event {e}"));

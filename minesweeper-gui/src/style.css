@@ -1,9 +1,9 @@
 container {
-  border-radius: 50%;
+  border-radius: 8px;
 }
 
 .cell {
-  border-radius: 50%;
+  border-radius: 8px;
 }
 
 .open {

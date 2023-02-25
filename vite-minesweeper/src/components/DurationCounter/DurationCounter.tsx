@@ -9,11 +9,12 @@ function DurationCounter() {
     const [duration, setDuration] = useState("0 seconds");
 
     useEffect(() => {
-        new WebviewWindow("main")
-            .listen<TimeEvent>("time-event", event => setDuration(event.payload.duration))
-            .then(handle => console.info("registered listener"))
-            .catch(err => console.error("Failed to listen to time-event", err));
-
+        const unListen = new WebviewWindow("main").listen<TimeEvent>("time-event", event => {
+            setDuration(event.payload.duration);
+        })
+        return () => {
+            unListen.then(f => f());
+        }
     }, []);
 
     return (

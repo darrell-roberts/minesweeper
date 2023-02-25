@@ -18,7 +18,13 @@ function Wins() {
     return (
         <div>
             {wins?.wins &&
-                wins.wins.map((win, index) => <WinComponent win={win} rank={index + 1} />)
+                wins.wins.map((win, index) =>
+                    <WinComponent
+                        key={win.date}
+                        win={win}
+                        rank={index + 1}
+                    />
+                )
             }
             {
                 !wins && <span className={classes.noWins}>No wins yet.</span>
