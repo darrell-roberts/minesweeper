@@ -116,7 +116,7 @@ function App() {
     return (
         <div className="App">
             <div className="header">
-                <DurationCounter />
+                <DurationCounter gameState={gameState.state} />
                 <span>Opened: {gameState.opened}</span>
                 <span>Flagged: {gameState.flagged}</span>
                 <span>Mined: {gameState.mined}</span>

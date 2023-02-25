@@ -23,25 +23,31 @@ fn main() {
     .setup(move |app| {
       let main_window = app.get_window("main").unwrap();
       std::thread::spawn(move || loop {
-        let (state, duration, paused) = {
+        if let Some((state, duration, paused)) = {
           game
             .read()
             .map(|g| {
-              (
-                *g.board.state(),
-                format_elapsed(
-                  g.start_time.elapsed().as_secs() - g.paused_time,
-                ),
-                g.paused.is_some(),
-              )
+              g.start_time
+                .and_then(|st| {
+                  st.elapsed().as_secs().checked_sub(g.paused_time)
+                })
+                .map(|elapsed| {
+                  (
+                    *g.board.state(),
+                    format_elapsed(elapsed),
+                    g.paused.is_some(),
+                  )
+                })
             })
             .unwrap()
-        };
-        if !paused && matches!(state, GameState::Active | GameState::New) {
-          main_window
-            .emit("time-event", TimeEvent { duration })
-            .unwrap_or_else(|e| eprintln!("Failed to emit time event {e}"));
+        } {
+          if !paused && matches!(state, GameState::Active) {
+            main_window
+              .emit("time-event", TimeEvent { duration })
+              .unwrap_or_else(|e| eprintln!("Failed to emit time event {e}"));
+          }
         }
+
         std::thread::sleep(Duration::from_secs(1));
       });
       Ok(())

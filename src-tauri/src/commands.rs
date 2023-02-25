@@ -10,6 +10,9 @@ use tauri::State;
 #[tauri::command]
 pub fn open(position: Position, game: State<AppGame>) -> OpenResult {
   let mut g = game.write().unwrap();
+  if g.board.state() == &GameState::New {
+    g.start_time = Some(Instant::now());
+  }
   let opened_cells = g.open_cell(position);
   let game_state = *g.board.state();
   let opened_cells = match game_state {

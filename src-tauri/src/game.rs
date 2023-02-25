@@ -14,7 +14,7 @@ pub struct Game {
   pub board: Board,
   pub pos_map: HashMap<Pos, usize>,
   pub positions: Vec<Position>,
-  pub start_time: Instant,
+  pub start_time: Option<Instant>,
   pub paused_time: u64,
   pub paused: Option<Instant>,
 }
@@ -87,7 +87,7 @@ impl Default for Game {
       board,
       positions,
       pos_map,
-      start_time: Instant::now(),
+      start_time: None,
       paused_time: 0,
       paused: None,
     }

@@ -82,8 +82,12 @@ fn get_full_save_path() -> Result<String> {
 const SAVE_FILE: &str = "stats.bin";
 
 pub fn save_win(game: &Game) -> Result<()> {
+  let duration = game
+    .start_time
+    .map(|st| st.elapsed().as_secs() - game.paused_time)
+    .unwrap_or_default();
   persist_win(Win {
-    duration: game.start_time.elapsed().as_secs() - game.paused_time,
+    duration,
     date: Local::now(),
   })
 }
