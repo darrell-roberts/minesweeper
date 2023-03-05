@@ -1,8 +1,8 @@
-use minesweeper_gui::AppModel;
+use minesweeper_gui::{board, AppModel};
 use relm4::RelmApp;
 
 fn main() {
-  let app = RelmApp::new(AppModel::default());
-  relm4::set_global_css(include_bytes!("style.css"));
-  app.run();
+  let relm = RelmApp::new("dr.minesweeper");
+  relm4::set_global_css(include_str!("style.css"));
+  relm.run::<AppModel>(board());
 }
