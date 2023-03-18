@@ -23,14 +23,14 @@ npm install
 cd ../minesweeper
 cargo tauri build
 ```
-
-<img width="917" alt="image" src="https://user-images.githubusercontent.com/33698065/226124259-98d629de-ebb6-463f-b31d-384ee46fb247.png">
+<img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218481069-72467dd9-cb91-4db7-bf6c-e260434b655c.png">
 
 # minesweeper-gui
 
 A Relm4/Gtk4 UI for the minesweeper game.
 
-<img width="917" alt="image" src="https://user-images.githubusercontent.com/33698065/226123580-821dbcab-2ac7-46fb-ba61-17ae41ce6bfe.png">
+<img width="917" alt="image" src="https://user-images.githubusercontent.com/33698065/226124259-98d629de-ebb6-463f-b31d-384ee46fb247.png">
+
 
 # minesweeper
 
