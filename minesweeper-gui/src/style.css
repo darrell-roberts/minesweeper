@@ -89,4 +89,7 @@ grid {
   margin-left: 15px;
   margin-right: 15px;
   font-size: 14px;
+  background-image: image(black);
+  border-radius: 8px;
+  color: white;
 }
