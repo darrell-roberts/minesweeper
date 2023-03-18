@@ -62,7 +62,11 @@ impl FactoryComponent for Position {
     let mut button = gtk::Button::builder().label(EMPTY);
     match self.cell.state {
       CellState::Open => {
-        button = button.css_classes(vec!["cell".into(), "open".into()]);
+        button = button.css_classes(vec![
+          "cell".into(),
+          "open".into(),
+          adjacent_mine_style(*self).unwrap_or_default().into(),
+        ]);
         container = container.css_classes(vec!["open".into()]);
         if self.cell.adjacent_mines > 0 {
           button = button.label(adjacent_mine_label(*self));

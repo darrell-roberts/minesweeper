@@ -29,8 +29,9 @@ cargo tauri build
 
 A Relm4/Gtk4 UI for the minesweeper game.
 
-<img width="917" alt="image" src="https://user-images.githubusercontent.com/33698065/226124259-98d629de-ebb6-463f-b31d-384ee46fb247.png">
+<img width="917" alt="image" src="https://user-images.githubusercontent.com/33698065/226142872-ee57723b-b54d-46a4-bc88-d347449c4ec3.png">
 
+<img width="873" alt="image" src="https://user-images.githubusercontent.com/33698065/226142813-47c396f0-e6f2-495c-8770-95d7e214ecb3.png">
 
 # minesweeper
 
