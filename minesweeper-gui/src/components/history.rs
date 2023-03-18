@@ -107,6 +107,7 @@ fn persist_win(win: Win) -> anyhow::Result<()> {
 pub enum HistoryMsg {
   Open,
   Close,
+  Reload,
 }
 
 #[derive(Debug)]
@@ -190,6 +191,12 @@ impl SimpleComponent for WinHistoryView {
       HistoryMsg::Close => {
         self.hidden = true;
         sender.output_sender().emit(HistoryOut::Resume);
+      }
+      HistoryMsg::Reload => {
+        self.win_history.guard().clear();
+        for win in load_wins().into_iter().flat_map(|w| w.wins.into_iter()) {
+          self.win_history.guard().push_back(win);
+        }
       }
     }
   }

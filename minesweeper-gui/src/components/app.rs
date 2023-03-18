@@ -1,5 +1,5 @@
 use super::{
-  history::{save_win, HistoryOut, WinHistoryView},
+  history::{save_win, HistoryMsg, HistoryOut, WinHistoryView},
   status_dialog::{StatusDialogModel, StatusMsg},
   timer::{GameTimer, GameTimerInput, GameTimerOutput},
 };
@@ -240,6 +240,7 @@ impl SimpleComponent for AppModel {
             if s == GameState::Win {
               save_win(self.time_elapsed)
                 .unwrap_or_else(|e| eprintln!("Failed to save game win {e}"));
+              self.history_window.emit(HistoryMsg::Reload);
             }
             self.update_all_positions();
             self
