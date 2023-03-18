@@ -26,6 +26,8 @@ impl SimpleComponent for StatusDialogModel {
       set_visible: !model.hidden,
       #[watch]
       set_text: model.message.as_deref(),
+      set_default_width: 250,
+      set_default_height: 200,
       set_css_classes: &["status_dialog"],
       set_decorated: true,
       set_message_type: gtk::MessageType::Info,

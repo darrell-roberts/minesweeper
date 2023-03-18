@@ -22,24 +22,24 @@ container {
 
 .open {
   background-image: image(white);
-  box-shadow: 0;
+  box-shadow: 0px;
   color: black;
 }
 
 .one {
-  color: blue
+  color: blue;
 }
 
 .two {
-  color: green
+  color: green;
 }
 
 .three {
-  color: purple
+  color: purple;
 }
 
 .four {
-  color: red
+  color: red;
 }
 
 .exposed {
@@ -94,4 +94,19 @@ grid {
   border-radius: 8px;
   color: white;
   padding: 10px;
+}
+
+.winHistory {
+    font-size: 16px;
+    background-color: lightgray;
+    color: black;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px;
+}
+
+.winHistoryHeader {
+    font-size: 20px;
+    color: black;
+    margin: 25px;
 }

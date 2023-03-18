@@ -52,6 +52,7 @@ impl Worker for GameTimer {
 
 impl GameTimer {
   fn stop_thread(&mut self) {
+    println!("Stopping timer");
     if let Some(handle) = self.0.take() {
       RUNNING.store(false, Ordering::Release);
       handle.join().expect("Failed to wait on thread");
@@ -60,6 +61,7 @@ impl GameTimer {
 }
 
 fn start_timer(sender: relm4::ComponentSender<GameTimer>) -> JoinHandle<()> {
+  println!("Starting timer");
   thread::spawn(move || {
     let start_time = Instant::now();
     loop {

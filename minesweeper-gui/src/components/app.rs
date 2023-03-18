@@ -1,4 +1,5 @@
 use super::{
+  history::{save_win, HistoryOut, WinHistoryView},
   status_dialog::{StatusDialogModel, StatusMsg},
   timer::{GameTimer, GameTimerInput, GameTimerOutput},
 };
@@ -25,6 +26,11 @@ pub struct AppModel {
   timer_worker: WorkerController<GameTimer>,
   /// The elapsed time from game start to end.
   time_elapsed: u64,
+  time_paused: u64,
+  /// If the game is paused.
+  paused: bool,
+
+  history_window: Controller<WinHistoryView>,
 }
 
 impl AppModel {
@@ -57,6 +63,10 @@ pub enum AppMsg {
   Start,
   /// Timer tick.
   Tick(u64),
+  /// Show win history.
+  ShowHistory,
+  /// Resume an active game.
+  Resume,
 }
 
 #[relm4::component(pub)]
@@ -79,8 +89,6 @@ impl SimpleComponent for AppModel {
             set_halign: gtk::Align::Center,
             set_orientation: gtk::Orientation::Horizontal,
             set_spacing: 25,
-            // set_margin_bottom: 10,
-            set_margin_top: 10,
             set_css_classes: &["header"],
 
             gtk::Box {
@@ -141,15 +149,30 @@ impl SimpleComponent for AppModel {
             set_vexpand: true,
             #[watch]
             set_sensitive: !matches!(model.board.state(), GameState::Win | GameState::Loss),
+            #[watch]
+            set_opacity: if model.paused {
+                0.1
+            } else {
+                1.
+            },
           },
 
-          gtk::Button {
-            set_halign: gtk::Align::Center,
-            set_label: "restart",
-            set_css_classes: &["restart"],
-            connect_clicked => AppMsg::Start
+          gtk::Box {
+              set_halign: gtk::Align::Center,
+              set_spacing: 10,
+              gtk::Button {
+                set_label: "top scores",
+                set_css_classes: &["restart"],
+                connect_clicked => AppMsg::ShowHistory
+              },
+
+              gtk::Button {
+                  set_label: "restart",
+                  set_css_classes: &["restart"],
+                  connect_clicked => AppMsg::Start
+              }
           }
-      },
+        },
     }
   }
 
@@ -184,6 +207,14 @@ impl SimpleComponent for AppModel {
         },
       ),
       time_elapsed: 0,
+      time_paused: 0,
+      paused: false,
+      history_window: WinHistoryView::builder()
+        .transient_for(root)
+        .launch(())
+        .forward(sender.input_sender(), |msg| match msg {
+          HistoryOut::Resume => AppMsg::Resume,
+        }),
     };
 
     let factory_board = model.positions.widget();
@@ -206,6 +237,10 @@ impl SimpleComponent for AppModel {
 
         match *self.board.state() {
           s @ GameState::Loss | s @ GameState::Win => {
+            if s == GameState::Win {
+              save_win(self.time_elapsed)
+                .unwrap_or_else(|e| eprintln!("Failed to save game win {e}"));
+            }
             self.update_all_positions();
             self
               .timer_worker
@@ -253,9 +288,27 @@ impl SimpleComponent for AppModel {
         self.board = board();
         self.update_all_positions();
         self.time_elapsed = 0;
+        self.time_paused = 0;
+        self.paused = false;
       }
       AppMsg::Tick(seconds) => {
-        self.time_elapsed = seconds;
+        if !self.paused {
+          self.time_elapsed = seconds + self.time_paused;
+        }
+      }
+      AppMsg::ShowHistory => {
+        if *self.board.state() == GameState::Active {
+          self.paused = true;
+          self.timer_worker.emit(GameTimerInput::Stop);
+          self.time_paused = self.time_elapsed;
+        }
+        self.history_window.emit(super::history::HistoryMsg::Open);
+      }
+      AppMsg::Resume => {
+        if self.paused && *self.board.state() == GameState::Active {
+          self.timer_worker.emit(GameTimerInput::Start);
+          self.paused = false;
+        }
       }
     }
   }
