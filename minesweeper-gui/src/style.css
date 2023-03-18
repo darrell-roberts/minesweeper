@@ -76,9 +76,10 @@ grid {
 
 .status_dialog {
   padding: 15px 15px 15px 15px;
-  background-color: darkslategray;
-  color: white;
   border-radius: 20px;
+  color: black;
+  background-color: whitesmoke;
+  font-size: 20px;
 }
 
 .restart {
@@ -92,4 +93,5 @@ grid {
   background-image: image(black);
   border-radius: 8px;
   color: white;
+  padding: 10px;
 }

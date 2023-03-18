@@ -79,7 +79,7 @@ impl SimpleComponent for AppModel {
             set_halign: gtk::Align::Center,
             set_orientation: gtk::Orientation::Horizontal,
             set_spacing: 25,
-            set_margin_bottom: 10,
+            // set_margin_bottom: 10,
             set_margin_top: 10,
             set_css_classes: &["header"],
 
