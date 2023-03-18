@@ -121,12 +121,15 @@ impl SimpleComponent for WinHistoryView {
   type Init = ();
 
   view! {
-      gtk::MessageDialog {
+      gtk::Window {
           set_modal: true,
           set_default_width: 400,
           set_default_height: 400,
           #[watch]
           set_visible: !model.hidden,
+          set_deletable: false,
+          set_decorated: false,
+
           #[wrap(Some)]
           set_child = &gtk::Box {
               set_orientation: gtk::Orientation::Vertical,
@@ -146,7 +149,6 @@ impl SimpleComponent for WinHistoryView {
                   connect_clicked => HistoryMsg::Close
               }
           },
-
       }
   }
 

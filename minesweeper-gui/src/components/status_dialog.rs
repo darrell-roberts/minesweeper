@@ -20,13 +20,14 @@ impl SimpleComponent for StatusDialogModel {
   type Init = bool;
 
   view! {
-    gtk::MessageDialog {
+    gtk::Window {
       set_modal: true,
       #[watch]
       set_visible: !model.hidden,
       set_default_width: 250,
       set_default_height: 200,
       set_css_classes: &["status_dialog"],
+      set_decorated: false,
 
       #[wrap(Some)]
       set_child = &gtk::Box {
