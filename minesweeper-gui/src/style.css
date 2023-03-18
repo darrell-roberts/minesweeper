@@ -50,7 +50,7 @@ container {
 
 .flagged {
   background-image: image(lightgray);
-  color: yellow;
+  color: darkorange;
   font-weight: bold;
 }
 
@@ -69,6 +69,10 @@ label.lose {
   color: darkred;
 }
 
+.statusMessage {
+    margin-top: 50px;
+}
+
 grid {
   padding: 15px 15px 15px 15px;
   background-color: whitesmoke;
@@ -76,7 +80,6 @@ grid {
 
 .status_dialog {
   padding: 15px 15px 15px 15px;
-  border-radius: 20px;
   color: black;
   background-color: whitesmoke;
   font-size: 20px;

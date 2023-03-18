@@ -24,16 +24,27 @@ impl SimpleComponent for StatusDialogModel {
       set_modal: true,
       #[watch]
       set_visible: !model.hidden,
-      #[watch]
-      set_text: model.message.as_deref(),
       set_default_width: 250,
       set_default_height: 200,
       set_css_classes: &["status_dialog"],
-      set_decorated: true,
-      set_message_type: gtk::MessageType::Info,
-      add_button: ("Close", gtk::ResponseType::Close),
-      connect_response[sender] => move |_, _resp| {
-        sender.input(StatusMsg::Close)
+
+      #[wrap(Some)]
+      set_child = &gtk::Box {
+          set_orientation: gtk::Orientation::Vertical,
+          gtk::Label {
+              #[watch]
+              set_label: model.message.as_deref().unwrap_or_default(),
+              set_css_classes: &["statusMessage"],
+          },
+          gtk::Box {
+              set_orientation: gtk::Orientation::Vertical,
+              set_vexpand: true,
+
+          },
+          gtk::Button {
+             set_label: "Close",
+             connect_clicked => StatusMsg::Close
+          },
       }
     }
   }
