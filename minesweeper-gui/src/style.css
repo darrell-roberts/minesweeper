@@ -23,6 +23,23 @@ container {
 .open {
   background-image: image(white);
   box-shadow: 0;
+  color: black;
+}
+
+.one {
+  color: blue
+}
+
+.two {
+  color: green
+}
+
+.three {
+  color: purple
+}
+
+.four {
+  color: red
 }
 
 .exposed {

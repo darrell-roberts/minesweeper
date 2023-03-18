@@ -122,7 +122,11 @@ impl FactoryComponent for Position {
   ) {
     let label = match self.cell.state {
       CellState::Open => {
-        widgets.button.set_css_classes(&["cell", "open"]);
+        widgets.button.set_css_classes(&[
+          "cell",
+          "open",
+          adjacent_mine_style(*self).unwrap_or_default(),
+        ]);
         widgets.container.set_css_classes(&["open"]);
         if self.cell.adjacent_mines > 0 {
           adjacent_mine_label(*self)
@@ -181,4 +185,15 @@ fn adjacent_mine_label(pos: Position) -> &'static str {
     8 => "8",
     _ => unreachable!(),
   }
+}
+
+fn adjacent_mine_style(pos: Position) -> Option<&'static str> {
+  match pos.cell.adjacent_mines {
+    0 => return None,
+    1 => "one",
+    2 => "two",
+    3 => "three",
+    _ => "four",
+  }
+  .into()
 }
