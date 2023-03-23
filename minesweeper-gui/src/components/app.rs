@@ -26,10 +26,11 @@ pub struct AppModel {
   timer_worker: WorkerController<GameTimer>,
   /// The elapsed time from game start to end.
   time_elapsed: u64,
+  /// Elapsed time copied when paused.
   time_paused: u64,
   /// If the game is paused.
   paused: bool,
-
+  /// History view window.
   history_window: Controller<WinHistoryView>,
 }
 
@@ -162,13 +163,13 @@ impl SimpleComponent for AppModel {
               set_spacing: 10,
               gtk::Button {
                 set_label: "top scores",
-                set_css_classes: &["restart"],
+                set_css_classes: &["button"],
                 connect_clicked => AppMsg::ShowHistory
               },
 
               gtk::Button {
                   set_label: "restart",
-                  set_css_classes: &["restart"],
+                  set_css_classes: &["button"],
                   connect_clicked => AppMsg::Start
               }
           }
@@ -286,6 +287,7 @@ impl SimpleComponent for AppModel {
         }
       }
       AppMsg::Start => {
+        self.timer_worker.emit(GameTimerInput::Stop);
         self.board = board();
         self.update_all_positions();
         self.time_elapsed = 0;
@@ -293,7 +295,7 @@ impl SimpleComponent for AppModel {
         self.paused = false;
       }
       AppMsg::Tick(seconds) => {
-        if !self.paused {
+        if !self.paused && *self.board.state() == GameState::Active {
           self.time_elapsed = seconds + self.time_paused;
         }
       }

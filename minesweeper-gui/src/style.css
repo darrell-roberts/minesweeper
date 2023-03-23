@@ -49,13 +49,14 @@ container {
 }
 
 .flagged {
-  background-image: image(lightgray);
+  background-image: linear-gradient(45deg, orange, wheat);
+  box-shadow: 2px 2px gray;
   color: darkorange;
   font-weight: bold;
 }
 
 .closed {
-  background-image: image(lightgray);
+  background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
   box-shadow: 2px 2px gray;
 }
 
@@ -80,12 +81,14 @@ grid {
 
 .status_dialog {
   padding: 15px 15px 15px 15px;
-  color: black;
-  background-color: whitesmoke;
+  color: white;
+  /* background-color: whitesmoke; */
+  background-color: black;
   font-size: 20px;
+  border-radius: 10px;
 }
 
-.restart {
+.button {
   margin-bottom: 10px;
 }
 
@@ -93,10 +96,11 @@ grid {
   margin-left: 15px;
   margin-right: 15px;
   font-size: 14px;
-  background-image: image(black);
+  background-image: linear-gradient(to right, black, darkred 20%, black);
   border-radius: 8px;
   color: white;
   padding: 10px;
+  box-shadow: 2px 2px gray;
 }
 
 .winHistory {
@@ -110,6 +114,22 @@ grid {
 
 .winHistoryHeader {
     font-size: 20px;
-    color: black;
+    color: white;
     margin: 25px;
+}
+
+.winHistoryRank {
+    font-size: 20px;
+    color: white;
+}
+
+.winHistoryWindow {
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+}
+
+.winHistoryButton {
+    margin-top: 10px;
+    background-image: image(black);
+    box-shadow: 2px 2px gray;
+    color: white;
 }

@@ -133,11 +133,12 @@ impl SimpleComponent for WinHistoryView {
 
           #[wrap(Some)]
           set_child = &gtk::Box {
+              set_css_classes: &["winHistoryWindow"],
               set_orientation: gtk::Orientation::Vertical,
 
               gtk::Label {
                   set_label: "Top 10 Scores",
-                  set_css_classes: &["winHistoryHeader"]
+                  set_css_classes: &["winHistoryHeader"],
               },
 
               #[local_ref]
@@ -146,8 +147,9 @@ impl SimpleComponent for WinHistoryView {
                   set_orientation: gtk::Orientation::Vertical,
               },
               gtk::Button {
+                  set_css_classes: &["winHistoryButton"],
                   set_label: "Close",
-                  connect_clicked => HistoryMsg::Close
+                  connect_clicked => HistoryMsg::Close,
               }
           },
       }
@@ -217,15 +219,26 @@ impl FactoryComponent for Win {
           set_orientation: gtk::Orientation::Horizontal,
           set_spacing: 10,
           set_halign: gtk::Align::Center,
-          set_css_classes: &["winHistory"],
-          gtk::Label {
-              set_label: &format!("{}.", index.current_index() + 1)
+
+          gtk::Box {
+              set_halign: gtk::Align::End,
+              // set_width_request: 20,
+              gtk::Label {
+                  set_css_classes: &["winHistoryRank"],
+                  set_label: &format!("{}.", index.current_index() + 1)
+              },
           },
-          gtk::Label {
-              set_label: &format_elapsed(self.duration)
-          },
-          gtk::Label {
-              set_label: &format!("{}", self.date.format("%b %e / %G %R"))
+
+          gtk::Box {
+              set_spacing: 10,
+              set_css_classes: &["winHistory"],
+              set_orientation: gtk::Orientation::Horizontal,
+              gtk::Label {
+                  set_label: &format_elapsed(self.duration)
+              },
+              gtk::Label {
+                  set_label: &format!("{}", self.date.format("%b %e / %G %R"))
+              }
           }
       }
   }

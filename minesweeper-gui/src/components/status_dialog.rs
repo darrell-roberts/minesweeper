@@ -26,8 +26,8 @@ impl SimpleComponent for StatusDialogModel {
       set_visible: !model.hidden,
       set_default_width: 250,
       set_default_height: 200,
-      set_css_classes: &["status_dialog"],
       set_decorated: false,
+      set_css_classes: &["status_dialog"],
 
       #[wrap(Some)]
       set_child = &gtk::Box {
