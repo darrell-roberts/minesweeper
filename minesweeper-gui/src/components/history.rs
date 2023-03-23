@@ -217,14 +217,14 @@ impl FactoryComponent for Win {
   view! {
       root = gtk::Box {
           set_orientation: gtk::Orientation::Horizontal,
-          set_spacing: 10,
-          set_halign: gtk::Align::Center,
 
           gtk::Box {
+              set_valign: gtk::Align::Center,
               set_halign: gtk::Align::End,
-              // set_width_request: 20,
+              set_orientation: gtk::Orientation::Vertical,
+              set_css_classes: &["winHistoryRank"],
               gtk::Label {
-                  set_css_classes: &["winHistoryRank"],
+                  set_halign: gtk::Align::End,
                   set_label: &format!("{}.", index.current_index() + 1)
               },
           },
@@ -233,6 +233,7 @@ impl FactoryComponent for Win {
               set_spacing: 10,
               set_css_classes: &["winHistory"],
               set_orientation: gtk::Orientation::Horizontal,
+              set_hexpand: true,
               gtk::Label {
                   set_label: &format_elapsed(self.duration)
               },

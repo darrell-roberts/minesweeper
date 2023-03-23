@@ -162,13 +162,13 @@ impl SimpleComponent for AppModel {
               set_halign: gtk::Align::Center,
               set_spacing: 10,
               gtk::Button {
-                set_label: "top scores",
+                set_label: "Top Scores",
                 set_css_classes: &["button"],
                 connect_clicked => AppMsg::ShowHistory
               },
 
               gtk::Button {
-                  set_label: "restart",
+                  set_label: "Restart",
                   set_css_classes: &["button"],
                   connect_clicked => AppMsg::Start
               }
