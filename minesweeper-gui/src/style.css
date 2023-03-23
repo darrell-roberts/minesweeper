@@ -90,6 +90,8 @@ grid {
 
 .button {
   margin-bottom: 10px;
+  background-image: image(darkred);
+  color: white;
 }
 
 .header {
