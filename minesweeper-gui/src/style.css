@@ -58,6 +58,8 @@ container {
   box-shadow: 2px 2px gray;
   color: darkorange;
   font-weight: bold;
+  animation-name: flagged;
+  animation-duration: 250ms;
 }
 
 .closed {
@@ -144,13 +146,29 @@ grid {
 }
 
 @keyframes exposedmine {
-    0% {background-image: image(red); color: yellow;}
-    25% {background-image: image(darkred); color: yellow;}
-    75% {background-image: image(red); color: yellow;}
-    100% {background-image: image(whitesmoke); color: red;}
+    0% {background-image: image(red); color: yellow; transform: rotate(15deg);}
+    25% {background-image: image(darkred); color: yellow; transform: rotate(45deg);}
+    75% {background-image: image(red); color: yellow; transform: rotate(15deg);}
+    100% {background-image: image(whitesmoke); color: red; transform: rotate(180deg);}
 }
 
 @keyframes opened {
-    from {background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);}
-    to {background-image: image(white);}
+    from {
+        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        transform: scale(0.75);
+    }
+    to {
+        background-image: image(white);
+        transform: scale(0.25);
+    }
+}
+
+@keyframes flagged {
+    from {
+        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        transform: scale(0.75);
+    }
+    to {
+        transform: scale(1);
+    }
 }
