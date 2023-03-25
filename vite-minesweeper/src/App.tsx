@@ -3,7 +3,6 @@ import './App.css'
 import { invoke } from '@tauri-apps/api'
 import { FlagResult, GameState, OpenResult, Position, } from "./common/types";
 import CellComp from "./components/Cell/Cell";
-import { message } from '@tauri-apps/api/dialog';
 import DurationCounter from './components/DurationCounter/DurationCounter';
 import Wins from './components/Wins/Wins';
 import StatusDialog from './components/StatusDialog/StatusDialog';
@@ -54,7 +53,9 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
                 && action.position.cell.state.content.flagged;
             return {
                 ...state,
-                board: state.board.map(pos => pos.index === action.position.index ? action.position : pos),
+                board: state.board.map(pos =>
+                    pos.index === action.position.index
+                        ? action.position : pos),
                 flagged: flagged
                     ? state.flagged + 1
                     : state.flagged - 1,
@@ -95,13 +96,6 @@ function App() {
         newGame();
     }, []);
 
-    // useEffect(() => {
-    //     if (!gameState.active) {
-    //         message(gameState.state, "Game Status")
-    //             .catch((err) => console.error("Failed to open dialog", err));
-    //     }
-    // }, [gameState.state]);
-
     async function openCell(position: Position) {
         if (position.cell.state.type === "Closed") {
             try {
@@ -137,6 +131,7 @@ function App() {
                 <span>Flagged: {gameState.flagged}</span>
                 <span>Mined: {gameState.mined}</span>
             </div>
+
             <div className='boardContainer'>
                 {
                     gameState.showWins &&
@@ -146,7 +141,7 @@ function App() {
                     gameState.statusDialog &&
                     <StatusDialog
                         close={() => dispatch({ type: "statusDialog" })}
-                        message="You Lose!"
+                        message={gameState.state === "Win" ? "You Win!" : "You Lose!"}
                     />
                 }
                 {gameState.board.length > 0 &&
