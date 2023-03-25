@@ -75,25 +75,25 @@
     0% {
         background-image: image(red);
         color: yellow;
-        transform: rotate(15deg);
+        transform: rotate(15deg) scale(0.5);
     }
 
     25% {
         background-image: image(darkred);
         color: yellow;
-        transform: rotate(45deg);
+        transform: rotate(45deg) scale(1.2);
     }
 
     75% {
         background-image: image(red);
         color: yellow;
-        transform: rotate(15deg);
+        transform: rotate(15deg) scale(0.5);
     }
 
     100% {
         background-image: image(whitesmoke);
         color: red;
-        transform: rotate(180deg);
+        transform: rotate(180deg) scale(1.2);
     }
 }
 
