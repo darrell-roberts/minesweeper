@@ -24,6 +24,8 @@ container {
   background-image: image(white);
   box-shadow: 0px;
   color: black;
+  animation-name: opened;
+  animation-duration: 250ms;
 }
 
 .one {
@@ -46,6 +48,9 @@ container {
   background-image: image(whitesmoke);
   font-weight: bold;
   color: red;
+  animation-name: exposedmine;
+  animation-duration: 1s;
+  animate-iteration-count: 5;
 }
 
 .flagged {
@@ -136,4 +141,16 @@ grid {
     background-image: image(black);
     box-shadow: 2px 2px gray;
     color: white;
+}
+
+@keyframes exposedmine {
+    0% {background-image: image(red); color: yellow;}
+    25% {background-image: image(darkred); color: yellow;}
+    75% {background-image: image(red); color: yellow;}
+    100% {background-image: image(whitesmoke); color: red;}
+}
+
+@keyframes opened {
+    from {background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);}
+    to {background-image: image(white);}
 }
