@@ -60,7 +60,7 @@
     "windows": [
       {
         "fullscreen": false,
-
+        "height": 840,
         "resizable": true,
         "title": "Minesweeper"
       }
