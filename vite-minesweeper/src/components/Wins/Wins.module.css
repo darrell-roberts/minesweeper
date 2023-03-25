@@ -55,7 +55,7 @@
 }
 
 .closeButton {
-    align-self: end;
+    align-self: flex-end;
     margin-right: 25px;
     font-size: 18px;
     font-weight: bold;
