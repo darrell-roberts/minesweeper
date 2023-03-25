@@ -29,7 +29,8 @@ cargo tauri build
 
 A Relm4/Gtk4 UI for the minesweeper game.
 
-<img src="https://github.com/darrell-roberts/minesweeper/blob/master/minesweeper.gif">
+![Minesweeper](./minesweeper.gif)
+
 # minesweeper
 
 A minesweeper game library and text binary interface.
