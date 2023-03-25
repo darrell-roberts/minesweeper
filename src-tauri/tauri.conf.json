@@ -1,72 +1,70 @@
 {
-    "build": {
-        "beforeBuildCommand": "cd vite-minesweeper && npm run build",
-        "beforeDevCommand": "cd vite-minesweeper && npm run dev",
-        "devPath": "http://localhost:5173",
-        "distDir": "../vite-minesweeper/dist"
+  "build": {
+    "beforeBuildCommand": "cd vite-minesweeper && npm run build",
+    "beforeDevCommand": "cd vite-minesweeper && npm run dev",
+    "devPath": "http://localhost:5173",
+    "distDir": "../vite-minesweeper/dist"
+  },
+  "package": {
+    "productName": "Minesweeper",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "dialog": {
+        "all": true
+      },
+      "fs": {
+        "scope": ["$HOME/.local/share/minesweeper"]
+      }
     },
-    "package": {
-        "productName": "Minesweeper",
-        "version": "0.1.0"
+    "bundle": {
+      "active": true,
+      "category": "Game",
+      "copyright": "",
+      "deb": {
+        "depends": []
+      },
+      "externalBin": [],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "com.dr.dev",
+      "longDescription": "",
+      "macOS": {
+        "entitlements": null,
+        "exceptionDomain": "",
+        "frameworks": [],
+        "providerShortName": null,
+        "signingIdentity": null
+      },
+      "resources": [],
+      "shortDescription": "",
+      "targets": "all",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      }
     },
-    "tauri": {
-        "allowlist": {
-            "dialog": {
-                "all": true
-            },
-            "fs": {
-                "scope": [
-                    "$HOME/.local/share/minesweeper"
-                ]
-            }
-        },
-        "bundle": {
-            "active": true,
-            "category": "Game",
-            "copyright": "",
-            "deb": {
-                "depends": []
-            },
-            "externalBin": [],
-            "icon": [
-                "icons/32x32.png",
-                "icons/128x128.png",
-                "icons/128x128@2x.png",
-                "icons/icon.icns",
-                "icons/icon.ico"
-            ],
-            "identifier": "com.dr.dev",
-            "longDescription": "",
-            "macOS": {
-                "entitlements": null,
-                "exceptionDomain": "",
-                "frameworks": [],
-                "providerShortName": null,
-                "signingIdentity": null
-            },
-            "resources": [],
-            "shortDescription": "",
-            "targets": "all",
-            "windows": {
-                "certificateThumbprint": null,
-                "digestAlgorithm": "sha256",
-                "timestampUrl": ""
-            }
-        },
-        "security": {
-            "csp": null
-        },
-        "updater": {
-            "active": false
-        },
-        "windows": [
-            {
-                "fullscreen": false,
-                "height": 920,
-                "resizable": true,
-                "title": "Minesweeper",
-                "width": 805
-            }
-        ]
-    }
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 820,
+        "resizable": true,
+        "title": "Minesweeper",
+        "width": 705
+      }
+    ]
+  }
 }
