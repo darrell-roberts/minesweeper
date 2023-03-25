@@ -1,3 +1,15 @@
+# A minesweeper game with different Rust UI Frameworks.
+
+# minesweeper-gui
+
+A Relm4/Gtk4 UI for the minesweeper game.
+
+
+https://user-images.githubusercontent.com/33698065/227719432-6a6ccaf7-b81f-47e0-b0c7-55e4527ae06e.mov
+
+
+https://user-images.githubusercontent.com/33698065/227719270-cd3130cb-56d1-4922-90d5-236acf9c9d69.mov
+
 # minesweeper-tauri
 
 A Tauri UI for the minesweeper game.
@@ -24,16 +36,6 @@ cd ../minesweeper
 cargo tauri build
 ```
 <img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218481069-72467dd9-cb91-4db7-bf6c-e260434b655c.png">
-
-# minesweeper-gui
-
-A Relm4/Gtk4 UI for the minesweeper game.
-
-
-https://user-images.githubusercontent.com/33698065/227719432-6a6ccaf7-b81f-47e0-b0c7-55e4527ae06e.mov
-
-
-https://user-images.githubusercontent.com/33698065/227719270-cd3130cb-56d1-4922-90d5-236acf9c9d69.mov
 
 # minesweeper
 
