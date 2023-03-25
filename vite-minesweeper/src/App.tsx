@@ -6,6 +6,7 @@ import CellComp from "./components/Cell/Cell";
 import { message } from '@tauri-apps/api/dialog';
 import DurationCounter from './components/DurationCounter/DurationCounter';
 import Wins from './components/Wins/Wins';
+import StatusDialog from './components/StatusDialog/StatusDialog';
 
 type GameAppState = {
     board: Position[],
@@ -15,12 +16,14 @@ type GameAppState = {
     flagged: number,
     active: boolean,
     showWins: boolean,
+    statusDialog: boolean
 }
 
 type GameAction = { type: "open", result: OpenResult }
     | { type: "restart", board: Position[], }
     | { type: "flag", position: Position }
     | { type: "showWins" }
+    | { type: "statusDialog" }
     ;
 
 function gameReducer(state: GameAppState, action: GameAction): GameAppState {
@@ -37,6 +40,9 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
                 active: action.result.gameState == "Active",
                 opened: state.opened + action.result.openedCells.length,
                 mined: action.result.totalMines,
+                statusDialog: action.result.gameState === "Loss"
+                    || action.result.gameState === "Win",
+
             }
         };
         case "restart": return {
@@ -44,7 +50,8 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
             board: action.board,
         };
         case "flag": {
-            const flagged = action.position.cell.state.type === "Closed" && action.position.cell.state.content.flagged;
+            const flagged = action.position.cell.state.type === "Closed"
+                && action.position.cell.state.content.flagged;
             return {
                 ...state,
                 board: state.board.map(pos => pos.index === action.position.index ? action.position : pos),
@@ -56,6 +63,10 @@ function gameReducer(state: GameAppState, action: GameAction): GameAppState {
         case "showWins": return {
             ...state,
             showWins: !state.showWins
+        }
+        case "statusDialog": return {
+            ...state,
+            statusDialog: !state.statusDialog
         }
 
         default: return state;
@@ -70,21 +81,26 @@ const INITIAL_STATE: GameAppState = {
     flagged: 0,
     active: true,
     showWins: false,
+    statusDialog: false,
 }
 
 function App() {
     const [gameState, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
     useEffect(() => {
+        addEventListener("contextmenu", (event) => {
+            event.preventDefault();
+
+        });
         newGame();
     }, []);
 
-    useEffect(() => {
-        if (!gameState.active) {
-            message(gameState.state, "Game Status")
-                .catch((err) => console.error("Failed to open dialog", err));
-        }
-    }, [gameState.state]);
+    // useEffect(() => {
+    //     if (!gameState.active) {
+    //         message(gameState.state, "Game Status")
+    //             .catch((err) => console.error("Failed to open dialog", err));
+    //     }
+    // }, [gameState.state]);
 
     async function openCell(position: Position) {
         if (position.cell.state.type === "Closed") {
@@ -123,9 +139,17 @@ function App() {
             </div>
             <div className='boardContainer'>
                 {
-                    gameState.showWins && <Wins />
+                    gameState.showWins &&
+                    <Wins close={() => dispatch({ type: "showWins" })} />
                 }
-                {gameState.board.length > 0 && !gameState.showWins &&
+                {
+                    gameState.statusDialog &&
+                    <StatusDialog
+                        close={() => dispatch({ type: "statusDialog" })}
+                        message="You Lose!"
+                    />
+                }
+                {gameState.board.length > 0 &&
                     <div className={`board ${!gameState.active ? "gameOver" : ""}`}>
                         {gameState.board.map(cell =>
                             <CellComp
@@ -141,10 +165,18 @@ function App() {
             </div>
 
             <div className="buttonBar">
-                <button className="buttons" onClick={() => dispatch({ type: "showWins" })}>
-                    {gameState.showWins ? "Hide Top Scores" : "Show Top Scores"}
+                <button
+                    className="buttons"
+                    onClick={() => dispatch({ type: "showWins" })}
+                    disabled={gameState.statusDialog || gameState.showWins}
+                >
+                    Top Scores
                 </button>
-                <button className="buttons" onClick={() => newGame()} >
+                <button
+                    className="buttons"
+                    onClick={() => newGame()}
+                    disabled={gameState.statusDialog || gameState.showWins}
+                >
                     New Game
                 </button>
             </div>

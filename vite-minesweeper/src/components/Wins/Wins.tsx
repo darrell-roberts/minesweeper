@@ -3,7 +3,11 @@ import { invoke } from '@tauri-apps/api'
 import { WinHistory, Win } from "../../common/types";
 import classes from "./Wins.module.css";
 
-function Wins() {
+type WinsProps = {
+    close: () => void,
+};
+
+function Wins({ close }: WinsProps) {
     const [wins, setWins] = useState<WinHistory>();
 
     useEffect(() => {
@@ -16,35 +20,43 @@ function Wins() {
     }, []);
 
     return (
-        <div>
-            {wins?.wins &&
-                wins.wins.map((win, index) =>
-                    <WinComponent
-                        key={win.date}
-                        win={win}
-                        rank={index + 1}
-                    />
-                )
-            }
-            {
-                !wins && <span className={classes.noWins}>No wins yet.</span>
-            }
+        <div className={classes.modal}>
+            <div className={classes.container}>
+                <div className={classes.closeButton} onClick={close}>X</div>
+                {wins?.wins &&
+                    wins.wins.map((win, index) =>
+                        <WinComponent
+                            key={win.date}
+                            win={win}
+                            rank={index + 1}
+                        />
+                    )
+                }
+                {
+                    !wins && <span className={classes.noWins}>No wins yet.</span>
+                }
+            </div>
         </div>
     )
 }
 
 type WinComponentProps = {
     win: Win,
-    rank: number
-}
+    rank: number,
+
+};
 
 const WinComponent = ({ win, rank }: WinComponentProps) => (
-    <div className={classes.container}>
-        <span className={classes.rank}>{rank}.</span>
+    <div className={classes.winComponent}>
+        <div className={classes.rank}>
+            <span >{rank}.</span>
+        </div>
+
         <div className={classes.win}>
             <div className={classes.duration}>{win.duration}</div>
             <div className={classes.date}>{win.date}</div>
         </div>
+
     </div>
 );
 

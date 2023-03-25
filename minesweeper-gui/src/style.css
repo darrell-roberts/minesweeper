@@ -9,20 +9,20 @@ container {
 }
 
 .cell:active {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .container:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .cell:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .open {
   background-image: image(white);
-  box-shadow: 0px;
+  box-shadow: none;
   color: black;
   animation-name: opened;
   animation-duration: 250ms;
@@ -48,9 +48,9 @@ container {
   background-image: image(whitesmoke);
   font-weight: bold;
   color: red;
-  animation-name: exposedmine;
+  animation-name: exposed;
   animation-duration: 1s;
-  animate-iteration-count: 5;
+  animation-iteration-count: 5;
 }
 
 .flagged {
@@ -78,7 +78,7 @@ label.lose {
 }
 
 .statusMessage {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 grid {
@@ -89,7 +89,6 @@ grid {
 .status_dialog {
   padding: 15px 15px 15px 15px;
   color: white;
-  /* background-color: whitesmoke; */
   background-color: black;
   font-size: 20px;
   border-radius: 10px;
@@ -113,62 +112,82 @@ grid {
 }
 
 .winHistory {
-    font-size: 16px;
-    background-image: linear-gradient(to right, wheat, lightgray);
-    color: black;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 5px;
+  font-size: 16px;
+  background-image: linear-gradient(to right, wheat, lightgray);
+  color: black;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 5px;
 }
 
 .winHistoryHeader {
-    font-size: 20px;
-    color: white;
-    margin: 25px;
+  font-size: 20px;
+  color: white;
+  margin: 25px;
 }
 
 .winHistoryRank {
-    font-size: 20px;
-    min-width: 40px;
-    text-align: end;
-    color: white;
+  font-size: 20px;
+  min-width: 40px;
+  color: white;
 }
 
 .winHistoryWindow {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+  background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
 }
 
 .winHistoryButton {
-    margin-top: 10px;
-    background-image: image(black);
-    box-shadow: 2px 2px gray;
-    color: white;
+  margin-top: 10px;
+  background-image: image(black);
+  box-shadow: 2px 2px gray;
+  color: white;
 }
 
-@keyframes exposedmine {
-    0% {background-image: image(red); color: yellow; transform: rotate(15deg);}
-    25% {background-image: image(darkred); color: yellow; transform: rotate(45deg);}
-    75% {background-image: image(red); color: yellow; transform: rotate(15deg);}
-    100% {background-image: image(whitesmoke); color: red; transform: rotate(180deg);}
+@keyframes exposed {
+  0% {
+    background-image: image(red);
+    color: yellow;
+    transform: rotate(15deg);
+  }
+
+  25% {
+    background-image: image(darkred);
+    color: yellow;
+    transform: rotate(45deg);
+  }
+
+  75% {
+    background-image: image(red);
+    color: yellow;
+    transform: rotate(15deg);
+  }
+
+  100% {
+    background-image: image(whitesmoke);
+    color: red;
+    transform: rotate(180deg);
+  }
 }
 
 @keyframes opened {
-    from {
-        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
-        transform: scale(0.75);
-    }
-    to {
-        background-image: image(white);
-        transform: scale(0.25);
-    }
+  from {
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    transform: scale(0.75);
+  }
+
+  to {
+    background-image: image(white);
+    transform: scale(0.25);
+  }
 }
 
 @keyframes flagged {
-    from {
-        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
-        transform: scale(0.75);
-    }
-    to {
-        transform: scale(1);
-    }
+  from {
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    transform: scale(0.75);
+  }
+
+  to {
+    transform: scale(1);
+  }
 }

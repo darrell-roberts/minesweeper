@@ -62,10 +62,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 730,
+        "height": 900,
         "resizable": true,
         "title": "Minesweeper",
-        "width": 620
+        "width": 805
       }
     ]
   }

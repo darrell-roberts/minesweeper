@@ -25,7 +25,7 @@ function DurationCounter({ gameState }: { gameState: GameState }) {
 
     return (
         <>
-            <span>Duration: {duration}</span>
+            <span>Time: {duration}</span>
         </>
     )
 }
