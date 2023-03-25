@@ -2,6 +2,7 @@ use minesweeper::model::{Board, Cell, GameState, Pos};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, num::NonZeroU8, time::Instant};
 
+/// Cell position with an index.
 #[derive(Debug, Copy, Clone, Serialize, Deserialize)]
 pub struct Position {
   pub index: usize,
@@ -9,6 +10,7 @@ pub struct Position {
   pub cell: Cell,
 }
 
+/// Game and state.
 #[derive(Debug)]
 pub struct Game {
   pub board: Board,
@@ -19,6 +21,7 @@ pub struct Game {
   pub paused: Option<Instant>,
 }
 
+/// Command response for opening a cell.
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct OpenResult {
@@ -27,6 +30,7 @@ pub struct OpenResult {
   pub total_mines: usize,
 }
 
+/// Command response for flagging a cell.
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FlagResult {
@@ -34,6 +38,7 @@ pub struct FlagResult {
 }
 
 impl Game {
+  /// Get positions with indices.
   pub fn positions(&self) -> Vec<Position> {
     self
       .board
@@ -43,6 +48,7 @@ impl Game {
       .collect()
   }
 
+  /// Open a cell on the board.
   pub fn open_cell(&mut self, position: Position) -> Vec<Position> {
     self
       .board
@@ -57,6 +63,7 @@ impl Game {
       .collect::<Vec<_>>()
   }
 
+  /// Flag a cell on the board.
   pub fn flag_cell(&mut self, position: Position) -> Option<Position> {
     self
       .board
@@ -94,6 +101,7 @@ impl Default for Game {
   }
 }
 
+/// Create a new un-mined 20 x 20 board.
 fn board() -> Board {
   Board::new(NonZeroU8::new(20).unwrap(), NonZeroU8::new(20).unwrap())
 }

@@ -141,7 +141,7 @@ function App() {
                     gameState.statusDialog &&
                     <StatusDialog
                         close={() => dispatch({ type: "statusDialog" })}
-                        message={gameState.state === "Win" ? "😀 You Win!" : "😞 You Lose!"}
+                        message={gameState.state === "Win" ? "😀 You Won!" : "😞 You Lose!"}
                     />
                 }
                 {gameState.board.length > 0 &&

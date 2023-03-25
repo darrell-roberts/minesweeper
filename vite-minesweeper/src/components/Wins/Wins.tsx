@@ -50,7 +50,6 @@ function Wins({ close }: WinsProps) {
 type WinComponentProps = {
     win: Win,
     rank: number,
-
 };
 
 const WinComponent = ({ win, rank }: WinComponentProps) => (
@@ -63,7 +62,6 @@ const WinComponent = ({ win, rank }: WinComponentProps) => (
             <div className={classes.duration}>{win.duration}</div>
             <div className={classes.date}>{win.date}</div>
         </div>
-
     </div>
 );
 

@@ -7,6 +7,7 @@ use minesweeper::model::GameState;
 use std::time::Instant;
 use tauri::State;
 
+/// Open a cell.
 #[tauri::command]
 pub fn open(position: Position, game: State<AppGame>) -> OpenResult {
   let mut g = game.write().unwrap();
@@ -42,6 +43,7 @@ pub fn open(position: Position, game: State<AppGame>) -> OpenResult {
   }
 }
 
+/// Flag a cell.
 #[tauri::command]
 pub fn flag(position: Position, game: State<AppGame>) -> FlagResult {
   let mut g = game.write().unwrap();
@@ -50,6 +52,7 @@ pub fn flag(position: Position, game: State<AppGame>) -> FlagResult {
   }
 }
 
+/// Start a new game.
 #[tauri::command]
 pub fn new_game(game: State<AppGame>) -> Vec<Position> {
   let new_game = Game::default();
@@ -63,6 +66,7 @@ pub fn new_game(game: State<AppGame>) -> Vec<Position> {
   positions
 }
 
+/// Get the top 10 wins.
 #[tauri::command]
 pub fn get_win_history(game: State<AppGame>) -> Option<WinHistoryView> {
   {
@@ -72,6 +76,7 @@ pub fn get_win_history(game: State<AppGame>) -> Option<WinHistoryView> {
   load_wins()
 }
 
+/// Resume a game that is paused.
 #[tauri::command]
 pub fn resume(game: State<AppGame>) {
   let mut g = game.write().unwrap();

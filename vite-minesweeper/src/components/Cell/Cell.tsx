@@ -37,7 +37,6 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
             case "Open": return localPos.cell.adjacentMines > 0
                 ? localPos.cell.adjacentMines
                 : ""
-
         }
     }
 
