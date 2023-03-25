@@ -23,7 +23,7 @@ function Wins({ close }: WinsProps) {
         <div className={classes.modal}>
             <div className={classes.container}>
                 <div className={classes.closeButton} onClick={close}>X</div>
-                <div className={classes.title}>Top 10 Times</div>
+                <div className={classes.title}>Top 10 Wins</div>
                 {wins?.wins &&
                     wins.wins.map((win, index) =>
                         <WinComponent
