@@ -1,65 +1,70 @@
 .win {
-  padding: 10px;
-  font-size: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
 }
 
 .rank {
-  font-size: 16px;
-  margin-left: 10px;
-  min-width: 50px;
-  text-align: end;
+    font-size: 16px;
+    margin-left: 10px;
+    min-width: 50px;
+    text-align: end;
 }
 
 .date {
-  background-image: linear-gradient(to right, blue, black);
-  color: white;
-  border-radius: 20px;
-  padding: 10px 10px 10px 10px;
-  opacity: .6;
+    background-image: linear-gradient(to right, blue, black);
+    color: white;
+    border-radius: 20px;
+    padding: 10px 10px 10px 10px;
+    opacity: .6;
 }
 
 .modal {
-  position: fixed;
-  z-index: 1;
-  left: 10%;
-  top: 50px;
-  width: 700px;
-  height: 750px;
-  overflow: auto;
-  background-color: white;
-  opacity: .95;
-  border: 1px solid black;
-  border-radius: 8px;
-  box-shadow: 10px 10px gray;
+    position: fixed;
+    z-index: 1;
+    left: 3rem;
+    top: 50px;
+    width: 700px;
+    height: 750px;
+    overflow: auto;
+    background-color: white;
+    opacity: .95;
+    border: 1px solid black;
+    border-radius: 8px;
+    box-shadow: 10px 10px gray;
 }
 
 .container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .noWins {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .winComponent {
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-  flex-direction: row;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    flex-direction: row;
 }
 
 .closeButton {
-  align-self: end;
-  margin-right: 25px;
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
+    align-self: end;
+    margin-right: 25px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 10px;
 }

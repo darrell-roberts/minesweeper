@@ -25,17 +25,6 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
     const [localPos, setLocalPos] = useState(position);
 
     useEffect(() => {
-        // addEventListener("contextmenu", async (event) => {
-        //     try {
-        //         const pos = await flag(position);
-        //         if (pos) {
-        //             setLocalPos(pos);
-        //         }
-        //     } catch (err) {
-        //         console.error("failed to flag cell", err)
-        //     }
-        //     event.preventDefault();
-        // });
         setLocalPos(position);
     }, [position])
 

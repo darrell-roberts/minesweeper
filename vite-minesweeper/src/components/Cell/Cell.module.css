@@ -1,48 +1,48 @@
 .container {
-  width: 35px;
-  height: 35px;
-  padding: 0;
-  justify-content: start;
-  font-size: 0.8em;
-  box-shadow: -2px -2px rgba(255, 255, 255, 0.856), 2px 2px gray;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    justify-content: start;
+    font-size: 0.8em;
+    box-shadow: -2px -2px rgba(255, 255, 255, 0.856), 2px 2px gray;
 }
 
 .container:active {
-  box-shadow: none;
+    box-shadow: none;
 }
 
 .container:hover {
-  opacity: .8;
+    opacity: .8;
 }
 
 .closed {
-  background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
-  box-shadow: 2px 2px gray;
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    box-shadow: 2px 2px gray;
 }
 
 .flagged {
-  background-image: linear-gradient(45deg, orange, wheat);
-  box-shadow: 2px 2px gray;
-  color: darkorange;
-  font-weight: bold;
-  animation-name: flagged;
-  animation-duration: 250ms;
+    background-image: linear-gradient(45deg, orange, wheat);
+    box-shadow: 2px 2px gray;
+    color: darkorange;
+    font-weight: bold;
+    animation-name: flagged;
+    animation-duration: 250ms;
 }
 
 .open {
-  background-color: white;
-  box-shadow: none;
-  font-weight: bold;
-  font-size: 14px;
-  animation-name: opened;
-  animation-duration: 250ms;
+    background-color: white;
+    box-shadow: none;
+    font-weight: bold;
+    font-size: 14px;
+    animation-name: opened;
+    animation-duration: 250ms;
 }
 
 .exposed {
-  background-color: red;
-  animation-name: exposed;
-  animation-duration: 1s;
-  animation-iteration-count: 5;
+    background-color: red;
+    animation-name: exposed;
+    animation-duration: 1s;
+    animation-iteration-count: 3;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -56,66 +56,66 @@
 } */
 
 .one {
-  color: blue
+    color: blue
 }
 
 .two {
-  color: green
+    color: green
 }
 
 .three {
-  color: purple
+    color: purple
 }
 
 .four {
-  color: red
+    color: red
 }
 
 @keyframes exposed {
-  0% {
-    background-image: image(red);
-    color: yellow;
-    transform: rotate(15deg);
-  }
+    0% {
+        background-image: image(red);
+        color: yellow;
+        transform: rotate(15deg);
+    }
 
-  25% {
-    background-image: image(darkred);
-    color: yellow;
-    transform: rotate(45deg);
-  }
+    25% {
+        background-image: image(darkred);
+        color: yellow;
+        transform: rotate(45deg);
+    }
 
-  75% {
-    background-image: image(red);
-    color: yellow;
-    transform: rotate(15deg);
-  }
+    75% {
+        background-image: image(red);
+        color: yellow;
+        transform: rotate(15deg);
+    }
 
-  100% {
-    background-image: image(whitesmoke);
-    color: red;
-    transform: rotate(180deg);
-  }
+    100% {
+        background-image: image(whitesmoke);
+        color: red;
+        transform: rotate(180deg);
+    }
 }
 
 @keyframes opened {
-  from {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
-    transform: scale(0.75);
-  }
+    from {
+        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        transform: scale(0.75);
+    }
 
-  to {
-    background-image: image(white);
-    transform: scale(0.25);
-  }
+    to {
+        background-image: image(white);
+        transform: scale(0.25);
+    }
 }
 
 @keyframes flagged {
-  from {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
-    transform: scale(0.75);
-  }
+    from {
+        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        transform: scale(0.75);
+    }
 
-  to {
-    transform: scale(1);
-  }
+    to {
+        transform: scale(1);
+    }
 }
