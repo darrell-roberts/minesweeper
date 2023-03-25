@@ -29,7 +29,7 @@ cargo tauri build
 
 A Relm4/Gtk4 UI for the minesweeper game.
 
-![Minesweeper](./minesweeper.gif)
+![Minesweeper](./minesweeper.mov)
 
 # minesweeper
 
