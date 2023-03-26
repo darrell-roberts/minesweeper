@@ -4,9 +4,10 @@ import classes from "./StatusDialog.module.css";
 type StatusDialogProps = {
     close: () => void;
     message: string;
+    emoji: string;
 };
 
-function StatusDialog({ close, message }: StatusDialogProps) {
+function StatusDialog({ close, message, emoji }: StatusDialogProps) {
     const [closing, setClosing] = useState(false);
 
     const closeDialog = () => {
@@ -20,7 +21,8 @@ function StatusDialog({ close, message }: StatusDialogProps) {
                 <div className={classes.closeButton} onClick={closeDialog}>X</div>
                 <div className={classes.content}>
                     <div className={classes.message}>
-                        {message}
+                        <div className={classes.emoji}>{emoji}</div>
+                        <div className={classes.text}>{message}</div>
                     </div>
                 </div>
             </div>

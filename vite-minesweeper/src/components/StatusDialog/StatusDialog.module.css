@@ -41,14 +41,30 @@
     flex-direction: column;
 }
 
+.emoji {
+    animation-name: emoji;
+    animation-duration: 250ms;
+    animation-delay: 350ms;
+    animation-iteration-count: 4;
+    align-self: center;
+}
+
 .message {
     margin-top: 20px;
     font-size: 20px;
     font-weight: bold;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+}
+
+.text {
+    align-self: center;
+    margin-left: 5px;
 }
 
 .closing {
-    animation: closing;
+    animation-name: closing;
     animation-duration: 300ms;
 }
 
@@ -69,5 +85,11 @@
 
     100% {
         transform: scale(1.1);
+    }
+}
+
+@keyframes emoji {
+    to {
+        transform: rotate(180deg);
     }
 }
