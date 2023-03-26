@@ -96,7 +96,7 @@
 
 @keyframes closing {
     to {
-        transform: scale(0.1);
+        /* transform: scale(0.1); */
         top: -800px;
     }
 }
@@ -104,11 +104,11 @@
 @keyframes opening {
     0% {
         top: -800px;
-        transform: scale(0.1);
+        /* transform: scale(0.1); */
     }
 
     100% {
         top: 5%;
-        transform: scale(1);
+        /* transform: scale(1); */
     }
 }
