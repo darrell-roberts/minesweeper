@@ -1,3 +1,5 @@
+//! API commands for the tauri client. These API's expose
+//! game functions and state management.
 use crate::{
   game::{FlagResult, Game, OpenResult, Position},
   history::{load_wins, save_win, WinHistoryView},

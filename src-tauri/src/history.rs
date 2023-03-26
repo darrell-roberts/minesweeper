@@ -1,3 +1,4 @@
+//! API for handling top 10 wins.
 use crate::{format_elapsed, game::Game};
 use anyhow::{Context, Result};
 use chrono::{DateTime, Local};

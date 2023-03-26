@@ -1,3 +1,5 @@
+//! Wrapper for the minesweeper game used with a Tauri user
+//! interface.
 use minesweeper::model::{Board, Cell, GameState, Pos};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, num::NonZeroU8, time::Instant};

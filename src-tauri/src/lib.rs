@@ -1,3 +1,4 @@
+//! Tauri API for the minesweeper game.
 use game::Game;
 use serde::Serialize;
 use std::sync::{Arc, RwLock};
@@ -6,8 +7,10 @@ pub mod commands;
 pub mod game;
 pub mod history;
 
+/// Payload for the time event.
 #[derive(Serialize, Clone)]
 pub struct TimeEvent {
+  /// Formatted game time duration.
   pub duration: String,
 }
 

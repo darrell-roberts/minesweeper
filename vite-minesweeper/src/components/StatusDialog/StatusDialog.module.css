@@ -17,19 +17,24 @@
 }
 
 .container {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-content: flex-end;
-
 }
 
 .closeButton {
     align-self: flex-end;
-    margin-right: 25px;
+    margin-right: 15px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
+    padding: 10px;
+}
+
+.closeButton:hover {
+    background-color: lightgray;
+    border-radius: 8px;
 }
 
 .content {
