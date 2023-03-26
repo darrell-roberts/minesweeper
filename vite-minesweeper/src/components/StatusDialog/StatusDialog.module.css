@@ -9,7 +9,7 @@
     background-color: white;
     opacity: .95;
     border-radius: 8px;
-    box-shadow: 10px 10px 5px gray;
+    box-shadow: 10px 10px 15px gray;
     animation-name: opened;
     animation-duration: 250ms;
     animation-iteration-count: 3;
