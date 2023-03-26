@@ -14,6 +14,8 @@ https://user-images.githubusercontent.com/33698065/227719270-cd3130cb-56d1-4922-
 
 A Tauri UI for the minesweeper game.
 
+https://user-images.githubusercontent.com/33698065/227748843-4da95c55-5bdf-4042-8dc8-2a617085d5bc.mov
+
 ## Build from source
 
 ### Clone Repo
@@ -35,7 +37,6 @@ npm install
 cd ../minesweeper
 cargo tauri build
 ```
-<img width="732" alt="image" src="https://user-images.githubusercontent.com/33698065/218481069-72467dd9-cb91-4db7-bf6c-e260434b655c.png">
 
 # minesweeper
 
