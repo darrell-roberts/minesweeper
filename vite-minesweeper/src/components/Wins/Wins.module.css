@@ -43,6 +43,8 @@
     box-shadow: 10px 10px 15px gray;
     width: 95%;
     height: 70%;
+    animation-name: opening;
+    animation-duration: 250ms;
 }
 
 .container {
@@ -95,5 +97,18 @@
 @keyframes closing {
     to {
         transform: scale(0.1);
+        top: -800px;
+    }
+}
+
+@keyframes opening {
+    0% {
+        top: -800px;
+        transform: scale(0.1);
+    }
+
+    100% {
+        top: 5%;
+        transform: scale(1);
     }
 }
