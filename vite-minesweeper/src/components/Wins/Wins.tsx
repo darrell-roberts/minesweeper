@@ -22,11 +22,15 @@ function Wins({ close }: WinsProps) {
 
     const closeDialog = () => {
         setClosing(true);
-        setTimeout(() => close(), 250);
     };
 
     return (
-        <div className={closing ? `${classes.modal} ${classes.closing}` : classes.modal}>
+        <div className={closing ? `${classes.modal} ${classes.closing}` : classes.modal}
+            onAnimationEnd={() => {
+                if (closing) {
+                    close();
+                }
+            }}>
             <div className={classes.container}>
                 <div className={classes.closeButton} onClick={closeDialog}>X</div>
                 <div className={classes.title}>Top 10 Wins</div>

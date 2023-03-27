@@ -26,7 +26,13 @@
         "depends": []
       },
       "externalBin": [],
-      "icon": ["icons/minesweeper_32x32.png", "icons/minesweeper_128x128.png"],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
       "identifier": "com.dr.dev",
       "longDescription": "",
       "macOS": {

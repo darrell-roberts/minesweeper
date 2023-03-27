@@ -93,13 +93,19 @@
 
 .closing {
     animation: closing;
-    animation-duration: 300ms;
+    animation-duration: 250ms;
+    visibility: hidden;
 }
 
 @keyframes closing {
+    from {
+        visibility: visible;
+    }
+
     to {
         /* transform: scale(0.1); */
         top: -800px;
+        visibility: hidden;
     }
 }
 
