@@ -4,10 +4,10 @@
 )]
 
 use app::{
-  commands::{flag, get_win_history, new_game, open, resume},
+  commands::{flag, get_win_history, new_game, open, platform, resume},
   game::Game,
   AppGame, TimeEvent, __cmd__flag, __cmd__get_win_history, __cmd__new_game,
-  __cmd__open, __cmd__resume, format_elapsed,
+  __cmd__open, __cmd__platform, __cmd__resume, format_elapsed,
 };
 use minesweeper::model::GameState;
 use std::{
@@ -57,7 +57,8 @@ fn main() {
       new_game,
       flag,
       get_win_history,
-      resume
+      resume,
+      platform
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

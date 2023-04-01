@@ -91,11 +91,19 @@ function App() {
 
     useEffect(() => {
         if (ref.current && gameState.board.length > 0) {
-            console.info(`dimensions ${ref.current?.offsetWidth} x ${ref.current?.offsetHeight}`);
-            if (ref.current?.offsetHeight && ref.current?.offsetWidth) {
-                appWindow.setSize(new LogicalSize(ref.current.offsetWidth, ref.current.offsetHeight))
-                    .catch((err) => console.error("failed to resize", err));
-            }
+            const fn = async () => {
+                const platform = await invoke<string>("platform");
+
+                if (ref.current?.offsetHeight && ref.current?.offsetWidth) {
+                    const height = platform === "mac"
+                        ? ref.current.offsetHeight + 25
+                        : ref.current.offsetHeight;
+
+                    appWindow.setSize(new LogicalSize(ref.current.offsetWidth, height))
+                        .catch((err) => console.error("failed to resize", err));
+                }
+            };
+            fn().catch((err) => console.error("failed to set window dimensions", err));
 
         }
     }, [ref.current, gameState.board]);

@@ -86,3 +86,12 @@ pub fn resume(game: State<AppGame>) {
     g.paused_time += p.elapsed().as_secs();
   }
 }
+
+#[tauri::command]
+pub fn platform() -> &'static str {
+  if cfg!(target_os = "macos") {
+    "mac"
+  } else {
+    "other"
+  }
+}
