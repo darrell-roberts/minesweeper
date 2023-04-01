@@ -61,4 +61,5 @@ span {
 .buttonBar {
     display: flex;
     justify-content: center;
+    padding-bottom: 10px;
 }

@@ -11,11 +11,43 @@
   },
   "tauri": {
     "allowlist": {
-      "dialog": {
-        "all": true
-      },
+      "all": false,
       "fs": {
-        "scope": ["$HOME/.local/share/minesweeper"]
+        "scope": [
+          "$HOME/.local/share/minesweeper"
+        ]
+      },
+      "window": {
+        "all": false,
+        "center": false,
+        "close": false,
+        "create": false,
+        "hide": false,
+        "maximize": false,
+        "minimize": false,
+        "print": false,
+        "requestUserAttention": false,
+        "setAlwaysOnTop": false,
+        "setCursorGrab": false,
+        "setCursorIcon": false,
+        "setCursorPosition": false,
+        "setCursorVisible": false,
+        "setDecorations": false,
+        "setFocus": false,
+        "setFullscreen": false,
+        "setIcon": false,
+        "setIgnoreCursorEvents": false,
+        "setMaxSize": false,
+        "setMinSize": false,
+        "setPosition": false,
+        "setResizable": false,
+        "setSize": true,
+        "setSkipTaskbar": false,
+        "setTitle": false,
+        "show": false,
+        "startDragging": false,
+        "unmaximize": false,
+        "unminimize": false
       }
     },
     "bundle": {
@@ -60,7 +92,6 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 840,
         "resizable": true,
         "title": "Minesweeper"
       }

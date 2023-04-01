@@ -1,4 +1,4 @@
-import { useEffect, useReducer, } from 'react'
+import { useEffect, useReducer, useRef, } from 'react'
 import './App.css'
 import { invoke } from '@tauri-apps/api'
 import { FlagResult, GameState, OpenResult, Position, } from "./common/types";
@@ -6,6 +6,7 @@ import CellComp from "./components/Cell/Cell";
 import DurationCounter from './components/DurationCounter/DurationCounter';
 import Wins from './components/Wins/Wins';
 import StatusDialog from './components/StatusDialog/StatusDialog';
+import { appWindow, LogicalSize } from '@tauri-apps/api/window';
 
 type GameAppState = {
     board: Position[],
@@ -87,6 +88,19 @@ const INITIAL_STATE: GameAppState = {
 
 function App() {
     const [gameState, dispatch] = useReducer(gameReducer, INITIAL_STATE);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (ref.current && gameState.board.length > 0) {
+            console.info(`dimensions ${ref.current?.offsetWidth} x ${ref.current?.offsetHeight}`);
+            if (ref.current?.offsetHeight && ref.current?.offsetWidth) {
+                appWindow.setSize(new LogicalSize(ref.current.offsetWidth, ref.current.offsetHeight))
+                    .catch((err) => console.error("failed to resize", err));
+            }
+
+        }
+    }, [ref.current, gameState.board]);
+
 
     useEffect(() => {
         addEventListener("contextmenu", (event) => {
@@ -124,7 +138,7 @@ function App() {
     }
 
     return (
-        <div className="App">
+        <div className="App" ref={ref}>
             <div className="header">
                 <DurationCounter gameState={gameState.state} />
                 <span>Opened: {gameState.opened}</span>
