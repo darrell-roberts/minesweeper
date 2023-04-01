@@ -43,6 +43,11 @@
     box-shadow: 10px 10px 15px gray;
     width: 95%;
     height: 70%;
+    visibility: hidden;
+}
+
+.modalReady {
+    visibility: visible;
     animation-name: opening;
     animation-duration: 250ms;
 }
@@ -104,15 +109,15 @@
 
     to {
         /* transform: scale(0.1); */
-        top: -800px;
         visibility: hidden;
+        top: var(--wins-height);
     }
 }
 
 @keyframes opening {
     0% {
-        top: -800px;
         transform: scale(0.1);
+        top: var(--wins-height);
     }
 
     100% {

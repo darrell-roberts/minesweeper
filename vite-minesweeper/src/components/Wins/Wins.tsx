@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { invoke } from '@tauri-apps/api'
 import { WinHistory, Win } from "../../common/types";
 import classes from "./Wins.module.css";
@@ -10,6 +10,9 @@ type WinsProps = {
 function Wins({ close }: WinsProps) {
     const [wins, setWins] = useState<WinHistory>();
     const [closing, setClosing] = useState(false);
+    const containerDiv = useRef<HTMLDivElement>(null);
+    const [containerClasses, setContainerClasses] = useState(classes["modal"]);
+    const [height, setHeight] = useState("0px");
 
     useEffect(() => {
         invoke<WinHistory>("get_win_history")
@@ -20,20 +23,39 @@ function Wins({ close }: WinsProps) {
         }
     }, []);
 
+    useEffect(() => {
+        if (containerDiv.current) {
+            const height = containerDiv.current.clientHeight;
+            setHeight(`-${height}px`);
+            setContainerClasses(`${classes["modal"]} ${classes["modalReady"]}`);
+        }
+
+    }, [containerDiv]);
+
+    useEffect(() => {
+        if (closing) {
+            setContainerClasses(`${classes["modal"]} ${classes["closing"]}`);
+        }
+    }, [closing])
+
+
     const closeDialog = () => {
         setClosing(true);
     };
 
     return (
-        <div className={closing ? `${classes.modal} ${classes.closing}` : classes.modal}
+        <div className={containerClasses}
             onAnimationEnd={() => {
                 if (closing) {
                     close();
                 }
-            }}>
-            <div className={classes.container}>
-                <div className={classes.closeButton} onClick={closeDialog}>X</div>
-                <div className={classes.title}>Top 10 Wins</div>
+            }}
+            ref={containerDiv}
+            style={{ "--wins-height": height } as React.CSSProperties}
+        >
+            <div className={classes["container"]}>
+                <div className={classes["closeButton"]} onClick={closeDialog}>X</div>
+                <div className={classes["title"]}>Top 10 Wins</div>
                 {wins?.wins &&
                     wins.wins.map((win, index) =>
                         <WinComponent
@@ -44,7 +66,7 @@ function Wins({ close }: WinsProps) {
                     )
                 }
                 {
-                    !wins && <span className={classes.noWins}>No wins yet.</span>
+                    !wins && <span className={classes["noWins"]}>No wins yet.</span>
                 }
             </div>
         </div>
@@ -57,14 +79,14 @@ type WinComponentProps = {
 };
 
 const WinComponent = ({ win, rank }: WinComponentProps) => (
-    <div className={classes.winComponent}>
-        <div className={classes.rank}>
+    <div className={classes["winComponent"]}>
+        <div className={classes["rank"]}>
             <span >{rank}.</span>
         </div>
 
-        <div className={classes.win}>
-            <div className={classes.duration}>{win.duration}</div>
-            <div className={classes.date}>{win.date}</div>
+        <div className={classes["win"]}>
+            <div className={classes["duration"]}>{win.duration}</div>
+            <div className={classes["date"]}>{win.date}</div>
         </div>
     </div>
 );

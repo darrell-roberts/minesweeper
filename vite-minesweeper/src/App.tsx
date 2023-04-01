@@ -23,15 +23,14 @@ type GameAction = { type: "open", result: OpenResult }
     | { type: "restart", board: Position[], }
     | { type: "flag", position: Position }
     | { type: "showWins" }
-    | { type: "statusDialog" }
-    ;
+    | { type: "statusDialog" };
 
 function gameReducer(state: GameAppState, action: GameAction): GameAppState {
     switch (action.type) {
         case "open": {
             const updatedBoard = [...state.board];
             for (const opened of action.result.openedCells) {
-                updatedBoard[opened.index].cell = opened.cell
+                updatedBoard[opened.index]!.cell = opened.cell;
             }
             return {
                 ...state,
