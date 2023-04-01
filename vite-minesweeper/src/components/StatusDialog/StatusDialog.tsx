@@ -16,13 +16,13 @@ function StatusDialog({ close, message, emoji }: StatusDialogProps) {
     }
 
     return (
-        <div className={closing ? `${classes.modal} ${classes.closing}` : classes.modal}>
-            <div className={classes.container}>
-                <div className={classes.closeButton} onClick={closeDialog}>X</div>
-                <div className={classes.content}>
-                    <div className={classes.message}>
-                        <div className={classes.emoji}>{emoji}</div>
-                        <div className={classes.text}>{message}</div>
+        <div className={closing ? `${classes["modal"]} ${classes["closing"]}` : classes["modal"]}>
+            <div className={classes["container"]}>
+                <div className={classes["closeButton"]} onClick={closeDialog}>X</div>
+                <div className={classes["content"]}>
+                    <div className={classes["message"]}>
+                        <div className={classes["emoji"]}>{emoji}</div>
+                        <div className={classes["text"]}>{message}</div>
                     </div>
                 </div>
             </div>

@@ -9,12 +9,12 @@ type CellProps = {
     gameActive: boolean,
 }
 
-function mineCountStyle(count: number): string {
+function mineCountStyle(count: number): string | undefined {
     switch (count) {
-        case 1: return classes.one;
-        case 2: return classes.two;
-        case 3: return classes.three;
-        default: return classes.four;
+        case 1: return classes["one"];
+        case 2: return classes["two"];
+        case 3: return classes["three"];
+        default: return classes["four"];
     }
 }
 
@@ -40,13 +40,13 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
         }
     }
 
-    function getClassName(): string {
+    function getClassName(): string | undefined {
         switch (localPos.cell.state.type) {
             case "Closed": {
-                return localPos.cell.state.content.flagged ? classes.flagged : classes.closed;
+                return localPos.cell.state.content.flagged ? classes["flagged"] : classes["closed"];
             };
-            case "ExposedMine": return classes.exposed;
-            case "Open": return `${classes.open} ${mineCountStyle(localPos.cell.adjacentMines)}`;
+            case "ExposedMine": return classes["exposed"];
+            case "Open": return `${classes["open"]} ${mineCountStyle(localPos.cell.adjacentMines)}`;
         }
     }
 
@@ -77,7 +77,7 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
 
     return (
         <button
-            className={`${classes.container} ${getClassName()}`}
+            className={`${classes["container"]} ${getClassName()}`}
             onClick={handleClick}
             onContextMenu={handleClick}
             disabled={!gameActive}>
