@@ -25,7 +25,7 @@ function Wins({ close }: WinsProps) {
 
     useLayoutEffect(() => {
         if (containerDiv.current) {
-            const height = containerDiv.current.clientHeight;
+            const { height } = containerDiv.current.getBoundingClientRect();
             setHeight(`-${height}px`);
             setContainerClasses(`${classes["modal"]} ${classes["modalReady"]}`);
         }
