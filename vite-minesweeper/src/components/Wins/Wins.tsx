@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { invoke } from '@tauri-apps/api'
 import { WinHistory, Win } from "../../common/types";
 import classes from "./Wins.module.css";
@@ -23,7 +23,7 @@ function Wins({ close }: WinsProps) {
         }
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (containerDiv.current) {
             const height = containerDiv.current.clientHeight;
             setHeight(`-${height}px`);
