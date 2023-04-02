@@ -106,7 +106,7 @@ function App() {
     useLayoutEffect(() => {
         if (ref.current && gameState.board.length > 0 && !resized && platform) {
             setResized(true);
-            let { width, height } = ref.current?.getBoundingClientRect();
+            let { width, height } = ref.current.getBoundingClientRect();
             if (platform === "mac") {
                 height += 25;
             }
