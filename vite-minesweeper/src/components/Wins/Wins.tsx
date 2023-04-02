@@ -38,7 +38,6 @@ function Wins({ close }: WinsProps) {
         }
     }, [closing])
 
-
     const closeDialog = () => {
         setClosing(true);
     };
