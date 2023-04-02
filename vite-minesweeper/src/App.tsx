@@ -113,7 +113,6 @@ function App() {
     useEffect(() => {
         addEventListener("contextmenu", (event) => {
             event.preventDefault();
-
         });
         newGame();
     }, []);
