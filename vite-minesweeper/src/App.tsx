@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState, } from 'react'
+import { useEffect, useLayoutEffect, useReducer, useRef, useState, } from 'react'
 import './App.css'
 import { invoke } from '@tauri-apps/api'
 import { FlagResult, GameState, OpenResult, Position, } from "./common/types";
@@ -88,26 +88,31 @@ const INITIAL_STATE: GameAppState = {
 function App() {
     const [gameState, dispatch] = useReducer(gameReducer, INITIAL_STATE);
     const [resized, setResized] = useState(false);
+    const [platform, setPlatform] = useState<string>();
+    const [dimensions, setDimensions] = useState<LogicalSize>();
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (ref.current && gameState.board.length > 0 && !resized) {
-            setResized(true);
-            const fn = async () => {
-                const platform = await invoke<string>("platform");
+        invoke<string>("platform").then(setPlatform);
+    }, []);
 
-                if (ref.current?.offsetHeight && ref.current?.offsetWidth) {
-                    const height = platform === "mac"
-                        ? ref.current.offsetHeight + 25
-                        : ref.current.offsetHeight;
-
-                    appWindow.setSize(new LogicalSize(ref.current.offsetWidth, height))
-                        .catch((err) => console.error("failed to resize", err));
-                }
-            };
-            fn().catch((err) => console.error("failed to set window dimensions", err));
+    useEffect(() => {
+        if (dimensions) {
+            appWindow.setSize(dimensions)
+                .catch((err) => console.error("failed to resize", err));
         }
-    }, [ref.current, gameState.board, resized]);
+    }, [dimensions]);
+
+    useLayoutEffect(() => {
+        if (ref.current && gameState.board.length > 0 && !resized && platform) {
+            setResized(true);
+            let { width, height } = ref.current?.getBoundingClientRect();
+            if (platform === "mac") {
+                height += 25;
+            }
+            setDimensions(new LogicalSize(width, height));
+        }
+    }, [ref.current, gameState.board, resized, platform]);
 
 
     useEffect(() => {
@@ -119,12 +124,8 @@ function App() {
 
     async function openCell(position: Position) {
         if (position.cell.state.type === "Closed") {
-            try {
-                const result = await invoke<OpenResult>("open", { position });
-                dispatch({ type: "open", result });
-            } catch (e) {
-                console.error("failed to open cell", e);
-            }
+            const result = await invoke<OpenResult>("open", { position });
+            dispatch({ type: "open", result });
         }
     }
 

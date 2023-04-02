@@ -51,7 +51,6 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
     }
 
     async function handleClick(event: MouseEvent) {
-        console.info(`button: ${event.button}`);
         if (event.altKey || event.button == 2) {
             try {
                 const pos = await flag(position);
@@ -59,7 +58,7 @@ export default function CellComp({ position, open, gameActive, flag }: CellProps
                     setLocalPos(pos);
                 }
             } catch (err) {
-                console.error("failed to flag cell", err)
+                console.error("failed to flag cell", err);
             }
         } else {
             if (localPos.cell.state.type == "Closed") {
