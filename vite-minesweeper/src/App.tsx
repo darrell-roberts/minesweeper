@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, } from 'react'
+import { useEffect, useReducer, useRef, useState, } from 'react'
 import './App.css'
 import { invoke } from '@tauri-apps/api'
 import { FlagResult, GameState, OpenResult, Position, } from "./common/types";
@@ -87,10 +87,12 @@ const INITIAL_STATE: GameAppState = {
 
 function App() {
     const [gameState, dispatch] = useReducer(gameReducer, INITIAL_STATE);
+    const [resized, setResized] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (ref.current && gameState.board.length > 0) {
+        if (ref.current && gameState.board.length > 0 && !resized) {
+            setResized(true);
             const fn = async () => {
                 const platform = await invoke<string>("platform");
 
@@ -106,7 +108,7 @@ function App() {
             fn().catch((err) => console.error("failed to set window dimensions", err));
 
         }
-    }, [ref.current, gameState.board]);
+    }, [ref.current, gameState.board, resized]);
 
 
     useEffect(() => {
