@@ -106,7 +106,6 @@ function App() {
                 }
             };
             fn().catch((err) => console.error("failed to set window dimensions", err));
-
         }
     }, [ref.current, gameState.board, resized]);
 
