@@ -114,11 +114,7 @@ function App() {
         }
     }, [ref.current, gameState.board, resized, platform]);
 
-
     useEffect(() => {
-        addEventListener("contextmenu", (event) => {
-            event.preventDefault();
-        });
         newGame();
     }, []);
 
@@ -146,7 +142,9 @@ function App() {
     }
 
     return (
-        <div className="App" ref={ref}>
+        <div className="App"
+            ref={ref}
+            onContextMenu={(event) => event.preventDefault()}>
             <div className="header">
                 <DurationCounter gameState={gameState.state} />
                 <span>Opened: {gameState.opened}</span>
