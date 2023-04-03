@@ -11,6 +11,7 @@
     background-color: whitesmoke;
     padding: 5px;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .gameOver {
@@ -50,11 +51,11 @@ span {
     background-image: linear-gradient(to right, black, slategray, black);
     color: white;
     padding: 5px;
-    min-width: 605px;
 }
 
 .boardContainer {
-    min-height: 615px;
+    /* min-height: 615px; */
+    height: 100%;
     flex: 1;
 }
 
