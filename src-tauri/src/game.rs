@@ -62,7 +62,7 @@ impl Game {
           .get(&pos)
           .map(|&index| Position { pos, cell, index })
       })
-      .collect::<Vec<_>>()
+      .collect()
   }
 
   /// Flag a cell on the board.
@@ -90,7 +90,7 @@ impl Default for Game {
     let pos_map = positions
       .iter()
       .map(|Position { index, pos, .. }| (*pos, *index))
-      .collect::<HashMap<_, _>>();
+      .collect();
 
     Self {
       board,
