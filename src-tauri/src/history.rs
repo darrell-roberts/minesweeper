@@ -131,12 +131,17 @@ mod test {
   use super::*;
 
   #[test]
-  fn test_write() {
+  fn test_win_history() {
     let win = Win {
       date: Local::now(),
       duration: 100,
     };
 
     persist_win(win).unwrap();
+    let wins = load_wins().unwrap();
+
+    assert!(
+      matches!(&wins.wins[0], WinView { duration, .. } if &format_elapsed(100) == duration)
+    );
   }
 }
