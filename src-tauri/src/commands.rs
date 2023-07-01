@@ -30,12 +30,9 @@ pub fn open(position: Position, game: State<AppGame>) -> OpenResult {
 
   // Save the win history.
   if matches!(game_state, GameState::Win) {
-    save_win(&g)
-      .map_err(|e| {
-        eprintln!("Failed to save game state {e}");
-        e
-      })
-      .unwrap_or_default();
+    if let Err(err) = save_win(&g) {
+      eprintln!("Failed to save game state {err}");
+    }
   }
 
   OpenResult {
