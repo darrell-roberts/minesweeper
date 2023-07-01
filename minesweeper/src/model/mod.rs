@@ -307,7 +307,7 @@ impl Pos {
       .filter(move |&(x1, y1)| {
         x1 > 0 && y1 > 0 && (x1, y1) != (x.get(), y.get())
       })
-      .filter(move |&(x, y)| x <= max_rows && y <= max_columns)
+      .filter(move |&(x, y)| y <= max_rows && x <= max_columns)
       .map(Pos::try_from)
       .flat_map(|r| r.ok())
   }
