@@ -272,7 +272,7 @@ impl Iterator for RandomPosIter {
       if self.used_positions.len()
         == usize::from(self.rows) * usize::from(self.columns)
       {
-        return None;
+        None?;
       }
 
       if !self.used_positions.contains(&pos) {

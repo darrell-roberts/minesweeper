@@ -193,7 +193,7 @@ fn adjacent_mine_label(pos: Position) -> &'static str {
 
 fn adjacent_mine_style(pos: Position) -> Option<&'static str> {
   match pos.cell.adjacent_mines {
-    0 => return None,
+    0 => None?,
     1 => "one",
     2 => "two",
     3 => "three",
