@@ -5,8 +5,8 @@ edition = "2021"
 license = "Apache-2.0 OR MIT"
 
 [dependencies]
-relm4 = "0.5.1"
-relm4-components = "0.5.1"
+relm4 = "0.6"
+relm4-components = "0.6"
 minesweeper = { path = "../minesweeper" }
 rmp = "0.8"
 rmp-serde = "1"

@@ -252,7 +252,7 @@ struct RandomPosIter {
 impl RandomPosIter {
   fn new(columns: u8, rows: u8, exclude: Vec<Pos>) -> Self {
     Self {
-      used_positions: HashSet::from_iter(exclude.into_iter()),
+      used_positions: HashSet::from_iter(exclude),
       rng: Default::default(),
       rows,
       columns,

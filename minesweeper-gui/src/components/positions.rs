@@ -7,6 +7,7 @@ use relm4::{
   },
   gtk,
   gtk::prelude::*,
+  prelude::DynamicIndex,
 };
 
 #[derive(Debug)]
@@ -34,6 +35,7 @@ impl FactoryComponent for Position {
   type ParentInput = AppMsg;
   type ParentWidget = gtk::Grid;
   type Root = gtk::Box;
+  type Index = DynamicIndex;
 
   fn init_model(
     (pos, cell): Self::Init,
@@ -63,30 +65,26 @@ impl FactoryComponent for Position {
     match self.cell.state {
       CellState::Open => {
         button = button.css_classes(vec![
-          "cell".into(),
-          "open".into(),
-          adjacent_mine_style(*self).unwrap_or_default().into(),
+          "cell",
+          "open",
+          adjacent_mine_style(*self).unwrap_or_default(),
         ]);
-        container = container.css_classes(vec!["open".into()]);
+        container = container.css_classes(vec!["open"]);
         if self.cell.adjacent_mines > 0 {
           button = button.label(adjacent_mine_label(*self));
         }
       }
       CellState::Closed { flagged, .. } => {
         if flagged {
-          button = button
-            .css_classes(vec!["cell".into(), "flagged".into()])
-            .label("F");
-          container = container.css_classes(vec!["flagged".into()]);
+          button = button.css_classes(vec!["cell", "flagged"]).label("F");
+          container = container.css_classes(vec!["flagged"]);
         } else {
-          button = button.css_classes(vec!["cell".into(), "closed".into()]);
-          container = container.css_classes(vec!["closed".into()]);
+          button = button.css_classes(vec!["cell", "closed"]);
+          container = container.css_classes(vec!["closed"]);
         }
       }
       CellState::ExposedMine => {
-        button = button
-          .css_classes(vec!["cell".into(), "exposed".into()])
-          .label("X");
+        button = button.css_classes(vec!["cell", "exposed"]).label("X");
       }
     }
 
@@ -108,7 +106,7 @@ impl FactoryComponent for Position {
       });
     }
     container.append(&button);
-    container.add_controller(&right_click);
+    container.add_controller(right_click.clone());
 
     root.append(&container);
 
@@ -158,7 +156,7 @@ impl FactoryComponent for Position {
     widgets.button.set_label(label);
   }
 
-  fn output_to_parent_input(output: Self::Output) -> Option<Self::ParentInput> {
+  fn forward_to_parent(output: Self::Output) -> Option<Self::ParentInput> {
     match output {
       PositionOutput::Open(p) => Some(AppMsg::Open(p)),
       PositionOutput::Flag(p) => Some(AppMsg::Flag(p)),
@@ -166,8 +164,8 @@ impl FactoryComponent for Position {
   }
 }
 
-impl FactoryPosition<GridPosition> for Position {
-  fn position(&self, _index: usize) -> GridPosition {
+impl FactoryPosition<GridPosition, DynamicIndex> for Position {
+  fn position(&self, _index: &DynamicIndex) -> GridPosition {
     GridPosition {
       column: self.pos.x.get() as i32,
       row: self.pos.y.get() as i32,

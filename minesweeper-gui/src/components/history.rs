@@ -1,3 +1,4 @@
+use crate::format_elapsed;
 use anyhow::{Context, Result};
 use chrono::{DateTime, Local};
 use relm4::{
@@ -10,8 +11,6 @@ use std::{
   fs::{create_dir_all, OpenOptions},
   io::{BufWriter, Seek},
 };
-
-use crate::format_elapsed;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Win {
@@ -161,7 +160,7 @@ impl SimpleComponent for WinHistoryView {
     sender: relm4::ComponentSender<Self>,
   ) -> relm4::ComponentParts<Self> {
     let wins = load_wins().map(|w| {
-      FactoryVecDeque::from_vec(
+      FactoryVecDeque::from_iter(
         w.wins,
         gtk::Box::default(),
         sender.input_sender(),

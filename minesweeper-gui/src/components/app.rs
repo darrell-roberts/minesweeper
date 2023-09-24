@@ -182,8 +182,8 @@ impl SimpleComponent for AppModel {
     root: &Self::Root,
     sender: ComponentSender<Self>,
   ) -> ComponentParts<Self> {
-    let positions = FactoryVecDeque::from_vec(
-      board.positions().map(|(&pos, &cell)| (pos, cell)).collect(),
+    let positions = FactoryVecDeque::from_iter(
+      board.positions().map(|(&pos, &cell)| (pos, cell)),
       gtk::Grid::default(),
       sender.input_sender(),
     );

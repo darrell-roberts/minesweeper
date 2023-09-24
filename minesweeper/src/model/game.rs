@@ -134,7 +134,6 @@ impl Board {
           } else {
             self.flagged -= 1;
           }
-          //   Some((pos, c.clone()))
           self.cells.get(&pos).map(|&cell| (pos, cell))
         } else {
           None
