@@ -1,2 +1,3 @@
 [workspace]
-members = ["minesweeper", "minesweeper-gui", "src-tauri"]
+resolver = "2"
+members = ["minesweeper", "minesweeper-gui", "src-tauri", "minesweeper-iced"]
