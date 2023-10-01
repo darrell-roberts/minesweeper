@@ -1,25 +1,28 @@
-use crate::Command;
+use crate::AppMsg;
 use iced::{
   widget::{button, component, text, Component},
   Element, Renderer,
 };
-use minesweeper::model::{Cell, CellState, Pos};
+use minesweeper::model::{Cell, CellState, GameState, Pos};
 
 pub struct CellComponent<Message> {
   cell: Cell,
   pos: Pos,
-  on_change: Box<dyn Fn(Command) -> Message>,
+  game_state: GameState,
+  on_change: Box<dyn Fn(AppMsg) -> Message>,
 }
 
 impl<Message> CellComponent<Message> {
   pub fn new(
     cell: Cell,
     pos: Pos,
-    on_change: impl Fn(Command) -> Message + 'static,
+    game_state: GameState,
+    on_change: impl Fn(AppMsg) -> Message + 'static,
   ) -> Self {
     Self {
       cell,
       pos,
+      game_state,
       on_change: Box::new(on_change),
     }
   }
@@ -28,15 +31,17 @@ impl<Message> CellComponent<Message> {
 pub fn cell_component<Message>(
   cell: Cell,
   pos: Pos,
-  on_change: impl Fn(Command) -> Message + 'static,
+  game_state: GameState,
+  on_change: impl Fn(AppMsg) -> Message + 'static,
 ) -> CellComponent<Message> {
-  CellComponent::new(cell, pos, on_change)
+  CellComponent::new(cell, pos, game_state, on_change)
 }
 
 #[derive(Debug, Copy, Clone)]
 pub enum CellEvent {
   Open,
   Flag,
+  None,
 }
 
 impl<Message> Component<Message, Renderer> for CellComponent<Message> {
@@ -50,8 +55,9 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
     event: Self::Event,
   ) -> Option<Message> {
     match event {
-      CellEvent::Open => Some((self.on_change)(Command::Open(self.pos))),
-      CellEvent::Flag => Some((self.on_change)(Command::Flag(self.pos))),
+      CellEvent::Open => Some((self.on_change)(AppMsg::Open(self.pos))),
+      CellEvent::Flag => Some((self.on_change)(AppMsg::Flag(self.pos))),
+      CellEvent::None => None,
     }
   }
 
@@ -65,10 +71,20 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
         }
       }
       CellState::Closed { flagged, .. } => {
+        let game_active =
+          matches!(self.game_state, GameState::Active | GameState::New);
         if flagged {
-          button("🚩").on_press(CellEvent::Flag)
+          button("🚩").on_press(if game_active {
+            CellEvent::Flag
+          } else {
+            CellEvent::None
+          })
         } else {
-          button("").on_press(CellEvent::Open)
+          button("").on_press(if game_active {
+            CellEvent::Open
+          } else {
+            CellEvent::None
+          })
         }
       }
       CellState::ExposedMine => button("💣"),

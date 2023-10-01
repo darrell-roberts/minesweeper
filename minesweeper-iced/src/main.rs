@@ -1,4 +1,4 @@
-use iced::{window, Sandbox, Settings};
+use iced::{window, Application, Settings};
 use minesweeper_iced::AppState;
 
 fn main() -> iced::Result {
@@ -7,10 +7,6 @@ fn main() -> iced::Result {
       size: (500, 600),
       ..Default::default()
     },
-    // default_font: Font {
-    //   family: Family::Name("Fira Code Retina"),
-    //   ..Default::default()
-    // },
     ..Default::default()
   };
   AppState::run(settings)

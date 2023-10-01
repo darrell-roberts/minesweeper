@@ -1,20 +1,20 @@
 use iced::{
-  widget::{component, row, text, Component},
-  Element, Renderer,
+  widget::{component, container, row, text, Component},
+  Element, Length, Renderer,
 };
 use minesweeper::model::Board;
 
 pub struct Header {
-  time_elapsed: u64,
+  elapsed_seconds: u64,
   opened: usize,
   flagged: usize,
   mined: usize,
 }
 
 impl Header {
-  pub fn new(board: &Board) -> Self {
+  pub fn new(board: &Board, elapsed_seconds: u64) -> Self {
     Self {
-      time_elapsed: 0,
+      elapsed_seconds,
       opened: board.opened(),
       flagged: board.flagged(),
       mined: board.mined(),
@@ -39,13 +39,18 @@ impl<Message> Component<Message, Renderer> for Header {
   }
 
   fn view(&self, _state: &Self::State) -> Element<'_, Self::Event, Renderer> {
-    row![
-      text(format!("Opened {}", self.opened)),
-      text(format!("Flagged {}", self.flagged)),
-      text(format!("Mined {}", self.mined))
-    ]
-    .spacing(20)
-    .padding(10)
+    container(
+      row![
+        text(format!("Opened {}", self.opened)),
+        text(format!("Flagged {}", self.flagged)),
+        text(format!("Mined {}", self.mined)),
+        text(format!("Time {}", format_elapsed(self.elapsed_seconds)))
+      ]
+      .spacing(20)
+      .padding(10),
+    )
+    .width(Length::Fill)
+    .center_x()
     .into()
   }
 }
@@ -56,5 +61,18 @@ where
 {
   fn from(value: Header) -> Self {
     component(value)
+  }
+}
+
+/// Displayable elapsed time.
+fn format_elapsed(seconds: u64) -> String {
+  match seconds {
+    0..=59 => format!("{seconds} seconds"),
+    60..=3599 => format!(
+      "{} minute(s) {} seconds",
+      seconds.div_euclid(60),
+      seconds.rem_euclid(60)
+    ),
+    3600.. => format!("{} hours", seconds.div_euclid(3600)),
   }
 }
