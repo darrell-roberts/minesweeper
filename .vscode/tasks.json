@@ -57,6 +57,13 @@
       "args": ["--bin", "minesweeper-gui"],
       "problemMatcher": ["$rustc"],
       "label": "minesweeper-gui"
+    },
+    {
+      "type": "cargo",
+      "command": "run",
+      "args": ["--bin", "minesweeper-iced"],
+      "problemMatcher": ["$rustc"],
+      "label": "minesweeper-iced"
     }
   ]
 }

@@ -42,7 +42,7 @@ impl Application for AppState {
   }
 
   fn title(&self) -> String {
-    String::from("Minesweeper Iced")
+    String::from("Minesweeper")
   }
 
   fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
@@ -113,5 +113,9 @@ impl Application for AppState {
     } else {
       Subscription::none()
     }
+  }
+
+  fn theme(&self) -> Self::Theme {
+    Theme::Dark
   }
 }

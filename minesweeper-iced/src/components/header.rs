@@ -22,29 +22,25 @@ impl Header {
   }
 }
 
-#[derive(Debug, Copy, Clone)]
-pub enum HeaderEvent {}
-
 impl<Message> Component<Message, Renderer> for Header {
   type State = ();
-
-  type Event = HeaderEvent;
+  type Event = ();
 
   fn update(
     &mut self,
     _state: &mut Self::State,
     _event: Self::Event,
   ) -> Option<Message> {
-    todo!()
+    unreachable!()
   }
 
   fn view(&self, _state: &Self::State) -> Element<'_, Self::Event, Renderer> {
     container(
       row![
-        text(format!("Opened {}", self.opened)),
-        text(format!("Flagged {}", self.flagged)),
-        text(format!("Mined {}", self.mined)),
-        text(format!("Time {}", format_elapsed(self.elapsed_seconds)))
+        text(format!("Opened: {}", self.opened)),
+        text(format!("Flagged: {}", self.flagged)),
+        text(format!("Mined: {}", self.mined)),
+        text(format!("Time: {}", format_elapsed(self.elapsed_seconds)))
       ]
       .spacing(20)
       .padding(10),

@@ -1,7 +1,10 @@
 use crate::AppMsg;
 use iced::{
+  alignment::Horizontal,
+  font::Weight,
+  theme,
   widget::{button, component, text, Component},
-  Element, Renderer,
+  Color, Element, Font, Renderer,
 };
 use minesweeper::model::{Cell, CellState, GameState, Pos};
 
@@ -62,10 +65,19 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
   }
 
   fn view(&self, _state: &Self::State) -> Element<'_, Self::Event, Renderer> {
+    let bold_font = || Font {
+      weight: Weight::Bold,
+      ..Default::default()
+    };
     match self.cell.state {
       CellState::Open => {
         if self.cell.adjacent_mines > 0 {
-          button(text(format!("{}", self.cell.adjacent_mines)))
+          button(
+            text(format!("{}", self.cell.adjacent_mines))
+              .horizontal_alignment(Horizontal::Center)
+              .style(select_color(self.cell.adjacent_mines))
+              .font(bold_font()),
+          )
         } else {
           button(" ")
         }
@@ -74,11 +86,13 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
         let game_active =
           matches!(self.game_state, GameState::Active | GameState::New);
         if flagged {
-          button("🚩").on_press(if game_active {
-            CellEvent::Flag
-          } else {
-            CellEvent::None
-          })
+          button(text("F").horizontal_alignment(Horizontal::Center)).on_press(
+            if game_active {
+              CellEvent::Flag
+            } else {
+              CellEvent::None
+            },
+          )
         } else {
           button("").on_press(if game_active {
             CellEvent::Open
@@ -87,7 +101,17 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
           })
         }
       }
-      CellState::ExposedMine => button("💣"),
+      CellState::ExposedMine => button(
+        text("X")
+          .horizontal_alignment(Horizontal::Center)
+          .font(bold_font())
+          .style(theme::Text::Color(Color {
+            r: 217. / 255.,
+            g: 0.,
+            b: 0.,
+            a: 1.,
+          })),
+      ),
     }
     .padding(10)
     .width(35)
@@ -102,5 +126,29 @@ where
 {
   fn from(value: CellComponent<Message>) -> Self {
     component(value)
+  }
+}
+
+fn select_color(adjacent_mines: u8) -> theme::Text {
+  match adjacent_mines {
+    1 => theme::Text::Color(Color::WHITE),
+    2 => theme::Text::Color(Color {
+      r: 0.,
+      g: 229. / 256.,
+      b: 0.,
+      a: 1.,
+    }),
+    3 => theme::Text::Color(Color {
+      r: 230. / 256.,
+      g: 118. / 256.,
+      b: 0.,
+      a: 1.,
+    }),
+    _ => theme::Text::Color(Color {
+      r: 254. / 255.,
+      g: 0.,
+      b: 0.,
+      a: 1.,
+    }),
   }
 }
