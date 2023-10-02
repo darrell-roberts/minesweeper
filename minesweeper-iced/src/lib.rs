@@ -8,6 +8,7 @@ use minesweeper::model::{Board, GameState, Pos};
 use std::{num::NonZeroU8, time::Duration};
 
 mod components;
+mod widgets;
 
 pub struct AppState {
   board: Board,
