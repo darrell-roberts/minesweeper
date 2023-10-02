@@ -32,8 +32,8 @@ impl Application for AppState {
     (
       Self {
         board: Board::new(
-          NonZeroU8::try_from(10).unwrap(),
-          NonZeroU8::try_from(10).unwrap(),
+          NonZeroU8::try_from(20).unwrap(),
+          NonZeroU8::try_from(20).unwrap(),
         ),
         elapsed_seconds: 0,
       },
@@ -59,8 +59,8 @@ impl Application for AppState {
       AppMsg::Restart => {
         self.elapsed_seconds = 0;
         self.board = Board::new(
-          NonZeroU8::try_from(10).unwrap(),
-          NonZeroU8::try_from(10).unwrap(),
+          NonZeroU8::try_from(20).unwrap(),
+          NonZeroU8::try_from(20).unwrap(),
         )
       }
     }
@@ -74,7 +74,7 @@ impl Application for AppState {
 
     for (pos, cell) in self.board.positions() {
       if pos.y.get() != y {
-        rows.push(Element::from(Row::with_children(row).spacing(10)));
+        rows.push(Element::from(Row::with_children(row).spacing(2)));
         row = Vec::new();
         y = pos.y.get();
       }
@@ -87,7 +87,7 @@ impl Application for AppState {
       )));
     }
 
-    rows.push(Element::from(Row::with_children(row).spacing(10)));
+    rows.push(Element::from(Row::with_children(row).spacing(2)));
 
     let restart_button = container(button("Restart").on_press(AppMsg::Restart))
       .width(Length::Fill)
@@ -96,7 +96,7 @@ impl Application for AppState {
 
     let content = column![
       Header::new(&self.board, self.elapsed_seconds),
-      container(Column::with_children(rows).spacing(10))
+      container(Column::with_children(rows).spacing(2))
         .width(Length::Fill)
         .height(Length::Fill)
         .center_x()

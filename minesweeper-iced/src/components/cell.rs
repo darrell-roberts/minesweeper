@@ -1,6 +1,6 @@
 use crate::AppMsg;
 use iced::{
-  alignment::Horizontal,
+  alignment::{Horizontal, Vertical},
   font::Weight,
   theme,
   widget::{button, component, text, Component},
@@ -75,6 +75,7 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
           button(
             text(format!("{}", self.cell.adjacent_mines))
               .horizontal_alignment(Horizontal::Center)
+              .vertical_alignment(Vertical::Center)
               .style(select_color(self.cell.adjacent_mines))
               .font(bold_font()),
           )
@@ -86,13 +87,16 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
         let game_active =
           matches!(self.game_state, GameState::Active | GameState::New);
         if flagged {
-          button(text("F").horizontal_alignment(Horizontal::Center)).on_press(
-            if game_active {
-              CellEvent::Flag
-            } else {
-              CellEvent::None
-            },
+          button(
+            text("F")
+              .horizontal_alignment(Horizontal::Center)
+              .vertical_alignment(Vertical::Center),
           )
+          .on_press(if game_active {
+            CellEvent::Flag
+          } else {
+            CellEvent::None
+          })
         } else {
           button("").on_press(if game_active {
             CellEvent::Open
@@ -104,6 +108,7 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
       CellState::ExposedMine => button(
         text("X")
           .horizontal_alignment(Horizontal::Center)
+          .vertical_alignment(Vertical::Center)
           .font(bold_font())
           .style(theme::Text::Color(Color {
             r: 217. / 255.,
@@ -113,8 +118,8 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
           })),
       ),
     }
-    .padding(10)
-    .width(35)
+    .width(25)
+    .height(25)
     .into()
   }
 }
