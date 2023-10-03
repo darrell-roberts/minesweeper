@@ -1,9 +1,9 @@
-use crate::{widgets::cell_button, AppMsg};
+use crate::{theme::CellButtonStyle, widgets::cell_button, AppMsg};
 use iced::{
     alignment::{Horizontal, Vertical},
     font::Weight,
     theme,
-    widget::{button::StyleSheet, component, text, Component},
+    widget::{component, text, Component},
     Color, Element, Font, Renderer,
 };
 use minesweeper::model::{Cell, CellState, GameState, Pos};
@@ -132,6 +132,7 @@ impl<Message> Component<Message, Renderer> for CellComponent<Message> {
                     })),
             ),
         }
+        .style(theme::Button::Custom(Box::new(CellButtonStyle)))
         .width(25)
         .height(25)
         .into()
