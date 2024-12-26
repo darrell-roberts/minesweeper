@@ -14,14 +14,14 @@ use std::{
     sync::{Arc, RwLock},
     time::Duration,
 };
-use tauri::Manager;
+use tauri::{Emitter, Manager};
 
 fn main() {
     let game: AppGame = Arc::new(RwLock::new(Game::default()));
     tauri::Builder::default()
         .manage(game.clone())
         .setup(move |app| {
-            let main_window = app.get_window("main").unwrap();
+            let main_window = app.get_webview_window("main").unwrap();
             std::thread::spawn(move || loop {
                 if let Some((state, duration, paused)) = {
                     game.read()

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { WebviewWindow } from "@tauri-apps/api/window";
+import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { GameState, TimeEvent } from "../../common/types";
 
 /**
