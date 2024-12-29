@@ -201,7 +201,7 @@ impl<'a> CellExpandIter<'a> {
 
 /// An iterator that returns Positions that were opened from the starting
 /// position.
-impl<'a> Iterator for CellExpandIter<'a> {
+impl Iterator for CellExpandIter<'_> {
     type Item = (Pos, Cell);
 
     fn next(&mut self) -> Option<Self::Item> {
