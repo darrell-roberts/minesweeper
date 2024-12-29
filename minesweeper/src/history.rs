@@ -78,13 +78,10 @@ fn persist_win(win: Win) -> anyhow::Result<()> {
         .read(true)
         .create(true)
         .open(get_save_file()?)?;
-    let mut history: WinHistory =
-        from_read(&stats_file).unwrap_or_else(|err| {
-            eprintln!(
-                "Failed to read stats file: {err}. Creating new WinHistory"
-            );
-            WinHistory::default()
-        });
+    let mut history: WinHistory = from_read(&stats_file).unwrap_or_else(|err| {
+        eprintln!("Failed to read stats file: {err}. Creating new WinHistory");
+        WinHistory::default()
+    });
     history.wins.push(win);
     history.wins.sort_by_key(|win| win.duration);
     history.wins = history.wins.into_iter().take(10).collect();

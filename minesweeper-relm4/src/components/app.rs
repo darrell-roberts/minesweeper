@@ -9,9 +9,8 @@ use minesweeper::{
     model::{Board, GameState, Pos},
 };
 use relm4::{
-    factory::FactoryVecDeque, gtk, gtk::prelude::*, Component,
-    ComponentController, ComponentParts, ComponentSender, Controller,
-    SimpleComponent, WorkerController,
+    factory::FactoryVecDeque, gtk, gtk::prelude::*, Component, ComponentController, ComponentParts,
+    ComponentSender, Controller, SimpleComponent, WorkerController,
 };
 use std::collections::HashMap;
 
@@ -241,18 +240,15 @@ impl SimpleComponent for AppModel {
                 match *self.board.state() {
                     s @ GameState::Loss | s @ GameState::Win => {
                         if s == GameState::Win {
-                            save_win(self.time_elapsed).unwrap_or_else(|e| {
-                                eprintln!("Failed to save game win {e}")
-                            });
+                            save_win(self.time_elapsed)
+                                .unwrap_or_else(|e| eprintln!("Failed to save game win {e}"));
                             self.history_window.emit(HistoryMsg::Reload);
                         }
                         self.update_all_positions();
                         self.timer_worker
                             .sender()
                             .send(GameTimerInput::Stop)
-                            .unwrap_or_else(|_| {
-                                eprintln!("Failed to stop timer")
-                            });
+                            .unwrap_or_else(|_| eprintln!("Failed to stop timer"));
                         self.dialog
                             .sender()
                             .send(StatusMsg::Open(if s == GameState::Win {
@@ -260,34 +256,27 @@ impl SimpleComponent for AppModel {
                             } else {
                                 "You lose!".into()
                             }))
-                            .unwrap_or_else(|_| {
-                                eprintln!("Failed to send message")
-                            });
+                            .unwrap_or_else(|_| eprintln!("Failed to send message"));
                     }
                     _ => {
-                        let matched_pos =
-                            opened
-                                .into_iter()
-                                .flat_map(|(pos, cell)| {
-                                    self.pos_map.get(&pos).map(|&index| {
-                                        Position { pos, cell, index }
-                                    })
-                                })
-                                .collect::<Vec<_>>();
+                        let matched_pos = opened
+                            .into_iter()
+                            .flat_map(|(pos, cell)| {
+                                self.pos_map
+                                    .get(&pos)
+                                    .map(|&index| Position { pos, cell, index })
+                            })
+                            .collect::<Vec<_>>();
                         self.update_positions(&matched_pos);
                     }
                 }
             }
             AppMsg::Flag(p) => {
-                if let Some(position) =
-                    self.board.flag_cell(p.pos).and_then(|(pos, cell)| {
-                        self.pos_map.get(&pos).map(|&index| Position {
-                            pos,
-                            cell,
-                            index,
-                        })
-                    })
-                {
+                if let Some(position) = self.board.flag_cell(p.pos).and_then(|(pos, cell)| {
+                    self.pos_map
+                        .get(&pos)
+                        .map(|&index| Position { pos, cell, index })
+                }) {
                     self.update_positions(&[position]);
                 }
             }

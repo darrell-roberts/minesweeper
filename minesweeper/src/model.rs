@@ -207,8 +207,7 @@ impl<'a> Iterator for CellExpandIter<'a> {
     fn next(&mut self) -> Option<Self::Item> {
         // Start of iteration.
         if let Some(p) = self.start.take() {
-            self.adjacent =
-                p.adjacent(self.total_rows, self.total_columns).collect();
+            self.adjacent = p.adjacent(self.total_rows, self.total_columns).collect();
         }
 
         while !self.adjacent.is_empty() {
@@ -228,9 +227,8 @@ impl<'a> Iterator for CellExpandIter<'a> {
                     )
                 }) {
                     if c.adjacent_mines == 0 {
-                        self.adjacent.extend(
-                            p.adjacent(self.total_rows, self.total_columns),
-                        );
+                        self.adjacent
+                            .extend(p.adjacent(self.total_rows, self.total_columns));
                     }
                     c.state = CellState::Open;
                     return Some((p, *c));
@@ -270,9 +268,7 @@ impl Iterator for RandomPosIter {
 
             let pos = Pos::try_from((x, y)).ok()?;
 
-            if self.used_positions.len()
-                == usize::from(self.rows) * usize::from(self.columns)
-            {
+            if self.used_positions.len() == usize::from(self.rows) * usize::from(self.columns) {
                 None?;
             }
 
@@ -286,28 +282,18 @@ impl Iterator for RandomPosIter {
 
 impl Pos {
     /// Yields unique random positions within range and exclusion.
-    fn random_positions(
-        columns: u8,
-        rows: u8,
-        exclude: Vec<Pos>,
-    ) -> impl Iterator<Item = Pos> {
+    fn random_positions(columns: u8, rows: u8, exclude: Vec<Pos>) -> impl Iterator<Item = Pos> {
         RandomPosIter::new(columns, rows, exclude)
     }
 
     /// Yields adjacent positions within bounds.
-    fn adjacent(
-        &self,
-        max_rows: u8,
-        max_columns: u8,
-    ) -> impl Iterator<Item = Pos> + '_ {
+    fn adjacent(&self, max_rows: u8, max_columns: u8) -> impl Iterator<Item = Pos> + '_ {
         let &Pos { x, y } = &self;
         let edges = |n| [n - 1, n, n + 1].into_iter();
 
         edges(x.get())
             .flat_map(move |x1| edges(y.get()).map(move |y1| (x1, y1)))
-            .filter(move |&(x1, y1)| {
-                x1 > 0 && y1 > 0 && (x1, y1) != (x.get(), y.get())
-            })
+            .filter(move |&(x1, y1)| x1 > 0 && y1 > 0 && (x1, y1) != (x.get(), y.get()))
             .filter(move |&(x, y)| y <= max_rows && x <= max_columns)
             .map(Pos::try_from)
             .flat_map(|r| r.ok())

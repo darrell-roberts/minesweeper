@@ -6,8 +6,8 @@
 use app::{
     commands::{flag, get_win_history, new_game, open, platform, resume},
     game::Game,
-    AppGame, TimeEvent, __cmd__flag, __cmd__get_win_history, __cmd__new_game,
-    __cmd__open, __cmd__platform, __cmd__resume, format_elapsed,
+    AppGame, TimeEvent, __cmd__flag, __cmd__get_win_history, __cmd__new_game, __cmd__open,
+    __cmd__platform, __cmd__resume, format_elapsed,
 };
 use minesweeper::model::GameState;
 use std::{
@@ -27,11 +27,7 @@ fn main() {
                     game.read()
                         .map(|g| {
                             g.start_time
-                                .and_then(|st| {
-                                    st.elapsed()
-                                        .as_secs()
-                                        .checked_sub(g.paused_time)
-                                })
+                                .and_then(|st| st.elapsed().as_secs().checked_sub(g.paused_time))
                                 .map(|elapsed| {
                                     (
                                         *g.board.state(),
@@ -45,9 +41,7 @@ fn main() {
                     if !paused && matches!(state, GameState::Active) {
                         main_window
                             .emit("time-event", TimeEvent { duration })
-                            .unwrap_or_else(|e| {
-                                eprintln!("Failed to emit time event {e}")
-                            });
+                            .unwrap_or_else(|e| eprintln!("Failed to emit time event {e}"));
                     }
                 }
 

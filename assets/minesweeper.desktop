@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Game
+Comment=MineSweeper
+Exec=minesweeper-iced
+Icon=minesweeper
+Name=MineSweeper
+Terminal=false
+Type=Application

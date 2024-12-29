@@ -2,7 +2,7 @@ mod cell;
 mod header;
 mod scoreboard;
 
-pub use cell::{cell_component, CellComponent};
+pub use cell::cell_view;
 pub use header::Header;
 pub use scoreboard::ScoreBoard;
 
