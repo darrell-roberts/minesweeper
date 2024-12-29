@@ -50,15 +50,10 @@ impl CellView {
                 }
             }
             CellState::Closed { flagged, .. } => {
-                let game_active = matches!(
-                    self.game_state,
-                    GameState::Active | GameState::New
-                );
+                let game_active = matches!(self.game_state, GameState::Active | GameState::New);
                 if flagged {
-                    mouse_area(cell_button(text("F").center().style(|_| {
-                        text::Style {
-                            color: Some(Color::from_rgb8(1, 1, 0)),
-                        }
+                    mouse_area(cell_button(text("F").center().style(|_| text::Style {
+                        color: Some(Color::from_rgb8(1, 1, 0)),
                     })))
                     .on_right_press(if game_active {
                         AppMsg::Flag(self.pos)
@@ -67,9 +62,10 @@ impl CellView {
                     })
                     .into()
                 } else {
-                    mouse_area(cell_button("").on_press_maybe(
-                        game_active.then_some(AppMsg::Open(self.pos)),
-                    ))
+                    mouse_area(
+                        cell_button("")
+                            .on_press_maybe(game_active.then_some(AppMsg::Open(self.pos))),
+                    )
                     .on_right_press(if game_active {
                         AppMsg::Flag(self.pos)
                     } else {
@@ -79,10 +75,8 @@ impl CellView {
                 }
             }
             CellState::ExposedMine => {
-                cell_button(text("X").center().font(bold_font()).style(|_| {
-                    text::Style {
-                        color: Some(Color::from_rgb8(217, 0, 0)),
-                    }
+                cell_button(text("X").center().font(bold_font()).style(|_| text::Style {
+                    color: Some(Color::from_rgb8(217, 0, 0)),
                 }))
                 .into()
             }
@@ -103,9 +97,7 @@ fn select_color(adjacent_mines: u8) -> text::Style {
     }
 }
 
-fn cell_button<'a, Message>(
-    content: impl Into<Element<'a, Message>>,
-) -> Button<'a, Message>
+fn cell_button<'a, Message>(content: impl Into<Element<'a, Message>>) -> Button<'a, Message>
 where
     Message: Clone + 'a,
 {

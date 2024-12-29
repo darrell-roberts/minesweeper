@@ -113,8 +113,7 @@ impl AppState {
 
         let button_row = row![
             container(button("Restart").on_press(AppMsg::Restart)).padding(10),
-            container(button("Scoreboard").on_press(AppMsg::ViewScoreBoard),)
-                .padding(10),
+            container(button("Scoreboard").on_press(AppMsg::ViewScoreBoard),).padding(10),
         ];
 
         let button_container = container(button_row)

@@ -2,8 +2,8 @@ use crate::format_elapsed;
 use chrono::{DateTime, Local};
 use minesweeper::history::{load_wins, Win};
 use relm4::{
-    factory::FactoryVecDeque, gtk, gtk::prelude::*, prelude::FactoryComponent,
-    ComponentParts, SimpleComponent,
+    factory::FactoryVecDeque, gtk, gtk::prelude::*, prelude::FactoryComponent, ComponentParts,
+    SimpleComponent,
 };
 
 #[derive(Debug)]
@@ -90,9 +90,8 @@ impl SimpleComponent for WinHistoryView {
             )
         });
 
-        let win_history = wins.unwrap_or_else(|| {
-            FactoryVecDeque::new(gtk::Box::default(), sender.input_sender())
-        });
+        let win_history = wins
+            .unwrap_or_else(|| FactoryVecDeque::new(gtk::Box::default(), sender.input_sender()));
         let model = WinHistoryView {
             hidden: true,
             win_history,
@@ -103,11 +102,7 @@ impl SimpleComponent for WinHistoryView {
         ComponentParts { model, widgets }
     }
 
-    fn update(
-        &mut self,
-        message: Self::Input,
-        sender: relm4::ComponentSender<Self>,
-    ) {
+    fn update(&mut self, message: Self::Input, sender: relm4::ComponentSender<Self>) {
         match message {
             HistoryMsg::Open => {
                 self.hidden = false;
@@ -118,9 +113,7 @@ impl SimpleComponent for WinHistoryView {
             }
             HistoryMsg::Reload => {
                 self.win_history.guard().clear();
-                for win in
-                    load_wins().into_iter().flat_map(|w| w.wins.into_iter())
-                {
+                for win in load_wins().into_iter().flat_map(|w| w.wins.into_iter()) {
                     self.win_history.guard().push_back(WinData(win));
                 }
             }

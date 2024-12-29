@@ -18,9 +18,11 @@ impl<'a> ScoreBoard<'a> {
     where
         Message: 'a,
     {
-        let col = self.win_history.iter().zip(1..).fold(
-            Column::new(),
-            |col, (win, rank)| {
+        let col = self
+            .win_history
+            .iter()
+            .zip(1..)
+            .fold(Column::new(), |col, (win, rank)| {
                 let row = row![
                     container(text(format!("{rank:<5}"))).width(20),
                     container(text(format_elapsed(win.duration))).width(200),
@@ -28,14 +30,10 @@ impl<'a> ScoreBoard<'a> {
                 ]
                 .spacing(10);
                 col.push(row).spacing(10)
-            },
-        );
+            });
         container(col)
             .padding(20)
-            .style(|_| {
-                container::Style::default()
-                    .background(Color::from_rgb8(0, 153, 204))
-            })
+            .style(|_| container::Style::default().background(Color::from_rgb8(0, 153, 204)))
             .into()
     }
 }

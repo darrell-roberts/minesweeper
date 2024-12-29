@@ -34,10 +34,7 @@ impl Header {
                     text(format!("Opened: {}", self.opened)),
                     text(format!("Flagged: {}", self.flagged)),
                     text(format!("Mined: {}", self.mined)),
-                    text(format!(
-                        "Time: {}",
-                        format_elapsed(self.elapsed_seconds)
-                    ))
+                    text(format!("Time: {}", format_elapsed(self.elapsed_seconds)))
                 ]
                 .spacing(20),
             )
