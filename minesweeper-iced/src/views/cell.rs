@@ -76,7 +76,7 @@ impl CellView {
             }
         };
 
-        container(content).width(45).height(45).into()
+        container(content).width(35).height(35).into()
     }
 }
 
@@ -95,5 +95,5 @@ fn cell_button<'a, Message>(content: impl Into<Element<'a, Message>>) -> Button<
 where
     Message: Clone + 'a,
 {
-    button(content).width(45).height(45)
+    button(content).width(35).height(35)
 }
