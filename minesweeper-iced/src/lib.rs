@@ -1,23 +1,20 @@
-use components::{cell_component, Header, ScoreBoard};
 use iced::{
-    executor, time,
     widget::{button, column, container, row, text, Column, Row},
-    Application, Command, Element, Length, Subscription, Theme,
+    Color, Element, Length, Task,
 };
 use minesweeper::{
     history::{load_wins, save_win, WinHistory},
     model::{Board, GameState, Pos},
 };
-use std::{num::NonZeroU8, time::Duration};
-use theme::ModalStyle;
-use widgets::Modal;
+use modal::modal;
+use std::num::NonZeroU8;
+use views::{cell_view, Header, ScoreBoard};
 
-mod components;
-mod theme;
-mod widgets;
+mod modal;
+mod views;
 
 pub struct AppState {
-    board: Board,
+    pub board: Board,
     elapsed_seconds: u64,
     outcome: Option<String>,
     scoreboard: Option<WinHistory>,
@@ -32,15 +29,11 @@ pub enum AppMsg {
     DismissModal,
     ViewScoreBoard,
     DismissScoreBoard,
+    None,
 }
 
-impl Application for AppState {
-    type Executor = executor::Default;
-    type Flags = ();
-    type Message = AppMsg;
-    type Theme = Theme;
-
-    fn new(_flags: ()) -> (AppState, Command<Self::Message>) {
+impl AppState {
+    pub fn new() -> (AppState, Task<AppMsg>) {
         (
             Self {
                 board: Board::new(
@@ -51,15 +44,11 @@ impl Application for AppState {
                 outcome: None,
                 scoreboard: None,
             },
-            Command::none(),
+            Task::none(),
         )
     }
 
-    fn title(&self) -> String {
-        String::from("Minesweeper")
-    }
-
-    fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
+    pub fn update(&mut self, message: AppMsg) -> Task<AppMsg> {
         match message {
             AppMsg::Open(pos) => {
                 self.board.open_cell(pos);
@@ -100,11 +89,12 @@ impl Application for AppState {
             AppMsg::DismissScoreBoard => {
                 self.scoreboard = None;
             }
+            AppMsg::None => (),
         }
-        Command::none()
+        Task::none()
     }
 
-    fn view(&self) -> iced::Element<Self::Message> {
+    pub fn view(&self) -> iced::Element<AppMsg> {
         let mut y = 1;
         let mut rows = Vec::new();
         let mut row: Vec<Element<AppMsg>> = Vec::new();
@@ -116,12 +106,7 @@ impl Application for AppState {
                 y = pos.y.get();
             }
 
-            row.push(Element::from(cell_component(
-                *cell,
-                *pos,
-                *self.board.state(),
-                |command| command,
-            )));
+            row.push(cell_view(*cell, *pos, *self.board.state()).view());
         }
 
         rows.push(Element::from(Row::with_children(row).spacing(2)));
@@ -134,49 +119,45 @@ impl Application for AppState {
 
         let button_container = container(button_row)
             .width(Length::Fill)
-            .center_x()
+            .center_x(Length::Fill)
             .padding(20);
 
         let content = column![
-            Header::new(&self.board, self.elapsed_seconds),
+            Header::new(&self.board, self.elapsed_seconds).view(),
             container(Column::with_children(rows).spacing(2))
                 .width(Length::Fill)
                 .height(Length::Fill)
-                .center_x()
-                .center_y(),
+                .center_x(Length::Fill)
+                .center_y(Length::Fill),
             button_container
         ];
 
         if let Some(outcome) = self.outcome.as_ref() {
-            let modal = container(text(outcome))
-                .center_x()
-                .padding(20)
-                .width(200)
-                .style(iced::theme::Container::Custom(Box::new(ModalStyle)));
-            Modal::new(content, modal)
-                .on_blur(AppMsg::DismissModal)
-                .into()
+            modal(
+                content,
+                container(text(outcome))
+                    .center_x(Length::Fill)
+                    .padding(20)
+                    .width(200)
+                    .style(modal_content_style),
+                AppMsg::DismissModal,
+            )
         } else if let Some(wins) = self.scoreboard.as_ref() {
-            let modal = container(ScoreBoard::new(&wins.wins))
-                .padding(10)
-                .style(iced::theme::Container::Custom(Box::new(ModalStyle)));
-            Modal::new(content, modal)
-                .on_blur(AppMsg::DismissScoreBoard)
-                .into()
+            modal(
+                content,
+                container(ScoreBoard::new(&wins.wins).view())
+                    .padding(10)
+                    .style(modal_content_style),
+                AppMsg::DismissScoreBoard,
+            )
         } else {
             content.into()
         }
     }
+}
 
-    fn subscription(&self) -> iced::Subscription<Self::Message> {
-        if matches!(self.board.state(), GameState::Active) {
-            time::every(Duration::from_secs(1)).map(|_| AppMsg::Tick)
-        } else {
-            Subscription::none()
-        }
-    }
-
-    fn theme(&self) -> Self::Theme {
-        Theme::Dark
-    }
+fn modal_content_style(_theme: &iced::Theme) -> container::Style {
+    container::Style::default()
+        .background(Color::from_rgba8(0, 153, 204, 0.7))
+        .border(iced::border::rounded(15))
 }

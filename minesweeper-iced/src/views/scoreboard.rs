@@ -1,7 +1,7 @@
 use super::format_elapsed;
 use iced::{
-    widget::{component, container, row, text, Column, Component},
-    Element, Renderer,
+    widget::{container, row, text, Column},
+    Color, Element,
 };
 use minesweeper::history::Win;
 
@@ -13,21 +13,11 @@ impl<'a> ScoreBoard<'a> {
     pub fn new(win_history: &'a [Win]) -> Self {
         Self { win_history }
     }
-}
 
-impl<'a, Message> Component<Message, Renderer> for ScoreBoard<'a> {
-    type State = ();
-    type Event = ();
-
-    fn update(
-        &mut self,
-        _state: &mut Self::State,
-        _event: Self::Event,
-    ) -> Option<Message> {
-        None
-    }
-
-    fn view(&self, _state: &Self::State) -> Element<'_, Self::Event, Renderer> {
+    pub fn view<Message>(&self) -> Element<'a, Message>
+    where
+        Message: 'a,
+    {
         let col = self.win_history.iter().zip(1..).fold(
             Column::new(),
             |col, (win, rank)| {
@@ -40,15 +30,12 @@ impl<'a, Message> Component<Message, Renderer> for ScoreBoard<'a> {
                 col.push(row).spacing(10)
             },
         );
-        container(col).padding(20).into()
-    }
-}
-
-impl<'a, Message> From<ScoreBoard<'a>> for Element<'a, Message, Renderer>
-where
-    Message: 'a,
-{
-    fn from(value: ScoreBoard<'a>) -> Self {
-        component(value)
+        container(col)
+            .padding(20)
+            .style(|_| {
+                container::Style::default()
+                    .background(Color::from_rgb8(0, 153, 204))
+            })
+            .into()
     }
 }

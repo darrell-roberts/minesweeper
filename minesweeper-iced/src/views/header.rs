@@ -1,10 +1,9 @@
+use super::format_elapsed;
 use iced::{
-    widget::{component, container, row, text, Column, Component},
-    Element, Length, Renderer,
+    widget::{container, row, text, Column},
+    Element, Length,
 };
 use minesweeper::model::Board;
-
-use super::format_elapsed;
 
 pub struct Header {
     elapsed_seconds: u64,
@@ -24,22 +23,12 @@ impl Header {
     }
 }
 
-impl<Message> Component<Message, Renderer> for Header {
-    type State = ();
-    type Event = ();
-
-    fn update(
-        &mut self,
-        _state: &mut Self::State,
-        _event: Self::Event,
-    ) -> Option<Message> {
-        unreachable!()
-    }
-
-    fn view(&self, _state: &Self::State) -> Element<'_, Self::Event, Renderer> {
-        let mut column = Column::default();
-
-        column = column.push(
+impl Header {
+    pub fn view<'a, Message>(&self) -> Element<'a, Message>
+    where
+        Message: 'a,
+    {
+        let column = Column::new().push(
             container(
                 row![
                     text(format!("Opened: {}", self.opened)),
@@ -53,22 +42,13 @@ impl<Message> Component<Message, Renderer> for Header {
                 .spacing(20),
             )
             .width(Length::Fill)
-            .center_x(),
+            .center_x(Length::Fill),
         );
 
         container(column)
             .padding(10)
             .width(Length::Fill)
-            .center_x()
+            .center_x(Length::Fill)
             .into()
-    }
-}
-
-impl<'a, Message> From<Header> for Element<'a, Message, Renderer>
-where
-    Message: 'a,
-{
-    fn from(value: Header) -> Self {
-        component(value)
     }
 }
