@@ -21,8 +21,8 @@ bundle-mac: clean-dist build
 	# Copy application files
 	cp assets/icon.icns "dist/MineSweeper.app/Contents/Resources"
 	cp assets/Info.plist "dist/MineSweeper.app/Contents"
-	cp target/release/hacker-news-iced "dist/MineSweeper.app/Contents/MacOS"
-	chmod +x "dist/MineSweeper.app/Contents/MacOS/hacker-news-iced"
+	cp target/release/minesweeper-iced "dist/MineSweeper.app/Contents/MacOS"
+	chmod +x "dist/MineSweeper.app/Contents/MacOS/minesweeper-iced"
 
 	codesign --sign "MyApps" "dist/MineSweeper.app"
 
@@ -49,7 +49,6 @@ bundle-mac: clean-dist build
 
 	# Clean up
 	rm "dist/temp.dmg"
-	cd dist && zip -y "Hacker_News_aarch64.dmg.zip" "MineSweeper.dmg"
 
 linux-app-image: clean-dist build
 	echo "Building linux app image"
@@ -70,8 +69,8 @@ install-local-linux: build
 	mkdir -p ~/.local/share/applications
 	mkdir -p ~/.local/share/icons
 	mkdir -p ~/.local/bin
-	cp target/release/hacker-news-iced ~/.local/bin
-	cp assets/hacker-news.desktop ~/.local/share/applications
+	cp target/release/minesweeper-iced ~/.local/bin
+	cp assets/minesweeper.desktop ~/.local/share/applications
 	cp -r assets/icons ~/.local/share/icons
 
 install:
