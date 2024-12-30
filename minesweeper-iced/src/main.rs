@@ -18,7 +18,7 @@ fn launch() -> iced::Result {
         })
         .theme(|_state| Theme::Dark)
         .window(window::Settings {
-            size: (1024., 1124.).into(),
+            size: (900., 900.).into(),
             #[cfg(target_os = "linux")]
             platform_specific: window::settings::PlatformSpecific {
                 application_id: "minesweeper".into(),
