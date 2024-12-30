@@ -1,7 +1,7 @@
 use super::format_elapsed;
 use iced::{
     widget::{container, row, text, Column},
-    Color, Element,
+    Element,
 };
 use minesweeper::history::Win;
 
@@ -24,16 +24,13 @@ impl<'a> ScoreBoard<'a> {
             .zip(1..)
             .fold(Column::new(), |col, (win, rank)| {
                 let row = row![
-                    container(text(format!("{rank:<5}"))).width(20),
-                    container(text(format_elapsed(win.duration))).width(200),
-                    text(format!("{}", win.date.format("%b %d %Y %I:%M%P")))
+                    container(text(format!("{rank:<5}")).size(20)).width(25),
+                    container(text(format_elapsed(win.duration)).size(20)).width(250),
+                    text(format!("{}", win.date.format("%b %d %Y %I:%M%P"))).size(20)
                 ]
                 .spacing(10);
                 col.push(row).spacing(10)
             });
-        container(col)
-            .padding(20)
-            .style(|_| container::Style::default().background(Color::from_rgb8(0, 153, 204)))
-            .into()
+        container(col).padding(20).into()
     }
 }

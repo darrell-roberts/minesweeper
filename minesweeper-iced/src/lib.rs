@@ -1,6 +1,6 @@
 use iced::{
     widget::{button, column, container, row, text, Column, Row},
-    Color, Element, Length, Task,
+    Element, Length, Task,
 };
 use minesweeper::{
     history::{load_wins, save_win, WinHistory},
@@ -134,7 +134,7 @@ impl AppState {
         if let Some(outcome) = self.outcome.as_ref() {
             modal(
                 content,
-                container(text(outcome))
+                container(text(outcome).size(24))
                     .center_x(Length::Fill)
                     .padding(20)
                     .width(200)
@@ -155,8 +155,6 @@ impl AppState {
     }
 }
 
-fn modal_content_style(_theme: &iced::Theme) -> container::Style {
-    container::Style::default()
-        .background(Color::from_rgba8(0, 153, 204, 0.7))
-        .border(iced::border::rounded(15))
+fn modal_content_style(theme: &iced::Theme) -> container::Style {
+    container::dark(theme).border(iced::border::rounded(15))
 }
