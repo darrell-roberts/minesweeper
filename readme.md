@@ -18,7 +18,11 @@ https://user-images.githubusercontent.com/33698065/227748843-4da95c55-5bdf-4042-
 
 An Iced UI for the minesweeper game.
 
-<img width="712" alt="image" src="https://github.com/darrell-roberts/minesweeper/assets/33698065/81581b72-4370-4328-8ba7-9fd25d618621">
+![Screenshot from 2024-12-30 11-20-52](https://github.com/user-attachments/assets/6fe28841-c3a8-4062-b4bb-3a23d9bf2f3b)
+
+## Download
+[Releases](https://github.com/darrell-roberts/minesweeper/releases)
+
 
 ## Build from source
 
