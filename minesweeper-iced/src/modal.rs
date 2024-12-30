@@ -20,6 +20,7 @@ where
                     .align_top(Length::Fill)
                     .width(Length::Fill)
                     .center_x(Length::Fill)
+                    .center_y(Length::Fill)
                     .padding(padding::top(10))
                     .style(|_theme| {
                         container::Style {
