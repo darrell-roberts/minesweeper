@@ -8,3 +8,17 @@ edition = "2021"
 [dependencies]
 iced = { version = "0.13", features = ["lazy", "tokio", "advanced"] }
 minesweeper = { path = "../minesweeper" }
+
+[package.metadata.deb]
+maintainer = "Darrell Roberts"
+copyright = "2024, Darrell Roberts"
+license-file = "../LICENSE"
+extended-description = """MineSweeper"""
+section = "games"
+priority = "optional"
+assets = [
+    ["target/release/minesweeper-iced", "usr/bin/", "755"],
+    ["../assets/minesweeper.desktop", "usr/share/applications/", "644"],
+    ["../assets/icons/hicolor/32x32/apps/minesweeper.png", "usr/share/icons/hicolor/32x32/apps/", "644"],
+    ["../assets/icons/hicolor/128x128/apps/minesweeper.png", "usr/share/icons/hicolor/128x128/apps/", "644"],
+]
