@@ -85,5 +85,6 @@ jobs:
         with:
           files: |
             MineSweeper-x86_64.AppImage
+            target/debian/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
