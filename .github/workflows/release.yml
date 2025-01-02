@@ -9,43 +9,43 @@ permissions:
   contents: write
 
 jobs:
-  # build-and-release-macos:
-  #   runs-on: macos-latest
+  build-and-release-macos:
+    runs-on: macos-latest
 
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     - name: Setup Rust
-  #       uses: actions-rs/toolchain@v1
-  #       with:
-  #         toolchain: stable
-  #         override: true
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
 
-  #     - name: Setup Certificate
-  #       env:
-  #         CODE_SIGN_CERTIFICATE: ${{ secrets.CODE_SIGN_CERTIFICATE }}
-  #         CERT_PWD: ${{ secrets.CERT_PWD }}
-  #       run: |
-  #         echo "$CODE_SIGN_CERTIFICATE" | base64 --decode > certificate.p12
-  #         stat -f "%N %z" certificate.p12
-  #         security create-keychain -p "" build.keychain
-  #         security default-keychain -d user -s build.keychain
-  #         security unlock-keychain -p "" build.keychain
-  #         security import certificate.p12 -k build.keychain -P "$CERT_PWD" -T /usr/bin/codesign
-  #         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" build.keychain
+      - name: Setup Certificate
+        env:
+          CODE_SIGN_CERTIFICATE: ${{ secrets.CODE_SIGN_CERTIFICATE }}
+          CERT_PWD: ${{ secrets.CERT_PWD }}
+        run: |
+          echo "$CODE_SIGN_CERTIFICATE" | base64 --decode > certificate.p12
+          stat -f "%N %z" certificate.p12
+          security create-keychain -p "" build.keychain
+          security default-keychain -d user -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import certificate.p12 -k build.keychain -P "$CERT_PWD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" build.keychain
 
-  #     - name: Build bundle
-  #       run: make bundle-mac
+      - name: Build bundle
+        run: make bundle-mac
 
-  #     - name: Create GitHub Release
-  #       id: create_release
-  #       uses: softprops/action-gh-release@v1
-  #       with:
-  #         files: |
-  #           dist/MineSweeper.dmg
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/MineSweeper.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-and-release-linux:
     runs-on: ubuntu-latest

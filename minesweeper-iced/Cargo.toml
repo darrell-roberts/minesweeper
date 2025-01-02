@@ -28,12 +28,12 @@ assets = [
     "644",
   ],
   [
-    "../assets/icons/hicolor/32x32/apps/minesweeper.png",
+    "../assets/icons/hicolor/32x32/apps/io.github.darrellroberts.minesweeper.png",
     "usr/share/icons/hicolor/32x32/apps/",
     "644",
   ],
   [
-    "../assets/icons/hicolor/128x128/apps/minesweeper.png",
+    "../assets/icons/hicolor/128x128/apps/io.github.darrellroberts.minesweeper.png",
     "usr/share/icons/hicolor/128x128/apps/",
     "644",
   ],
