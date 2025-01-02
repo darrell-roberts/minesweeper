@@ -84,9 +84,8 @@ jobs:
           sudo apt install flatpak
           sudo apt install flatpak-builder
           flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install builddir io.github.darrellroberts.minesweeper.yml
+          flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --default-branch=stable --install builddir io.github.darrellroberts.minesweeper.yml
           flatpak build-bundle repo minesweeper.flatpak io.github.darrellroberts.minesweeper
-
 
       - name: Create GitHub Release
         id: create_release

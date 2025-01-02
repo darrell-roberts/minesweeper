@@ -23,9 +23,11 @@ modules:
       env:
         CARGO_HOME: /run/build/minesweeper/cargo
     build-commands:
-      - mkdir -p /app/share/icons
+      - install -dDdm777 assets/icons /app/share/icons
       - install -Dm644 assets/io.github.darrellroberts.minesweeper.desktop -t /app/share/applications/
-      - cp -r assets/icons /app/share/icons
+      - install -Dm644 assets/io.github.darrellroberts.minesweeper.metainfo.xml -t /app/share/metainfo/
+      - tar zxvf assets/icons.tar.gz -C /app/share
+
       - cargo --offline fetch --manifest-path Cargo.toml
       - cargo --offline build --release
       - install -Dm755 ./target/release/minesweeper-iced -t /app/bin/
