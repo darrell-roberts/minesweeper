@@ -2,3 +2,5 @@ target/
 dist/
 iced-minesweeper/
 .DS_Store
+repo/
+.flatpak-builder/

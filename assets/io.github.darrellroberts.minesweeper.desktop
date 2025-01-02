@@ -2,7 +2,7 @@
 Categories=Game
 Comment=MineSweeper
 Exec=minesweeper-iced
-Icon=minesweeper
+Icon=io.github.darrellroberts.minesweeper
 Name=MineSweeper
 Terminal=false
 Type=Application

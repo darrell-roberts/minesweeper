@@ -1,4 +1,3 @@
-
 PLATFORM := $(shell uname)
 
 all: build
@@ -58,7 +57,7 @@ linux-app-image: clean-dist build
 
 	# Copy contents into AppDir
 	cp target/release/minesweeper-iced dist/AppDir/usr/bin
-	cp assets/minesweeper.desktop dist/AppDir/usr/share/applications
+	cp assets/io.github.darrellroberts.minesweeper.desktop dist/AppDir/usr/share/applications
 	cp -r assets/icons dist/AppDir/usr/share
 
 	# Create app image
@@ -73,7 +72,7 @@ install-local-linux: build
 	mkdir -p ~/.local/share/icons
 	mkdir -p ~/.local/bin
 	cp target/release/minesweeper-iced ~/.local/bin
-	cp assets/minesweeper.desktop ~/.local/share/applications
+	cp assets/io.github.darrellroberts.minesweeper.desktop ~/.local/share/applications
 	cp -r assets/icons ~/.local/share/icons
 
 install:

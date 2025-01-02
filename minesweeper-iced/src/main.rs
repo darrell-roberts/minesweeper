@@ -21,7 +21,7 @@ fn launch() -> iced::Result {
             size: (900., 900.).into(),
             #[cfg(target_os = "linux")]
             platform_specific: window::settings::PlatformSpecific {
-                application_id: "minesweeper".into(),
+                application_id: "io.github.darrellroberts.minesweeper".into(),
                 ..Default::default()
             },
             ..Default::default()

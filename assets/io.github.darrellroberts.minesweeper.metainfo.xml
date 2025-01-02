@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<component type="desktop-application">
+  <id>io.github.darrellroberts.minesweeper</id>
+
+  <name>MineSweeper</name>
+  <summary>MineSweeper the game</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT-open-group</project_license>
+
+  <categories>
+    <category>Game</category>
+  </categories>
+
+  <developer id="io.github.darrellroberts">
+    <name>Darrell Roberts</name>
+  </developer>
+
+  <content_rating type="oars-1.1" />
+
+  <url type="homepage">https://github.com/darrell-roberts/minesweeper</url>
+  <description>
+    <p>
+      A minesweeper game written in Rust using the iced GUI library.
+      Try to open all unmined squares without detonating a mine.
+    </p>
+  </description>
+
+  <launchable
+        type="desktop-id"
+    >io.github.darrellroberts.minesweeper.desktop</launchable>
+
+  <releases>
+    <release version="0.1.4" type="stable" date="2025-01-02" />
+  </releases>
+</component>
