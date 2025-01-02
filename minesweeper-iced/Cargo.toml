@@ -1,6 +1,6 @@
 [package]
 name = "minesweeper-iced"
-version = "0.1.0"
+version = "0.1.4"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -17,8 +17,24 @@ extended-description = """MineSweeper"""
 section = "games"
 priority = "optional"
 assets = [
-    ["target/release/minesweeper-iced", "usr/bin/", "755"],
-    ["../assets/minesweeper.desktop", "usr/share/applications/", "644"],
-    ["../assets/icons/hicolor/32x32/apps/minesweeper.png", "usr/share/icons/hicolor/32x32/apps/", "644"],
-    ["../assets/icons/hicolor/128x128/apps/minesweeper.png", "usr/share/icons/hicolor/128x128/apps/", "644"],
+  [
+    "target/release/minesweeper-iced",
+    "usr/bin/",
+    "755",
+  ],
+  [
+    "../assets/io.github.darrellroberts.minesweeper.desktop",
+    "usr/share/applications/",
+    "644",
+  ],
+  [
+    "../assets/icons/hicolor/32x32/apps/minesweeper.png",
+    "usr/share/icons/hicolor/32x32/apps/",
+    "644",
+  ],
+  [
+    "../assets/icons/hicolor/128x128/apps/minesweeper.png",
+    "usr/share/icons/hicolor/128x128/apps/",
+    "644",
+  ],
 ]
