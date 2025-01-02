@@ -79,6 +79,15 @@ jobs:
           cargo install cargo-deb
           make linux-debian
 
+      - name: Build FlatPak
+        run: |
+          sudo apt install flatpak
+          sudo apt install flatpak-builder
+          flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install builddir io.github.darrellroberts.minesweeper.yml
+          flatpak build-bundle repo minesweeper.flatpak io.github.darrellroberts.minesweeper
+
+
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
