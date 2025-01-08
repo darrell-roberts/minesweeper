@@ -1,5 +1,11 @@
 # A minesweeper game with different Rust UI Frameworks.
 
+# minesweeper-iced
+
+An Iced UI for the minesweeper game.
+
+<img width="1012" alt="Screenshot 2025-01-08 at 9 33 38 AM" src="https://github.com/user-attachments/assets/c5853aa7-5167-4aaf-aefb-7d51212c263b" />
+
 # minesweeper-relm4
 
 A Relm4/Gtk4 UI for the minesweeper game.
@@ -14,15 +20,10 @@ A Tauri UI for the minesweeper game.
 
 https://user-images.githubusercontent.com/33698065/227748843-4da95c55-5bdf-4042-8dc8-2a617085d5bc.mov
 
-# minesweeper-iced
+## Download pre-built binaries
 
-An Iced UI for the minesweeper game.
-
-![Screenshot from 2024-12-30 11-20-52](https://github.com/user-attachments/assets/6fe28841-c3a8-4062-b4bb-3a23d9bf2f3b)
-
-## Download
+### minesweeper-iced
 [Releases](https://github.com/darrell-roberts/minesweeper/releases)
-
 
 ## Build from source
 
