@@ -32,9 +32,10 @@ impl Header {
             container(
                 row![
                     text(format!("Opened: {}", self.opened)),
-                    text(format!("Flagged: {}", self.flagged)),
-                    text(format!("Mined: {}", self.mined)),
-                    text(format!("Time: {}", format_elapsed(self.elapsed_seconds)))
+                    text(format!("🚩: {}", self.flagged)).shaping(text::Shaping::Advanced),
+                    text(format!("💣: {}", self.mined)).shaping(text::Shaping::Advanced),
+                    text(format!("⏰: {}", format_elapsed(self.elapsed_seconds)))
+                        .shaping(text::Shaping::Advanced)
                 ]
                 .spacing(20),
             )
