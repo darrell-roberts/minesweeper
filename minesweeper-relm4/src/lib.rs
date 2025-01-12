@@ -1,4 +1,3 @@
-// use crate::widgets::AppWidgets;
 use minesweeper::model::Board;
 use std::num::NonZeroU8;
 

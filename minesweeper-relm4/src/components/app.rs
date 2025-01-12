@@ -3,7 +3,7 @@ use super::{
     status_dialog::{StatusDialogModel, StatusMsg},
     timer::{GameTimer, GameTimerInput, GameTimerOutput},
 };
-use crate::{board, format_elapsed, types::Position};
+use crate::{board, components::positions::PositionOutput, format_elapsed, types::Position};
 use minesweeper::{
     history::save_win,
     model::{Board, GameState, Pos},
@@ -181,14 +181,19 @@ impl SimpleComponent for AppModel {
 
     fn init(
         board: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let positions = FactoryVecDeque::from_iter(
-            board.positions().map(|(&pos, &cell)| (pos, cell)),
-            gtk::Grid::default(),
-            sender.input_sender(),
-        );
+        let mut positions = FactoryVecDeque::builder()
+            .launch(gtk::Grid::default())
+            .forward(sender.input_sender(), |output| match output {
+                PositionOutput::Open(p) => AppMsg::Open(p),
+                PositionOutput::Flag(p) => AppMsg::Flag(p),
+            });
+
+        for (&pos, &cell) in board.positions() {
+            positions.guard().push_back((pos, cell));
+        }
 
         let pos_map = positions
             .iter()
@@ -200,7 +205,7 @@ impl SimpleComponent for AppModel {
             pos_map,
             positions,
             dialog: StatusDialogModel::builder()
-                .transient_for(root)
+                .transient_for(&root)
                 .launch(true)
                 .detach(),
             timer_worker: GameTimer::builder().detach_worker(()).forward(
@@ -213,7 +218,7 @@ impl SimpleComponent for AppModel {
             time_paused: 0,
             paused: false,
             history_window: WinHistoryView::builder()
-                .transient_for(root)
+                .transient_for(&root)
                 .launch(())
                 .forward(sender.input_sender(), |msg| match msg {
                     HistoryOut::Resume => AppMsg::Resume,

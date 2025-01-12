@@ -50,7 +50,7 @@ impl SimpleComponent for StatusDialogModel {
 
     fn init(
         hidden: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
         let model = StatusDialogModel {

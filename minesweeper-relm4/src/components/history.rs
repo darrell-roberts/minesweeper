@@ -79,19 +79,15 @@ impl SimpleComponent for WinHistoryView {
 
     fn init(
         _init: Self::Init,
-        root: &Self::Root,
+        root: Self::Root,
         sender: relm4::ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
         let wins = load_wins().map(|w| {
-            FactoryVecDeque::from_iter(
-                w.wins.into_iter().map(WinData),
-                gtk::Box::default(),
-                sender.input_sender(),
-            )
+            FactoryVecDeque::from_iter(w.wins.into_iter().map(WinData), gtk::Box::default())
         });
 
         let win_history = wins
-            .unwrap_or_else(|| FactoryVecDeque::new(gtk::Box::default(), sender.input_sender()));
+            .unwrap_or_else(|| FactoryVecDeque::from_iter(std::iter::empty(), gtk::Box::default()));
         let model = WinHistoryView {
             hidden: true,
             win_history,
@@ -128,7 +124,6 @@ impl FactoryComponent for WinData {
     type Output = ();
     type CommandOutput = ();
     type Widgets = WinWidgets;
-    type ParentInput = HistoryMsg;
     type ParentWidget = gtk::Box;
 
     view! {

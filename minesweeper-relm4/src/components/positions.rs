@@ -1,4 +1,3 @@
-use super::app::AppMsg;
 use crate::types::Position;
 use minesweeper::model::{Cell, CellState, Pos};
 use relm4::{
@@ -30,7 +29,6 @@ impl FactoryComponent for Position {
     type Output = PositionOutput;
     type CommandOutput = ();
     type Widgets = FactoryWidgets;
-    type ParentInput = AppMsg;
     type ParentWidget = gtk::Grid;
     type Root = gtk::Box;
     type Index = DynamicIndex;
@@ -54,7 +52,7 @@ impl FactoryComponent for Position {
     fn init_widgets(
         &mut self,
         _index: &relm4::prelude::DynamicIndex,
-        root: &Self::Root,
+        root: Self::Root,
         _returned_widget: &<Self::ParentWidget as relm4::factory::FactoryView>::ReturnedWidget,
         sender: relm4::FactorySender<Self>,
     ) -> Self::Widgets {
@@ -92,7 +90,9 @@ impl FactoryComponent for Position {
             let pos_selected = self.pos;
             let sender = sender.clone();
             button.connect_clicked(move |_| {
-                sender.output(PositionOutput::Open(pos_selected));
+                if let Err(err) = sender.output(PositionOutput::Open(pos_selected)) {
+                    eprintln!("Failed to send open cell {err:?}");
+                }
             });
         }
         let right_click = gtk::GestureClick::builder().button(3).build();
@@ -100,7 +100,9 @@ impl FactoryComponent for Position {
             let pos_selected = *self;
             right_click.connect_pressed(move |gesture, _, _, _| {
                 gesture.set_state(gtk::EventSequenceState::Claimed);
-                sender.output(PositionOutput::Flag(pos_selected));
+                if let Err(err) = sender.output(PositionOutput::Flag(pos_selected)) {
+                    eprintln!("Failed to send flag cell {err:?}");
+                };
             });
         }
         container.append(&button);
@@ -148,13 +150,6 @@ impl FactoryComponent for Position {
             }
         };
         widgets.button.set_label(label);
-    }
-
-    fn forward_to_parent(output: Self::Output) -> Option<Self::ParentInput> {
-        match output {
-            PositionOutput::Open(p) => Some(AppMsg::Open(p)),
-            PositionOutput::Flag(p) => Some(AppMsg::Flag(p)),
-        }
     }
 }
 
