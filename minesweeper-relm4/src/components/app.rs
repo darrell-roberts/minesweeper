@@ -3,7 +3,9 @@ use super::{
     status_dialog::{StatusDialogModel, StatusMsg},
     timer::{GameTimer, GameTimerInput, GameTimerOutput},
 };
-use crate::{board, components::positions::PositionOutput, format_elapsed, types::Position};
+use crate::{
+    board, components::positions::PositionOutput, format_elapsed, types::Position, BOMB, FLAG,
+};
 use minesweeper::{
     history::save_win,
     model::{Board, GameState, Pos},
@@ -120,7 +122,7 @@ impl SimpleComponent for AppModel {
 
               gtk::Box {
                 gtk::Label {
-                  set_label: "Flagged: ",
+                  set_label: &format!("{FLAG}: "),
                 },
                 #[name = "flagged"]
                 gtk::Label {
@@ -131,7 +133,7 @@ impl SimpleComponent for AppModel {
 
               gtk::Box {
                 gtk::Label {
-                  set_label: "Mined: ",
+                  set_label: &format!("{BOMB}: "),
                 },
                 #[name = "mined"]
                 gtk::Label {

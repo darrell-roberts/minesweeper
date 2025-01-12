@@ -1,4 +1,4 @@
-use crate::types::Position;
+use crate::{types::Position, BOMB, FLAG};
 use minesweeper::model::{Cell, CellState, Pos};
 use relm4::{
     factory::{positions::GridPosition, FactoryComponent, Position as FactoryPosition},
@@ -21,8 +21,6 @@ pub enum PositionOutput {
 }
 
 static EMPTY: &str = "";
-static FLAG: &str = "🚩";
-static BOMB: &str = "💣";
 
 impl FactoryComponent for Position {
     type Init = (Pos, Cell);
