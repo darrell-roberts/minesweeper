@@ -6,6 +6,8 @@ container {
 
 .cell {
     border: 0;
+    min-width: 35px;
+    min-height: 35px;
 }
 
 .cell:active {
@@ -63,7 +65,12 @@ container {
 }
 
 .closed {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    background-image: linear-gradient(
+        to bottom right,
+        #e6004c,
+        #660022 80%,
+        gray
+    );
     box-shadow: 2px 2px gray;
 }
 
@@ -135,7 +142,12 @@ grid {
 }
 
 .winHistoryWindow {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    background-image: linear-gradient(
+        to bottom right,
+        #e6004c,
+        #660022 80%,
+        gray
+    );
 }
 
 .winHistoryButton {
@@ -173,7 +185,12 @@ grid {
 
 @keyframes opened {
     from {
-        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        background-image: linear-gradient(
+            to bottom right,
+            #e6004c,
+            #660022 80%,
+            gray
+        );
         transform: scale(0.75);
     }
 
@@ -185,7 +202,12 @@ grid {
 
 @keyframes flagged {
     from {
-        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        background-image: linear-gradient(
+            to bottom right,
+            #e6004c,
+            #660022 80%,
+            gray
+        );
         transform: scale(0.75);
     }
 

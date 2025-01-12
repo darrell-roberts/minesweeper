@@ -20,8 +20,9 @@ pub enum PositionOutput {
     Flag(Position),
 }
 
-// static EMPTY: &str = "      ";
 static EMPTY: &str = "";
+static FLAG: &str = "🚩";
+static BOMB: &str = "💣";
 
 impl FactoryComponent for Position {
     type Init = (Pos, Cell);
@@ -72,7 +73,7 @@ impl FactoryComponent for Position {
             }
             CellState::Closed { flagged, .. } => {
                 if flagged {
-                    button = button.css_classes(vec!["cell", "flagged"]).label("F");
+                    button = button.css_classes(vec!["cell", "flagged"]).label(FLAG);
                     container = container.css_classes(vec!["flagged"]);
                 } else {
                     button = button.css_classes(vec!["cell", "closed"]);
@@ -80,7 +81,7 @@ impl FactoryComponent for Position {
                 }
             }
             CellState::ExposedMine => {
-                button = button.css_classes(vec!["cell", "exposed"]).label("X");
+                button = button.css_classes(vec!["cell", "exposed"]).label(BOMB);
             }
         }
 
@@ -136,7 +137,7 @@ impl FactoryComponent for Position {
                 if flagged {
                     widgets.button.set_css_classes(&["cell", "flagged"]);
                     widgets.container.set_css_classes(&["flagged"]);
-                    "F"
+                    FLAG
                 } else {
                     widgets.button.set_css_classes(&["cell", "closed"]);
                     widgets.container.set_css_classes(&["closed"]);
@@ -146,7 +147,7 @@ impl FactoryComponent for Position {
             CellState::ExposedMine => {
                 widgets.button.set_css_classes(&["cell", "exposed"]);
                 widgets.container.set_css_classes(&["exposed"]);
-                "B"
+                BOMB
             }
         };
         widgets.button.set_label(label);
