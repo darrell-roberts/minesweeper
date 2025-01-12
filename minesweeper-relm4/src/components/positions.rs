@@ -1,5 +1,4 @@
-use super::app::AppMsg;
-use crate::types::Position;
+use crate::{types::Position, BOMB, FLAG};
 use minesweeper::model::{Cell, CellState, Pos};
 use relm4::{
     factory::{positions::GridPosition, FactoryComponent, Position as FactoryPosition},
@@ -21,7 +20,6 @@ pub enum PositionOutput {
     Flag(Position),
 }
 
-// static EMPTY: &str = "      ";
 static EMPTY: &str = "";
 
 impl FactoryComponent for Position {
@@ -30,7 +28,6 @@ impl FactoryComponent for Position {
     type Output = PositionOutput;
     type CommandOutput = ();
     type Widgets = FactoryWidgets;
-    type ParentInput = AppMsg;
     type ParentWidget = gtk::Grid;
     type Root = gtk::Box;
     type Index = DynamicIndex;
@@ -54,7 +51,7 @@ impl FactoryComponent for Position {
     fn init_widgets(
         &mut self,
         _index: &relm4::prelude::DynamicIndex,
-        root: &Self::Root,
+        root: Self::Root,
         _returned_widget: &<Self::ParentWidget as relm4::factory::FactoryView>::ReturnedWidget,
         sender: relm4::FactorySender<Self>,
     ) -> Self::Widgets {
@@ -74,7 +71,7 @@ impl FactoryComponent for Position {
             }
             CellState::Closed { flagged, .. } => {
                 if flagged {
-                    button = button.css_classes(vec!["cell", "flagged"]).label("F");
+                    button = button.css_classes(vec!["cell", "flagged"]).label(FLAG);
                     container = container.css_classes(vec!["flagged"]);
                 } else {
                     button = button.css_classes(vec!["cell", "closed"]);
@@ -82,7 +79,7 @@ impl FactoryComponent for Position {
                 }
             }
             CellState::ExposedMine => {
-                button = button.css_classes(vec!["cell", "exposed"]).label("X");
+                button = button.css_classes(vec!["cell", "exposed"]).label(BOMB);
             }
         }
 
@@ -92,7 +89,9 @@ impl FactoryComponent for Position {
             let pos_selected = self.pos;
             let sender = sender.clone();
             button.connect_clicked(move |_| {
-                sender.output(PositionOutput::Open(pos_selected));
+                if let Err(err) = sender.output(PositionOutput::Open(pos_selected)) {
+                    eprintln!("Failed to send open cell {err:?}");
+                }
             });
         }
         let right_click = gtk::GestureClick::builder().button(3).build();
@@ -100,7 +99,9 @@ impl FactoryComponent for Position {
             let pos_selected = *self;
             right_click.connect_pressed(move |gesture, _, _, _| {
                 gesture.set_state(gtk::EventSequenceState::Claimed);
-                sender.output(PositionOutput::Flag(pos_selected));
+                if let Err(err) = sender.output(PositionOutput::Flag(pos_selected)) {
+                    eprintln!("Failed to send flag cell {err:?}");
+                };
             });
         }
         container.append(&button);
@@ -134,7 +135,7 @@ impl FactoryComponent for Position {
                 if flagged {
                     widgets.button.set_css_classes(&["cell", "flagged"]);
                     widgets.container.set_css_classes(&["flagged"]);
-                    "F"
+                    FLAG
                 } else {
                     widgets.button.set_css_classes(&["cell", "closed"]);
                     widgets.container.set_css_classes(&["closed"]);
@@ -144,17 +145,10 @@ impl FactoryComponent for Position {
             CellState::ExposedMine => {
                 widgets.button.set_css_classes(&["cell", "exposed"]);
                 widgets.container.set_css_classes(&["exposed"]);
-                "B"
+                BOMB
             }
         };
         widgets.button.set_label(label);
-    }
-
-    fn forward_to_parent(output: Self::Output) -> Option<Self::ParentInput> {
-        match output {
-            PositionOutput::Open(p) => Some(AppMsg::Open(p)),
-            PositionOutput::Flag(p) => Some(AppMsg::Flag(p)),
-        }
     }
 }
 

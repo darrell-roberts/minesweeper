@@ -1,4 +1,3 @@
-// use crate::widgets::AppWidgets;
 use minesweeper::model::Board;
 use std::num::NonZeroU8;
 
@@ -24,3 +23,6 @@ fn format_elapsed(seconds: u64) -> String {
         3600.. => format!("{} hours", seconds.div_euclid(3600)),
     }
 }
+
+pub static FLAG: &str = "🚩";
+pub static BOMB: &str = "💣";
