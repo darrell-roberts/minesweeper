@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use app_dirs2::{get_app_root, AppDataType, AppInfo};
 use chrono::{DateTime, Local};
 use rmp_serde::{encode::write_named, from_read};
 use serde::{Deserialize, Serialize};
@@ -18,37 +19,10 @@ pub struct WinHistory {
     pub wins: Vec<Win>,
 }
 
-#[cfg(test)]
-const SAVE_FILE_PATH: &str = "/tmp/minesweeper/";
-
-#[cfg(not(test))]
-const SAVE_FILE_PATH: &str = ".local/share/minesweeper/";
-
-#[cfg(not(test))]
-fn get_save_file() -> Result<String> {
-    std::env::var("HOME")
-        .with_context(|| "Could not lookup $HOME environment variable")
-        .map(|home| [&home, "/", SAVE_FILE_PATH, SAVE_FILE].concat())
-        .map(Ok)?
-}
-
-#[cfg(test)]
-fn get_save_file() -> Result<String> {
-    Ok([SAVE_FILE_PATH, SAVE_FILE].concat())
-}
-
-#[cfg(not(test))]
-fn get_full_save_path() -> Result<String> {
-    std::env::var("HOME")
-        .with_context(|| "Could not lookup up $HOME environment variable")
-        .map(|home| [&home, "/", SAVE_FILE_PATH].concat())
-        .map(Ok)?
-}
-
-#[cfg(test)]
-fn get_full_save_path() -> Result<String> {
-    Ok(SAVE_FILE_PATH.into())
-}
+pub const APP_INFO: AppInfo = AppInfo {
+    name: "Minesweeper",
+    author: "Somebody",
+};
 
 const SAVE_FILE: &str = "stats.bin";
 
@@ -62,22 +36,34 @@ pub fn save_win(duration: u64) -> Result<()> {
 
 /// Load win history.
 pub fn load_wins() -> Option<WinHistory> {
+    let data_file = get_app_root(AppDataType::UserData, &APP_INFO)
+        .context("Could not get app root")
+        .ok()?
+        .join(SAVE_FILE);
+
     OpenOptions::new()
         .read(true)
-        .open(get_save_file().ok()?)
+        .open(data_file)
         .ok()
         .and_then(|stats_file| from_read(&stats_file).ok())
 }
 
 // Save the best 10 results as a MessagePack format.
 fn persist_win(win: Win) -> anyhow::Result<()> {
-    create_dir_all(get_full_save_path()?)
-        .with_context(|| "Could not create folder for stats file")?;
+    let data_path =
+        get_app_root(AppDataType::UserData, &APP_INFO).context("Could not get app root")?;
+
+    if !data_path.exists() {
+        create_dir_all(&data_path).context("Failed to create app root")?;
+    }
+
     let mut stats_file = OpenOptions::new()
+        .create(true)
         .write(true)
         .read(true)
-        .create(true)
-        .open(get_save_file()?)?;
+        .truncate(false)
+        .open(data_path.join(SAVE_FILE))?;
+
     let mut history: WinHistory = from_read(&stats_file).unwrap_or_else(|err| {
         eprintln!("Failed to read stats file: {err}. Creating new WinHistory");
         WinHistory::default()

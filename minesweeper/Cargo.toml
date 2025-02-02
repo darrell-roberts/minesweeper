@@ -9,6 +9,7 @@ panic = "abort"
 strip = true
 
 [dependencies]
+app_dirs2 = "2"
 anyhow = "1"
 rand = "0.8"
 thiserror = "2"

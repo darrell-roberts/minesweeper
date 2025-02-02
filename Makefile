@@ -63,6 +63,12 @@ linux-app-image: clean-dist build
 	# Create app image
 	linuxdeploy-x86_64.AppImage --appdir dist/AppDir --output appimage
 
+
+linux-flatpak:
+	python3 ./flatpak-cargo-generator.py Cargo.lock -o cargo-sources.json
+	flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install builddir io.github.darrellroberts.minesweeper.yml
+	flatpak build-bundle repo minesweeper.flatpak io.github.darrellroberts.minesweeper
+
 linux-debian: clean-dist build
 	cargo deb -p minesweeper-iced
 

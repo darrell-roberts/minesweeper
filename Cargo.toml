@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-  "minesweeper",
-  "minesweeper-relm4",
-#  "minesweeper-tauri",
-  "minesweeper-iced",
+    "minesweeper",
+    # "minesweeper-relm4",
+    #  "minesweeper-tauri",
+    "minesweeper-iced",
 ]
