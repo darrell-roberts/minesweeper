@@ -4,3 +4,4 @@ iced-minesweeper/
 .DS_Store
 repo/
 .flatpak-builder/
+*.flatpak

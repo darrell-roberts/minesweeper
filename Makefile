@@ -75,6 +75,11 @@ install-local-linux: build
 	cp assets/io.github.darrellroberts.minesweeper.desktop ~/.local/share/applications
 	cp -r assets/icons ~/.local/share/icons
 
+linux-flatpak:
+	python3 ./flatpak-cargo-generator.py Cargo.lock -o cargo-sources.json
+	flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install builddir io.github.darrellroberts.minesweeper.yml
+	flatpak build-bundle repo minesweeper.flatpak io.github.darrellroberts.minesweeper
+
 install:
 ifeq ($(PLATFORM), Darwin)
 	@echo "Installing for Mac"

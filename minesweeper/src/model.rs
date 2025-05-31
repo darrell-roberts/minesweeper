@@ -263,8 +263,8 @@ impl Iterator for RandomPosIter {
     type Item = Pos;
     fn next(&mut self) -> Option<Self::Item> {
         loop {
-            let x = self.rng.gen_range(1..self.columns);
-            let y = self.rng.gen_range(1..self.rows);
+            let x = self.rng.random_range(1..self.columns);
+            let y = self.rng.random_range(1..self.rows);
 
             let pos = Pos::try_from((x, y)).ok()?;
 
