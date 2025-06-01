@@ -2,7 +2,7 @@
 resolver = "2"
 members = [
     "minesweeper",
-    # "minesweeper-relm4",
-    #  "minesweeper-tauri",
+    "minesweeper-relm4",
+    "minesweeper-tauri",
     "minesweeper-iced",
 ]
