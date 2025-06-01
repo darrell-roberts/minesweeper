@@ -5,3 +5,4 @@ iced-minesweeper/
 repo/
 .flatpak-builder/
 *.flatpak
+cargo-sources.json
