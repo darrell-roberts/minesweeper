@@ -77,6 +77,7 @@ fn persist_win(win: Win) -> anyhow::Result<()> {
         .write(true)
         .read(true)
         .create(true)
+        .truncate(true)
         .open(get_save_file()?)?;
     let mut history: WinHistory = from_read(&stats_file).unwrap_or_else(|err| {
         eprintln!("Failed to read stats file: {err}. Creating new WinHistory");

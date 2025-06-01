@@ -81,8 +81,7 @@ jobs:
 
       - name: Build FlatPak
         run: |
-          sudo apt install flatpak
-          sudo apt install flatpak-builder
+          sudo apt install flatpak flatpak-builder python3 python3-aiohttp python3-toml
           flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           make linux-flatpak
 
