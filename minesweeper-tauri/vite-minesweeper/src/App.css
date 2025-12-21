@@ -19,12 +19,17 @@
 }
 
 .buttons {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    background-image: linear-gradient(
+        to bottom right,
+        #e6004c,
+        #660022 80%,
+        gray
+    );
     color: white;
     border-radius: 8px;
     box-shadow: 2px 2px slategray;
     font-size: 14px;
-    opacity: .8;
+    opacity: 0.8;
     margin-right: 20px;
     padding: 5px;
 }
@@ -63,4 +68,5 @@ span {
     display: flex;
     justify-content: center;
     padding-bottom: 10px;
+    padding-top: 10px;
 }
