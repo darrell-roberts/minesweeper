@@ -33,19 +33,16 @@ pub enum AppMsg {
 }
 
 impl AppState {
-    pub fn new() -> (AppState, Task<AppMsg>) {
-        (
-            Self {
-                board: Board::new(
-                    NonZeroU8::try_from(20).unwrap(),
-                    NonZeroU8::try_from(20).unwrap(),
-                ),
-                elapsed_seconds: 0,
-                outcome: None,
-                scoreboard: None,
-            },
-            Task::none(),
-        )
+    pub fn new() -> Self {
+        Self {
+            board: Board::new(
+                NonZeroU8::try_from(20).unwrap(),
+                NonZeroU8::try_from(20).unwrap(),
+            ),
+            elapsed_seconds: 0,
+            outcome: None,
+            scoreboard: None,
+        }
     }
 
     pub fn update(&mut self, message: AppMsg) -> Task<AppMsg> {
@@ -94,10 +91,10 @@ impl AppState {
         Task::none()
     }
 
-    pub fn view(&self) -> iced::Element<AppMsg> {
+    pub fn view(&self) -> iced::Element<'_, AppMsg> {
         let mut y = 1;
         let mut rows = Vec::new();
-        let mut row: Vec<Element<AppMsg>> = Vec::new();
+        let mut row: Vec<Element<'_, AppMsg>> = Vec::new();
 
         for (pos, cell) in self.board.positions() {
             if pos.y.get() != y {

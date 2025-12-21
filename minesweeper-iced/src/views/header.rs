@@ -31,10 +31,10 @@ impl Header {
         let column = Column::new().push(
             container(
                 row![
-                    text(format!("Opened: {}", self.opened)),
-                    text(format!("🚩: {}", self.flagged)).shaping(text::Shaping::Advanced),
-                    text(format!("💣: {}", self.mined)).shaping(text::Shaping::Advanced),
-                    text(format!("⏰: {}", format_elapsed(self.elapsed_seconds)))
+                    text!("Opened: {}", self.opened),
+                    text!("🚩: {}", self.flagged).shaping(text::Shaping::Advanced),
+                    text!("💣: {}", self.mined).shaping(text::Shaping::Advanced),
+                    text!("⏰: {}", format_elapsed(self.elapsed_seconds))
                         .shaping(text::Shaping::Advanced)
                 ]
                 .spacing(20),

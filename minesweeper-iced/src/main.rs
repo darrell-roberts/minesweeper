@@ -8,7 +8,8 @@ fn main() -> iced::Result {
 }
 
 fn launch() -> iced::Result {
-    iced::application("Minesweeper", AppState::update, AppState::view)
+    iced::application(AppState::new, AppState::update, AppState::view)
+        .title("Minesweeper")
         .subscription(|state| {
             if matches!(state.board.state(), GameState::Active) {
                 time::every(Duration::from_secs(1)).map(|_| AppMsg::Tick)
@@ -16,7 +17,6 @@ fn launch() -> iced::Result {
                 Subscription::none()
             }
         })
-        .theme(|_state| Theme::Dark)
         .window(window::Settings {
             size: (900., 900.).into(),
             #[cfg(target_os = "linux")]
@@ -26,5 +26,6 @@ fn launch() -> iced::Result {
             },
             ..Default::default()
         })
-        .run_with(AppState::new)
+        .theme(|_app: &AppState| Theme::Dark)
+        .run()
 }
