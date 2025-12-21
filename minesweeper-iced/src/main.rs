@@ -8,7 +8,7 @@ fn main() -> iced::Result {
 }
 
 fn launch() -> iced::Result {
-    iced::application(AppState::new, AppState::update, AppState::view)
+    iced::application(AppState::default, AppState::update, AppState::view)
         .title("Minesweeper")
         .subscription(|state| {
             if matches!(state.board.state(), GameState::Active) {

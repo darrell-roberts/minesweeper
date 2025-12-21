@@ -33,7 +33,7 @@ pub enum AppMsg {
 }
 
 impl AppState {
-    pub fn new() -> Self {
+    fn new() -> Self {
         Self {
             board: Board::new(
                 NonZeroU8::try_from(20).unwrap(),
@@ -149,6 +149,12 @@ impl AppState {
         } else {
             content.into()
         }
+    }
+}
+
+impl Default for AppState {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
