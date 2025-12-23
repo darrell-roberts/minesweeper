@@ -1,6 +1,7 @@
 use iced::{
+    border,
     widget::{button, column, container, row, text, Column, Row},
-    Element, Length, Task,
+    Color, Element, Length, Task,
 };
 use minesweeper::{
     history::{load_wins, save_win, WinHistory},
@@ -109,8 +110,24 @@ impl AppState {
         rows.push(Element::from(Row::with_children(row).spacing(2)));
 
         let button_row = row![
-            container(button("Restart").on_press(AppMsg::Restart)).padding(10),
-            container(button("Scoreboard").on_press(AppMsg::ViewScoreBoard),).padding(10),
+            container(
+                button("Restart")
+                    .style(|theme, status| button::Style {
+                        border: border::rounded(10),
+                        ..button::primary(theme, status)
+                    })
+                    .on_press(AppMsg::Restart)
+            )
+            .padding(10),
+            container(
+                button("Scoreboard")
+                    .style(|theme, status| button::Style {
+                        border: border::rounded(10),
+                        ..button::primary(theme, status)
+                    })
+                    .on_press(AppMsg::ViewScoreBoard),
+            )
+            .padding(10),
         ];
 
         let button_container = container(button_row)
@@ -159,5 +176,10 @@ impl Default for AppState {
 }
 
 fn modal_content_style(theme: &iced::Theme) -> container::Style {
-    container::dark(theme).border(iced::border::rounded(15))
+    container::dark(theme)
+        .border(iced::border::rounded(15))
+        .background(Color {
+            a: 0.2,
+            ..Color::BLACK
+        })
 }
