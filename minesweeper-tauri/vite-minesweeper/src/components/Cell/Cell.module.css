@@ -6,7 +6,9 @@
     padding: 0;
     justify-content: start;
     font-size: 0.8em;
-    box-shadow: -2px -2px rgba(255, 255, 255, 0.856), 2px 2px gray;
+    box-shadow:
+        -2px -2px rgba(255, 255, 255, 0.856),
+        2px 2px gray;
 }
 
 .container:active {
@@ -14,11 +16,11 @@
 }
 
 .container:hover {
-    opacity: .8;
+    opacity: 0.8;
 }
 
 .closed {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%);
     box-shadow: 2px 2px gray;
 }
 
@@ -58,19 +60,19 @@
 } */
 
 .one {
-    color: blue
+    color: blue;
 }
 
 .two {
-    color: green
+    color: green;
 }
 
 .three {
-    color: purple
+    color: purple;
 }
 
 .four {
-    color: red
+    color: red;
 }
 
 @keyframes exposed {
@@ -101,7 +103,12 @@
 
 @keyframes opened {
     from {
-        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        background-image: linear-gradient(
+            to bottom right,
+            #e6004c,
+            #660022 80%,
+            gray
+        );
         transform: scale(0.75);
     }
 
@@ -113,7 +120,12 @@
 
 @keyframes flagged {
     from {
-        background-image: linear-gradient(to bottom right, #e6004c, #660022 80%, gray);
+        background-image: linear-gradient(
+            to bottom right,
+            #e6004c,
+            #660022 80%,
+            gray
+        );
         transform: scale(0.75);
     }
 

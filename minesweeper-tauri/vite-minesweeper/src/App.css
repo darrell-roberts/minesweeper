@@ -19,15 +19,10 @@
 }
 
 .buttons {
-    background-image: linear-gradient(
-        to bottom right,
-        #e6004c,
-        #660022 80%,
-        gray
-    );
+    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%);
     color: white;
-    border-radius: 8px;
-    box-shadow: 2px 2px slategray;
+    border-radius: 4px;
+    box-shadow: 2px 2px darkgray;
     font-size: 14px;
     opacity: 0.8;
     margin-right: 20px;
@@ -38,11 +33,11 @@
     opacity: 1;
 }
 
-.newGame:hover {
-    opacity: 1;
+.newGame:active {
+    box-shadow: none;
 }
 
-.newGame:active {
+.topScores:active {
     box-shadow: none;
 }
 
