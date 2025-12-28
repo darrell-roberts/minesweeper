@@ -1,15 +1,18 @@
 use iced::{
-    border,
+    border, time,
     widget::{button, column, container, row, text, Column, Row},
-    Color, Element, Length, Task,
+    window, Color, Element, Length, Subscription, Task,
 };
 use minesweeper::{
     history::{load_wins, save_win, WinHistory},
-    model::{Board, GameState, Pos},
+    model::{Board, CellState, GameState, Pos},
 };
 use modal::modal;
-use std::num::NonZeroU8;
-use views::{cell_view, Header, ScoreBoard};
+use std::{
+    num::NonZeroU8,
+    time::{Duration, Instant},
+};
+use views::{cell_view, CellView, Header, ScoreBoard};
 
 mod modal;
 mod views;
@@ -19,6 +22,8 @@ pub struct AppState {
     elapsed_seconds: u64,
     outcome: Option<String>,
     scoreboard: Option<WinHistory>,
+    cells: Vec<CellView>,
+    now: Instant,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -31,25 +36,70 @@ pub enum AppMsg {
     ViewScoreBoard,
     DismissScoreBoard,
     None,
+    Animate,
 }
 
 impl AppState {
-    fn new() -> Self {
+    pub fn new() -> Self {
+        let board = Board::new(
+            NonZeroU8::try_from(20).unwrap(),
+            NonZeroU8::try_from(20).unwrap(),
+        );
         Self {
-            board: Board::new(
-                NonZeroU8::try_from(20).unwrap(),
-                NonZeroU8::try_from(20).unwrap(),
-            ),
+            cells: board
+                .positions()
+                .map(|(pos, cell)| cell_view(*cell, *pos, *board.state()))
+                .collect(),
+            board,
             elapsed_seconds: 0,
             outcome: None,
             scoreboard: None,
+            now: Instant::now(),
         }
     }
 
-    pub fn update(&mut self, message: AppMsg) -> Task<AppMsg> {
+    pub fn subscription(&self) -> Subscription<AppMsg> {
+        let is_animating = self
+            .cells
+            .iter()
+            .any(|cell| cell.animated.is_animating(self.now));
+
+        Subscription::batch([
+            if matches!(self.board.state(), GameState::Active) {
+                time::every(Duration::from_secs(1)).map(|_| AppMsg::Tick)
+            } else {
+                Subscription::none()
+            },
+            if is_animating {
+                window::frames().map(|_| AppMsg::Animate)
+            } else {
+                Subscription::none()
+            },
+        ])
+    }
+
+    pub fn update(&mut self, message: AppMsg, instant: Instant) -> Task<AppMsg> {
+        self.now = instant;
+
+        for cell_view in self.cells.iter_mut() {
+            cell_view.instant = instant;
+        }
+
         match message {
             AppMsg::Open(pos) => {
                 self.board.open_cell(pos);
+
+                // Update cell state.
+                for (cell_view, (_pos, cell)) in self.cells.iter_mut().zip(self.board.positions()) {
+                    // Enable open animation for all opened cells.
+                    if let (CellState::Closed { .. }, CellState::Open) =
+                        (cell_view.cell.state, cell.state)
+                    {
+                        cell_view.open(self.now);
+                    }
+                    cell_view.cell = *cell;
+                }
+
                 match self.board.state() {
                     GameState::Loss => self.outcome = Some("You lose!".into()),
                     GameState::Win => {
@@ -63,6 +113,19 @@ impl AppState {
             }
             AppMsg::Flag(pos) => {
                 self.board.flag_cell(pos);
+
+                // Update cell state.
+                for (cell_view, (_pos, cell)) in self.cells.iter_mut().zip(self.board.positions()) {
+                    // Enabled flagged animation for flagged cell.
+                    if let (
+                        CellState::Closed { flagged: false, .. },
+                        CellState::Closed { flagged: true, .. },
+                    ) = (cell_view.cell.state, cell.state)
+                    {
+                        cell_view.flag(self.now);
+                    }
+                    cell_view.cell = *cell;
+                }
             }
             AppMsg::Tick => {
                 // Pause timer when viewing scoreboard.
@@ -76,6 +139,11 @@ impl AppState {
                     NonZeroU8::try_from(20).unwrap(),
                     NonZeroU8::try_from(20).unwrap(),
                 );
+                self.cells = self
+                    .board
+                    .positions()
+                    .map(|(pos, cell)| cell_view(*cell, *pos, *self.board.state()))
+                    .collect();
                 self.outcome = None;
             }
             AppMsg::DismissModal => {
@@ -88,6 +156,7 @@ impl AppState {
                 self.scoreboard = None;
             }
             AppMsg::None => (),
+            AppMsg::Animate => (),
         }
         Task::none()
     }
@@ -97,14 +166,14 @@ impl AppState {
         let mut rows = Vec::new();
         let mut row: Vec<Element<'_, AppMsg>> = Vec::new();
 
-        for (pos, cell) in self.board.positions() {
-            if pos.y.get() != y {
+        for cell_view in &self.cells {
+            if cell_view.pos.y.get() != y {
                 rows.push(Element::from(Row::with_children(row).spacing(2)));
                 row = Vec::new();
-                y = pos.y.get();
+                y = cell_view.pos.y.get();
             }
 
-            row.push(cell_view(*cell, *pos, *self.board.state()).view());
+            row.push(cell_view.view());
         }
 
         rows.push(Element::from(Row::with_children(row).spacing(2)));
