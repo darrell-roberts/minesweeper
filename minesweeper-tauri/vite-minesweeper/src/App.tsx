@@ -113,10 +113,6 @@ function App() {
 
 	useEffect(() => {
 		if (dimensions) {
-			console.log(
-				`Setting webview dimensions to ${JSON.stringify(dimensions)}`,
-			);
-
 			updateWebViewDimensions(appWindow, dimensions).catch((error) =>
 				console.error("Failed to set web view size: ", error),
 			);
@@ -127,7 +123,6 @@ function App() {
 		if (ref.current && gameState.board.length > 0 && !resized && platform) {
 			setResized(true);
 			let { width, height } = ref.current.getBoundingClientRect();
-			console.log(`width: ${width}, height: ${height}`);
 			if (platform === "mac") {
 				height += 25;
 			}
@@ -231,7 +226,6 @@ async function updateWebViewDimensions(
 	const physicalSize = size.toPhysical(scale);
 	physicalSize.width = Math.round(physicalSize.width);
 	physicalSize.height = Math.round(physicalSize.height);
-	console.info(`Physical size: ${JSON.stringify(physicalSize)}`);
 	appWindow.setSize(physicalSize);
 	appWindow.setMinSize(physicalSize);
 }
