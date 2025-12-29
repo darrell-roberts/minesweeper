@@ -22,6 +22,6 @@ fn launch() -> iced::Result {
         },
         ..Default::default()
     })
-    .theme(|_app: &AppState| Theme::Dark)
+    .theme(|_app: &AppState| Theme::Light)
     .run()
 }

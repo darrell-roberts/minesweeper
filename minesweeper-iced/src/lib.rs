@@ -1,7 +1,7 @@
 //! Minesweeper application state view and updates.
 use iced::{
     animation::Easing,
-    border, time,
+    border, color, time,
     widget::{button, column, container, opaque, row, text, Column, Row},
     window, Animation, Color, Element, Length, Subscription, Task,
 };
@@ -102,7 +102,13 @@ impl AppState {
                     if let (CellState::Closed { .. }, CellState::Open) =
                         (cell_view.cell.state, cell.state)
                     {
-                        cell_view.open(self.now);
+                        cell_view.open();
+                    }
+
+                    if let (CellState::Closed { .. }, CellState::ExposedMine) =
+                        (cell_view.cell.state, cell.state)
+                    {
+                        cell_view.boom();
                     }
                     cell_view.cell = *cell;
                 }
@@ -113,7 +119,7 @@ impl AppState {
                         self.modal_animation.go_mut(true, self.now);
                     }
                     GameState::Win => {
-                        self.outcome = Some("You win!".into());
+                        self.outcome = Some("You won!".into());
                         self.modal_animation.go_mut(true, self.now);
                         if let Err(err) = save_win(self.elapsed_seconds) {
                             eprintln!("Failed to save win: {err}");
@@ -133,7 +139,7 @@ impl AppState {
                         CellState::Closed { flagged: true, .. },
                     ) = (cell_view.cell.state, cell.state)
                     {
-                        cell_view.flag(self.now);
+                        cell_view.flag();
                     }
                     cell_view.cell = *cell;
                 }
@@ -216,10 +222,11 @@ impl AppState {
             .padding(20);
 
         let board = container(Column::with_children(rows).spacing(2))
-            .width(Length::Fill)
-            .height(Length::Fill)
+            // .width(Length::Fill)
+            // .height(Length::Fill)
             .center_x(Length::Fill)
-            .center_y(Length::Fill);
+            .center_y(Length::Fill)
+            .style(|theme| container::dark(theme).background(color!(0xf2f2f2)));
 
         let content = column![
             Header::new(&self.board, self.elapsed_seconds).view(),
@@ -272,7 +279,7 @@ fn modal_content_style(
             a: if animation.is_animating(now) {
                 animation.interpolate(0.2, 1.0, now)
             } else {
-                1.0
+                0.5
             },
             ..Color::BLACK
         })

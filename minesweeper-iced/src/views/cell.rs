@@ -4,6 +4,7 @@ use std::time::Instant;
 use crate::AppMsg;
 use iced::{
     animation::Easing,
+    color,
     widget::{button, container, mouse_area, text, Button},
     Animation, Color, Element, Length,
 };
@@ -14,6 +15,7 @@ pub struct CellView {
     pub pos: Pos,
     pub game_state: GameState,
     pub animated: Animation<bool>,
+    pub exposed_animation: Animation<bool>,
     pub instant: Instant,
 }
 
@@ -24,6 +26,10 @@ impl CellView {
             pos,
             game_state,
             animated: mk_cell_animation(),
+            exposed_animation: Animation::new(false)
+                .repeat(3)
+                .easing(Easing::EaseIn)
+                .slow(),
             instant: Instant::now(),
         }
     }
@@ -38,46 +44,45 @@ fn mk_cell_animation() -> Animation<bool> {
 }
 
 impl CellView {
-    pub fn open(&mut self, now: Instant) {
-        self.instant = now;
+    pub fn open(&mut self) {
         self.animated.go_mut(true, self.instant);
     }
 
-    pub fn flag(&mut self, now: Instant) {
-        self.instant = now;
+    pub fn flag(&mut self) {
         if self.animated.value() {
             self.animated = mk_cell_animation();
         }
         self.animated.go_mut(true, self.instant);
     }
 
+    pub fn boom(&mut self) {
+        self.exposed_animation.go_mut(true, self.instant);
+    }
+
     pub fn view(&self) -> Element<'_, AppMsg> {
         let adjacent_mines = self.cell.adjacent_mines;
 
         let content: Element<'_, AppMsg> = match self.cell.state {
-            CellState::Open => {
-                if self.cell.adjacent_mines > 0 {
-                    container(
-                        text(format!("{adjacent_mines}"))
-                            .center()
-                            .style(move |_| {
-                                if self.animated.is_animating(self.instant) {
-                                    select_color(
-                                        adjacent_mines,
-                                        self.animated.interpolate(0.0, 1.0, self.instant),
-                                    )
-                                } else {
-                                    select_color(adjacent_mines, 1.0)
-                                }
-                            })
-                            .center(),
-                    )
-                    .center(Length::Fill)
-                    .into()
-                } else {
-                    text("").into()
-                }
-            }
+            CellState::Open => container(if self.cell.adjacent_mines > 0 {
+                text(format!("{adjacent_mines}"))
+                    .center()
+                    .style(move |_| {
+                        if self.animated.is_animating(self.instant) {
+                            select_color(
+                                adjacent_mines,
+                                self.animated.interpolate(0.0, 1.0, self.instant),
+                            )
+                        } else {
+                            select_color(adjacent_mines, 1.0)
+                        }
+                    })
+                    .center()
+            } else {
+                text("")
+            })
+            .center(Length::Fill)
+            .style(|theme| container::primary(theme).background(Color::WHITE))
+            .into(),
             CellState::Closed { flagged, .. } => {
                 let game_active = matches!(self.game_state, GameState::Active | GameState::New);
                 if flagged {
@@ -132,6 +137,19 @@ impl CellView {
             CellState::ExposedMine => {
                 container(text("💣").shaping(text::Shaping::Advanced).center())
                     .center(Length::Fill)
+                    .style(|theme| {
+                        let animated_opacity_color = |mut color: Color| {
+                            color.a = if self.exposed_animation.is_animating(self.instant) {
+                                self.exposed_animation.interpolate(0.0, 1.0, self.instant)
+                            } else {
+                                1.0
+                            };
+                            color
+                        };
+                        container::primary(theme)
+                            .color(animated_opacity_color(color!(0xf9f06b)))
+                            .background(animated_opacity_color(color!(0xa51d2d)))
+                    })
                     .into()
             }
         };
@@ -145,9 +163,12 @@ fn select_color(adjacent_mines: u8, opacity: f32) -> text::Style {
         color: Some(Color {
             a: opacity,
             ..match adjacent_mines {
-                1 => Color::WHITE,
-                2 => Color::from_rgb8(0, 229, 0),
-                3 => Color::from_rgb8(230, 118, 0),
+                // 1 => Color::WHITE,
+                1 => Color::BLACK,
+                // 2 => Color::from_rgb8(0, 229, 0),
+                2 => color!(0x26a269),
+                // 3 => Color::from_rgb8(230, 118, 0),
+                3 => color!(0xa51d2d),
                 _ => Color::from_rgb8(254, 0, 0),
             }
         }),
