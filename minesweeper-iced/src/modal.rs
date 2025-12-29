@@ -22,7 +22,7 @@ where
                     .center_x(Length::Fill)
                     .center_y(Length::Fill)
                     .padding(padding::top(10))
-                    .style(|_theme| {
+                    .style(move |_theme| {
                         container::Style {
                             background: Some(
                                 Color {

@@ -1,7 +1,9 @@
+/// Minesweeper application state view and updates.
 use iced::{
+    animation::Easing,
     border, time,
-    widget::{button, column, container, row, text, Column, Row},
-    window, Color, Element, Length, Subscription, Task,
+    widget::{button, column, container, opaque, row, text, Column, Row},
+    window, Animation, Color, Element, Length, Subscription, Task,
 };
 use minesweeper::{
     history::{load_wins, save_win, WinHistory},
@@ -24,6 +26,7 @@ pub struct AppState {
     scoreboard: Option<WinHistory>,
     cells: Vec<CellView>,
     now: Instant,
+    modal_animation: Animation<bool>,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -55,6 +58,7 @@ impl AppState {
             outcome: None,
             scoreboard: None,
             now: Instant::now(),
+            modal_animation: mk_modal_animation(),
         }
     }
 
@@ -62,7 +66,8 @@ impl AppState {
         let is_animating = self
             .cells
             .iter()
-            .any(|cell| cell.animated.is_animating(self.now));
+            .any(|cell| cell.animated.is_animating(self.now))
+            || self.modal_animation.is_animating(self.now);
 
         Subscription::batch([
             if matches!(self.board.state(), GameState::Active) {
@@ -86,7 +91,9 @@ impl AppState {
         }
 
         match message {
-            AppMsg::Open(pos) => {
+            AppMsg::Open(pos)
+                if matches!(self.board.state(), GameState::Active | GameState::New) =>
+            {
                 self.board.open_cell(pos);
 
                 // Update cell state.
@@ -101,9 +108,13 @@ impl AppState {
                 }
 
                 match self.board.state() {
-                    GameState::Loss => self.outcome = Some("You lose!".into()),
+                    GameState::Loss => {
+                        self.outcome = Some("You lose!".into());
+                        self.modal_animation.go_mut(true, self.now);
+                    }
                     GameState::Win => {
                         self.outcome = Some("You win!".into());
+                        self.modal_animation.go_mut(true, self.now);
                         if let Err(err) = save_win(self.elapsed_seconds) {
                             eprintln!("Failed to save win: {err}");
                         }
@@ -111,7 +122,7 @@ impl AppState {
                     _ => (),
                 };
             }
-            AppMsg::Flag(pos) => {
+            AppMsg::Flag(pos) if matches!(self.board.state(), GameState::Active) => {
                 self.board.flag_cell(pos);
 
                 // Update cell state.
@@ -145,6 +156,7 @@ impl AppState {
                     .map(|(pos, cell)| cell_view(*cell, *pos, *self.board.state()))
                     .collect();
                 self.outcome = None;
+                self.modal_animation = mk_modal_animation();
             }
             AppMsg::DismissModal => {
                 self.outcome = None;
@@ -155,8 +167,7 @@ impl AppState {
             AppMsg::DismissScoreBoard => {
                 self.scoreboard = None;
             }
-            AppMsg::None => (),
-            AppMsg::Animate => (),
+            _ => (),
         }
         Task::none()
     }
@@ -204,24 +215,30 @@ impl AppState {
             .center_x(Length::Fill)
             .padding(20);
 
+        let board = container(Column::with_children(rows).spacing(2))
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .center_x(Length::Fill)
+            .center_y(Length::Fill);
+
         let content = column![
             Header::new(&self.board, self.elapsed_seconds).view(),
-            container(Column::with_children(rows).spacing(2))
-                .width(Length::Fill)
-                .height(Length::Fill)
-                .center_x(Length::Fill)
-                .center_y(Length::Fill),
+            if matches!(self.board.state(), GameState::Loss | GameState::Win) {
+                opaque(board)
+            } else {
+                board.into()
+            },
             button_container
         ];
 
         if let Some(outcome) = self.outcome.as_ref() {
             modal(
                 content,
-                container(text(outcome).size(24))
+                container(text(outcome).size(30))
                     .center_x(Length::Fill)
                     .padding(20)
                     .width(200)
-                    .style(modal_content_style),
+                    .style(|theme| modal_content_style(theme, &self.modal_animation, self.now)),
                 AppMsg::DismissModal,
             )
         } else if let Some(wins) = self.scoreboard.as_ref() {
@@ -229,7 +246,7 @@ impl AppState {
                 content,
                 container(ScoreBoard::new(&wins.wins).view())
                     .padding(10)
-                    .style(modal_content_style),
+                    .style(|theme| modal_content_style(theme, &self.modal_animation, self.now)),
                 AppMsg::DismissScoreBoard,
             )
         } else {
@@ -244,11 +261,34 @@ impl Default for AppState {
     }
 }
 
-fn modal_content_style(theme: &iced::Theme) -> container::Style {
+fn modal_content_style(
+    theme: &iced::Theme,
+    animation: &Animation<bool>,
+    now: Instant,
+) -> container::Style {
     container::dark(theme)
         .border(iced::border::rounded(15))
         .background(Color {
-            a: 0.2,
+            a: if animation.is_animating(now) {
+                animation.interpolate(0.2, 1.0, now)
+            } else {
+                1.0
+            },
             ..Color::BLACK
         })
+        .color(Color {
+            a: if animation.is_animating(now) {
+                animation.interpolate(0.2, 1.0, now)
+            } else {
+                1.0
+            },
+            ..Color::WHITE
+        })
+}
+
+fn mk_modal_animation() -> Animation<bool> {
+    Animation::new(false)
+        .easing(Easing::EaseInBack)
+        .very_slow()
+        .repeat(2)
 }
