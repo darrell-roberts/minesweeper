@@ -1,3 +1,4 @@
+//! View for a single cell.
 use std::time::Instant;
 
 use crate::AppMsg;
@@ -17,12 +18,12 @@ pub struct CellView {
 }
 
 impl CellView {
-    pub fn new(cell: Cell, pos: Pos, game_state: GameState) -> Self {
+    fn new(cell: Cell, pos: Pos, game_state: GameState) -> Self {
         Self {
             cell,
             pos,
             game_state,
-            animated: Animation::new(false).easing(Easing::EaseIn).quick(),
+            animated: mk_cell_animation(),
             instant: Instant::now(),
         }
     }
@@ -30,6 +31,10 @@ impl CellView {
 
 pub fn cell_view(cell: Cell, pos: Pos, game_state: GameState) -> CellView {
     CellView::new(cell, pos, game_state)
+}
+
+fn mk_cell_animation() -> Animation<bool> {
+    Animation::new(false).easing(Easing::EaseIn).quick()
 }
 
 impl CellView {
@@ -40,6 +45,9 @@ impl CellView {
 
     pub fn flag(&mut self, now: Instant) {
         self.instant = now;
+        if self.animated.value() {
+            self.animated = mk_cell_animation();
+        }
         self.animated.go_mut(true, self.instant);
     }
 
@@ -93,6 +101,11 @@ impl CellView {
                                         }
                                     });
                                 style.background = background;
+                                style.text_color.a = if self.animated.is_animating(self.instant) {
+                                    self.animated.interpolate(0.0, 1.0, self.instant)
+                                } else {
+                                    1.0
+                                };
                                 style
                             },
                         ),

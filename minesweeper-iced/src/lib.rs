@@ -1,4 +1,4 @@
-/// Minesweeper application state view and updates.
+//! Minesweeper application state view and updates.
 use iced::{
     animation::Easing,
     border, time,
@@ -85,10 +85,10 @@ impl AppState {
 
     pub fn update(&mut self, message: AppMsg, instant: Instant) -> Task<AppMsg> {
         self.now = instant;
-
-        for cell_view in self.cells.iter_mut() {
+        self.cells.iter_mut().for_each(|cell_view| {
             cell_view.instant = instant;
-        }
+            cell_view.game_state = *self.board.state();
+        });
 
         match message {
             AppMsg::Open(pos)
