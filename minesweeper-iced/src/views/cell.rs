@@ -16,11 +16,11 @@ pub struct CellView {
     pub game_state: GameState,
     pub animated: Animation<bool>,
     pub exposed_animation: Animation<bool>,
-    pub instant: Instant,
+    pub now: Instant,
 }
 
 impl CellView {
-    fn new(cell: Cell, pos: Pos, game_state: GameState) -> Self {
+    fn new(cell: Cell, pos: Pos, game_state: GameState, now: Instant) -> Self {
         Self {
             cell,
             pos,
@@ -30,13 +30,13 @@ impl CellView {
                 .repeat(3)
                 .easing(Easing::EaseIn)
                 .slow(),
-            instant: Instant::now(),
+            now,
         }
     }
 }
 
-pub fn cell_view(cell: Cell, pos: Pos, game_state: GameState) -> CellView {
-    CellView::new(cell, pos, game_state)
+pub fn cell_view(cell: Cell, pos: Pos, game_state: GameState, now: Instant) -> CellView {
+    CellView::new(cell, pos, game_state, now)
 }
 
 fn mk_cell_animation() -> Animation<bool> {
@@ -45,18 +45,18 @@ fn mk_cell_animation() -> Animation<bool> {
 
 impl CellView {
     pub fn open(&mut self) {
-        self.animated.go_mut(true, self.instant);
+        self.animated.go_mut(true, self.now);
     }
 
     pub fn flag(&mut self) {
         if self.animated.value() {
             self.animated = mk_cell_animation();
         }
-        self.animated.go_mut(true, self.instant);
+        self.animated.go_mut(true, self.now);
     }
 
     pub fn boom(&mut self) {
-        self.exposed_animation.go_mut(true, self.instant);
+        self.exposed_animation.go_mut(true, self.now);
     }
 
     pub fn view(&self) -> Element<'_, AppMsg> {
@@ -67,10 +67,10 @@ impl CellView {
                 text(format!("{adjacent_mines}"))
                     .center()
                     .style(move |_| {
-                        if self.animated.is_animating(self.instant) {
+                        if self.animated.is_animating(self.now) {
                             select_color(
                                 adjacent_mines,
-                                self.animated.interpolate(0.0, 1.0, self.instant),
+                                self.animated.interpolate(0.0, 1.0, self.now),
                             )
                         } else {
                             select_color(adjacent_mines, 1.0)
@@ -93,8 +93,8 @@ impl CellView {
                                 let background =
                                     style.background.map(|background| match background {
                                         iced::Background::Color(mut color) => {
-                                            color.a = if self.animated.is_animating(self.instant) {
-                                                self.animated.interpolate(0.0, 1.0, self.instant)
+                                            color.a = if self.animated.is_animating(self.now) {
+                                                self.animated.interpolate(0.0, 1.0, self.now)
                                             } else {
                                                 1.0
                                             };
@@ -106,8 +106,8 @@ impl CellView {
                                         }
                                     });
                                 style.background = background;
-                                style.text_color.a = if self.animated.is_animating(self.instant) {
-                                    self.animated.interpolate(0.0, 1.0, self.instant)
+                                style.text_color.a = if self.animated.is_animating(self.now) {
+                                    self.animated.interpolate(0.0, 1.0, self.now)
                                 } else {
                                     1.0
                                 };
@@ -139,8 +139,8 @@ impl CellView {
                     .center(Length::Fill)
                     .style(|theme| {
                         let animated_opacity_color = |mut color: Color| {
-                            color.a = if self.exposed_animation.is_animating(self.instant) {
-                                self.exposed_animation.interpolate(0.0, 1.0, self.instant)
+                            color.a = if self.exposed_animation.is_animating(self.now) {
+                                self.exposed_animation.interpolate(0.0, 1.0, self.now)
                             } else {
                                 1.0
                             };

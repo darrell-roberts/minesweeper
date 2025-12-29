@@ -48,16 +48,17 @@ impl AppState {
             NonZeroU8::try_from(20).unwrap(),
             NonZeroU8::try_from(20).unwrap(),
         );
+        let now = Instant::now();
         Self {
             cells: board
                 .positions()
-                .map(|(pos, cell)| cell_view(*cell, *pos, *board.state()))
+                .map(|(pos, cell)| cell_view(*cell, *pos, *board.state(), now))
                 .collect(),
             board,
             elapsed_seconds: 0,
             outcome: None,
             scoreboard: None,
-            now: Instant::now(),
+            now,
             modal_animation: mk_modal_animation(),
         }
     }
@@ -86,7 +87,7 @@ impl AppState {
     pub fn update(&mut self, message: AppMsg, instant: Instant) -> Task<AppMsg> {
         self.now = instant;
         self.cells.iter_mut().for_each(|cell_view| {
-            cell_view.instant = instant;
+            cell_view.now = instant;
             cell_view.game_state = *self.board.state();
         });
 
@@ -159,7 +160,7 @@ impl AppState {
                 self.cells = self
                     .board
                     .positions()
-                    .map(|(pos, cell)| cell_view(*cell, *pos, *self.board.state()))
+                    .map(|(pos, cell)| cell_view(*cell, *pos, *self.board.state(), self.now))
                     .collect();
                 self.outcome = None;
                 self.modal_animation = mk_modal_animation();
