@@ -23,7 +23,7 @@ bundle-mac: clean-dist build
 	cp target/release/minesweeper-iced "dist/MineSweeper.app/Contents/MacOS"
 	chmod +x "dist/MineSweeper.app/Contents/MacOS/minesweeper-iced"
 
-	codesign --sign "MyApps" "dist/MineSweeper.app"
+	# codesign --sign "MyApps" "dist/MineSweeper.app"
 
 	# Copy app to DMG staging area
 	cp -r "dist/MineSweeper.app" "dist/dmg"
