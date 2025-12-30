@@ -87,6 +87,7 @@ impl CellView {
             .center(Length::Fill)
             .style(|theme| container::primary(theme).background(Color::WHITE))
             .into(),
+
             CellState::Closed { flagged, .. } => {
                 let game_active = matches!(self.game_state, GameState::Active | GameState::New);
                 if flagged {
@@ -139,6 +140,7 @@ impl CellView {
                     .into()
                 }
             }
+
             CellState::ExposedMine => {
                 container(text("💣").shaping(text::Shaping::Advanced).center())
                     .center(Length::Fill)
@@ -168,11 +170,8 @@ fn select_color(adjacent_mines: u8, opacity: f32) -> text::Style {
         color: Some(Color {
             a: opacity,
             ..match adjacent_mines {
-                // 1 => Color::WHITE,
                 1 => Color::BLACK,
-                // 2 => Color::from_rgb8(0, 229, 0),
                 2 => color!(0x26a269),
-                // 3 => Color::from_rgb8(230, 118, 0),
                 3 => color!(0xa51d2d),
                 _ => Color::from_rgb8(254, 0, 0),
             }

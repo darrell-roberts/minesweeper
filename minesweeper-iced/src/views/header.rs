@@ -1,7 +1,8 @@
+//! Window Header.
 use super::format_elapsed;
 use iced::{
-    widget::{container, row, text, Column},
     Element, Length,
+    widget::{Column, container, row, text},
 };
 use minesweeper::model::Board;
 

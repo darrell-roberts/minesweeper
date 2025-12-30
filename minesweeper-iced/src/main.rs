@@ -1,11 +1,8 @@
-use iced::{window, Theme};
+//! A simple minesweeper game.
+use iced::{Theme, window};
 use minesweeper_iced::AppState;
 
 fn main() -> iced::Result {
-    launch()
-}
-
-fn launch() -> iced::Result {
     iced::application::timed(
         AppState::default,
         AppState::update,

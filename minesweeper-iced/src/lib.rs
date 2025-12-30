@@ -215,7 +215,7 @@ impl AppState {
         let board = container(Column::with_children(rows).spacing(2))
             .center_x(Length::Fill)
             .center_y(Length::Fill)
-            .style(|theme| container::dark(theme).background(color!(0xf2f2f2)));
+            .style(|theme| container::primary(theme).background(color!(0xf2f2f2)));
 
         let content = column![
             Header::new(&self.board, self.elapsed_seconds).view(),
@@ -258,7 +258,7 @@ fn modal_content_style(
     animation: &Animation<bool>,
     now: Instant,
 ) -> container::Style {
-    container::dark(theme)
+    container::primary(theme)
         .border(iced::border::rounded(15))
         .background(Color {
             a: if animation.is_animating(now) {

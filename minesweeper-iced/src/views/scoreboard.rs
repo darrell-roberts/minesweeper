@@ -1,7 +1,8 @@
+//! Scoreboard modal.
 use super::format_elapsed;
 use iced::{
-    widget::{container, row, text, Column},
     Element,
+    widget::{Column, container, row, text},
 };
 use minesweeper::history::Win;
 
@@ -24,9 +25,9 @@ impl<'a> ScoreBoard<'a> {
             .zip(1..)
             .fold(Column::new(), |col, (win, rank)| {
                 let row = row![
-                    container(text(format!("{rank:<5}")).size(20)).width(25),
+                    container(text!("{rank:<5}").size(20)).width(25),
                     container(text(format_elapsed(win.duration)).size(20)).width(250),
-                    text(format!("{}", win.date.format("%b %d %Y %I:%M%P"))).size(20)
+                    text!("{}", win.date.format("%b %d %Y %I:%M%P")).size(20)
                 ]
                 .spacing(10);
                 col.push(row).spacing(10)
