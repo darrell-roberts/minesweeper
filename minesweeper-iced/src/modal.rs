@@ -1,7 +1,7 @@
+//! Modal helper.
 use iced::{
-    padding,
+    Color, Element, Length, padding,
     widget::{container, mouse_area, opaque, stack},
-    Color, Element, Length,
 };
 
 pub fn modal<'a, Message>(
