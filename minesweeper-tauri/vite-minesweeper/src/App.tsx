@@ -13,7 +13,10 @@ import DurationCounter from "./components/DurationCounter/DurationCounter";
 import Wins from "./components/Wins/Wins";
 import StatusDialog from "./components/StatusDialog/StatusDialog";
 import { LogicalSize } from "@tauri-apps/api/dpi";
-import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import {
+	getCurrentWebviewWindow,
+	WebviewWindow,
+} from "@tauri-apps/api/webviewWindow";
 const appWindow = getCurrentWebviewWindow();
 
 type GameAppState = {
@@ -110,9 +113,9 @@ function App() {
 
 	useEffect(() => {
 		if (dimensions) {
-			appWindow
-				.setSize(dimensions)
-				.catch((err) => console.error("failed to resize", err));
+			updateWebViewDimensions(appWindow, dimensions).catch((error) =>
+				console.error("Failed to set web view size: ", error),
+			);
 		}
 	}, [dimensions]);
 
@@ -195,14 +198,14 @@ function App() {
 
 			<div className="buttonBar">
 				<button
-					className="buttons"
+					className="buttons topScores"
 					onClick={() => dispatch({ type: "showWins" })}
 					disabled={gameState.statusDialog || gameState.showWins}
 				>
 					Top Scores
 				</button>
 				<button
-					className="buttons"
+					className="buttons newGame"
 					onClick={() => newGame()}
 					disabled={gameState.statusDialog || gameState.showWins}
 				>
@@ -214,3 +217,15 @@ function App() {
 }
 
 export default App;
+
+async function updateWebViewDimensions(
+	appWindow: WebviewWindow,
+	size: LogicalSize,
+) {
+	const scale = await appWindow.scaleFactor();
+	const physicalSize = size.toPhysical(scale);
+	physicalSize.width = Math.round(physicalSize.width);
+	physicalSize.height = Math.round(physicalSize.height);
+	appWindow.setSize(physicalSize);
+	appWindow.setMinSize(physicalSize);
+}

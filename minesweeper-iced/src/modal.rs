@@ -1,7 +1,7 @@
+//! Modal helper.
 use iced::{
-    padding,
+    Color, Element, Length, padding,
     widget::{container, mouse_area, opaque, stack},
-    Color, Element, Length,
 };
 
 pub fn modal<'a, Message>(
@@ -22,11 +22,11 @@ where
                     .center_x(Length::Fill)
                     .center_y(Length::Fill)
                     .padding(padding::top(10))
-                    .style(|_theme| {
+                    .style(move |_theme| {
                         container::Style {
                             background: Some(
                                 Color {
-                                    a: 0.8,
+                                    a: 0.5,
                                     ..Color::BLACK
                                 }
                                 .into(),

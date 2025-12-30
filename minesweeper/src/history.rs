@@ -3,8 +3,8 @@ use chrono::{DateTime, Local};
 use rmp_serde::{encode::write_named, from_read};
 use serde::{Deserialize, Serialize};
 use std::{
-    fs::{create_dir_all, OpenOptions},
-    io::{BufWriter, Seek},
+    fs::{create_dir_all, File, OpenOptions},
+    io::BufWriter,
 };
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -73,20 +73,16 @@ pub fn load_wins() -> Option<WinHistory> {
 fn persist_win(win: Win) -> anyhow::Result<()> {
     create_dir_all(get_full_save_path()?)
         .with_context(|| "Could not create folder for stats file")?;
-    let mut stats_file = OpenOptions::new()
-        .write(true)
-        .read(true)
-        .create(true)
-        .truncate(true)
-        .open(get_save_file()?)?;
-    let mut history: WinHistory = from_read(&stats_file).unwrap_or_else(|err| {
+
+    let save_file = get_save_file()?;
+    let mut history: WinHistory = from_read(File::open(&save_file)?).unwrap_or_else(|err| {
         eprintln!("Failed to read stats file: {err}. Creating new WinHistory");
         WinHistory::default()
     });
     history.wins.push(win);
     history.wins.sort_by_key(|win| win.duration);
     history.wins = history.wins.into_iter().take(10).collect();
-    stats_file.rewind()?;
+    let stats_file = File::create(&save_file)?;
     let mut writer = BufWriter::new(stats_file);
     write_named(&mut writer, &history)?;
     Ok(())
