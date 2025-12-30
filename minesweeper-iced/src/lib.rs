@@ -20,31 +20,50 @@ use views::{CellView, Header, ScoreBoard, cell_view};
 mod modal;
 mod views;
 
+/// Application state.
 pub struct AppState {
+    /// Game board.
     pub board: Board,
+    /// Active play timer.
     elapsed_seconds: u64,
+    /// Win outcome.
     outcome: Option<String>,
+    /// Scoreboard when viewing historic wins.
     scoreboard: Option<WinHistory>,
+    /// Game cells.
     cells: Vec<CellView>,
+    /// Current instant.
     now: Instant,
+    /// Animation for modal.
     modal_animation: Animation<bool>,
 }
 
+/// Application messages.
 #[derive(Debug, Copy, Clone)]
 pub enum AppMsg {
+    /// Open a cell via its position.
     Open(Pos),
+    /// Flag a cell via its position.
     Flag(Pos),
+    /// Timer tick.
     Tick,
+    /// Restart the game.
     Restart,
+    /// Close the open modal.
     DismissModal,
+    /// View the scoreboard.
     ViewScoreBoard,
+    /// Dismiss the scoreboard.
     DismissScoreBoard,
+    /// No-op.
     None,
+    /// Render for animation. No-op.
     Animate,
 }
 
 impl AppState {
-    pub fn new() -> Self {
+    /// Create a new application state.
+    fn new() -> Self {
         let board = Board::new(
             NonZeroU8::try_from(20).unwrap(),
             NonZeroU8::try_from(20).unwrap(),
@@ -64,6 +83,7 @@ impl AppState {
         }
     }
 
+    /// Application subscriptions for timer and animations.
     pub fn subscription(&self) -> Subscription<AppMsg> {
         // Check if any of our animations are active.
         let is_animating = self.cells.iter().any(|cell| cell.is_animating(self.now))
@@ -81,6 +101,7 @@ impl AppState {
         ])
     }
 
+    /// Update game application view state.
     pub fn update(&mut self, message: AppMsg, instant: Instant) -> Task<AppMsg> {
         self.now = instant;
         self.cells.iter_mut().for_each(|cell_view| {
@@ -169,6 +190,7 @@ impl AppState {
         Task::none()
     }
 
+    /// Render the game view.
     pub fn view(&self) -> iced::Element<'_, AppMsg> {
         let mut y = 1;
         let mut rows = Vec::new();

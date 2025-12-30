@@ -20,6 +20,7 @@ pub struct CellView {
 }
 
 impl CellView {
+    /// Create a cell view from a game cell, position, game state and instant.
     fn new(cell: Cell, pos: Pos, game_state: GameState, now: Instant) -> Self {
         Self {
             cell,
@@ -34,11 +35,13 @@ impl CellView {
         }
     }
 
+    /// Are any of the cell views animations animating?
     pub fn is_animating(&self, now: Instant) -> bool {
         self.cell_animation.is_animating(now) || self.exposed_animation.is_animating(now)
     }
 }
 
+/// Create a cell view from a game cell, position, game state and instant.
 pub fn cell_view(cell: Cell, pos: Pos, game_state: GameState, now: Instant) -> CellView {
     CellView::new(cell, pos, game_state, now)
 }
@@ -48,10 +51,12 @@ fn mk_cell_animation() -> Animation<bool> {
 }
 
 impl CellView {
+    /// Start open cell animation.
     pub fn open(&mut self) {
         self.cell_animation.go_mut(true, self.now);
     }
 
+    /// Start flag cell animation.
     pub fn flag(&mut self) {
         if self.cell_animation.value() {
             self.cell_animation = mk_cell_animation();
@@ -59,10 +64,12 @@ impl CellView {
         self.cell_animation.go_mut(true, self.now);
     }
 
+    /// Start open mined cell animation.
     pub fn boom(&mut self) {
         self.exposed_animation.go_mut(true, self.now);
     }
 
+    /// Render this cell.
     pub fn view(&self) -> Element<'_, AppMsg> {
         let adjacent_mines = self.cell.adjacent_mines;
 
@@ -165,6 +172,7 @@ impl CellView {
     }
 }
 
+/// Set the text color for an open cell with adjacent mines.
 fn select_color(adjacent_mines: u8, opacity: f32) -> text::Style {
     text::Style {
         color: Some(Color {
