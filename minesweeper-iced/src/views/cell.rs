@@ -3,10 +3,10 @@ use std::time::Instant;
 
 use crate::AppMsg;
 use iced::{
+    Animation, Color, Element, Length,
     animation::Easing,
     color,
-    widget::{button, container, mouse_area, text, Button},
-    Animation, Color, Element, Length,
+    widget::{Button, button, container, mouse_area, text},
 };
 use minesweeper::model::{Cell, CellState, GameState, Pos};
 
@@ -14,8 +14,8 @@ pub struct CellView {
     pub cell: Cell,
     pub pos: Pos,
     pub game_state: GameState,
-    pub animated: Animation<bool>,
-    pub exposed_animation: Animation<bool>,
+    cell_animation: Animation<bool>,
+    exposed_animation: Animation<bool>,
     pub now: Instant,
 }
 
@@ -25,13 +25,17 @@ impl CellView {
             cell,
             pos,
             game_state,
-            animated: mk_cell_animation(),
+            cell_animation: mk_cell_animation(),
             exposed_animation: Animation::new(false)
                 .repeat(3)
                 .easing(Easing::EaseIn)
                 .slow(),
             now,
         }
+    }
+
+    pub fn is_animating(&self, now: Instant) -> bool {
+        self.cell_animation.is_animating(now) || self.exposed_animation.is_animating(now)
     }
 }
 
@@ -45,14 +49,14 @@ fn mk_cell_animation() -> Animation<bool> {
 
 impl CellView {
     pub fn open(&mut self) {
-        self.animated.go_mut(true, self.now);
+        self.cell_animation.go_mut(true, self.now);
     }
 
     pub fn flag(&mut self) {
-        if self.animated.value() {
-            self.animated = mk_cell_animation();
+        if self.cell_animation.value() {
+            self.cell_animation = mk_cell_animation();
         }
-        self.animated.go_mut(true, self.now);
+        self.cell_animation.go_mut(true, self.now);
     }
 
     pub fn boom(&mut self) {
@@ -67,10 +71,10 @@ impl CellView {
                 text(format!("{adjacent_mines}"))
                     .center()
                     .style(move |_| {
-                        if self.animated.is_animating(self.now) {
+                        if self.cell_animation.is_animating(self.now) {
                             select_color(
                                 adjacent_mines,
-                                self.animated.interpolate(0.0, 1.0, self.now),
+                                self.cell_animation.interpolate(0.0, 1.0, self.now),
                             )
                         } else {
                             select_color(adjacent_mines, 1.0)
@@ -93,8 +97,9 @@ impl CellView {
                                 let background =
                                     style.background.map(|background| match background {
                                         iced::Background::Color(mut color) => {
-                                            color.a = if self.animated.is_animating(self.now) {
-                                                self.animated.interpolate(0.0, 1.0, self.now)
+                                            color.a = if self.cell_animation.is_animating(self.now)
+                                            {
+                                                self.cell_animation.interpolate(0.0, 1.0, self.now)
                                             } else {
                                                 1.0
                                             };
@@ -106,8 +111,8 @@ impl CellView {
                                         }
                                     });
                                 style.background = background;
-                                style.text_color.a = if self.animated.is_animating(self.now) {
-                                    self.animated.interpolate(0.0, 1.0, self.now)
+                                style.text_color.a = if self.cell_animation.is_animating(self.now) {
+                                    self.cell_animation.interpolate(0.0, 1.0, self.now)
                                 } else {
                                     1.0
                                 };

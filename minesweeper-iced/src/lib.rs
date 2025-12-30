@@ -1,12 +1,13 @@
 //! Minesweeper application state view and updates.
 use iced::{
+    Animation, Color, Element, Length, Subscription, Task,
     animation::Easing,
     border, color, time,
-    widget::{button, column, container, opaque, row, text, Column, Row},
-    window, Animation, Color, Element, Length, Subscription, Task,
+    widget::{Column, Row, button, column, container, row, text},
+    window,
 };
 use minesweeper::{
-    history::{load_wins, save_win, WinHistory},
+    history::{WinHistory, load_wins, save_win},
     model::{Board, CellState, GameState, Pos},
 };
 use modal::modal;
@@ -14,7 +15,7 @@ use std::{
     num::NonZeroU8,
     time::{Duration, Instant},
 };
-use views::{cell_view, CellView, Header, ScoreBoard};
+use views::{CellView, Header, ScoreBoard, cell_view};
 
 mod modal;
 mod views;
@@ -64,23 +65,19 @@ impl AppState {
     }
 
     pub fn subscription(&self) -> Subscription<AppMsg> {
-        let is_animating = self
-            .cells
-            .iter()
-            .any(|cell| cell.animated.is_animating(self.now))
+        // Check if any of our animations are active.
+        let is_animating = self.cells.iter().any(|cell| cell.is_animating(self.now))
             || self.modal_animation.is_animating(self.now);
 
+        fn maybe_subscription<T>(b: bool, f: impl FnOnce() -> Subscription<T>) -> Subscription<T> {
+            if b { f() } else { Subscription::none() }
+        }
+
         Subscription::batch([
-            if matches!(self.board.state(), GameState::Active) {
+            maybe_subscription(matches!(self.board.state(), GameState::Active), || {
                 time::every(Duration::from_secs(1)).map(|_| AppMsg::Tick)
-            } else {
-                Subscription::none()
-            },
-            if is_animating {
-                window::frames().map(|_| AppMsg::Animate)
-            } else {
-                Subscription::none()
-            },
+            }),
+            maybe_subscription(is_animating, || window::frames().map(|_| AppMsg::Animate)),
         ])
     }
 
@@ -114,20 +111,13 @@ impl AppState {
                     cell_view.cell = *cell;
                 }
 
-                match self.board.state() {
-                    GameState::Loss => {
-                        self.outcome = Some("You lose!".into());
-                        self.modal_animation.go_mut(true, self.now);
+                if matches!(self.board.state(), GameState::Win) {
+                    self.outcome = Some("You won!".into());
+                    self.modal_animation.go_mut(true, self.now);
+                    if let Err(err) = save_win(self.elapsed_seconds) {
+                        eprintln!("Failed to save win: {err}");
                     }
-                    GameState::Win => {
-                        self.outcome = Some("You won!".into());
-                        self.modal_animation.go_mut(true, self.now);
-                        if let Err(err) = save_win(self.elapsed_seconds) {
-                            eprintln!("Failed to save win: {err}");
-                        }
-                    }
-                    _ => (),
-                };
+                }
             }
             AppMsg::Flag(pos) if matches!(self.board.state(), GameState::Active) => {
                 self.board.flag_cell(pos);
@@ -223,19 +213,13 @@ impl AppState {
             .padding(20);
 
         let board = container(Column::with_children(rows).spacing(2))
-            // .width(Length::Fill)
-            // .height(Length::Fill)
             .center_x(Length::Fill)
             .center_y(Length::Fill)
             .style(|theme| container::dark(theme).background(color!(0xf2f2f2)));
 
         let content = column![
             Header::new(&self.board, self.elapsed_seconds).view(),
-            if matches!(self.board.state(), GameState::Loss | GameState::Win) {
-                opaque(board)
-            } else {
-                board.into()
-            },
+            board,
             button_container
         ];
 
