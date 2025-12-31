@@ -17,10 +17,7 @@ where
         opaque(
             mouse_area(
                 container(opaque(content))
-                    .align_top(Length::Fill)
-                    .width(Length::Fill)
-                    .center_x(Length::Fill)
-                    .center_y(Length::Fill)
+                    .center(Length::Fill)
                     .padding(padding::top(10))
                     .style(move |_theme| {
                         container::Style {

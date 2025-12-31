@@ -70,7 +70,7 @@ impl CellView {
     }
 
     /// Render this cell.
-    pub fn view(&self) -> Element<'_, AppMsg> {
+    pub fn view(&self) -> impl Into<Element<'_, AppMsg>> {
         let adjacent_mines = self.cell.adjacent_mines;
 
         let content: Element<'_, AppMsg> = match self.cell.state {
@@ -178,7 +178,7 @@ impl CellView {
             }
         };
 
-        container(content).width(35).height(35).into()
+        container(content).width(35).height(35)
     }
 }
 

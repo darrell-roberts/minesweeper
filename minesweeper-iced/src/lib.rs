@@ -203,7 +203,7 @@ impl AppState {
                 y = cell_view.pos.y.get();
             }
 
-            row.push(cell_view.view());
+            row.push(cell_view.view().into());
         }
 
         rows.push(Element::from(Row::with_children(row).spacing(2)));

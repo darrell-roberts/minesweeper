@@ -15,7 +15,7 @@ impl<'a> ScoreBoard<'a> {
         Self { win_history }
     }
 
-    pub fn view<Message>(&self) -> Element<'a, Message>
+    pub fn view<Message>(&self) -> impl Into<Element<'a, Message>>
     where
         Message: 'a,
     {
@@ -32,6 +32,6 @@ impl<'a> ScoreBoard<'a> {
                 .spacing(10);
                 col.push(row).spacing(10)
             });
-        container(col).padding(20).into()
+        container(col).padding(20)
     }
 }
