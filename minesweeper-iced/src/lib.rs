@@ -238,14 +238,10 @@ impl AppState {
         ];
 
         let board = container(Column::with_children(rows).spacing(2))
-            .center_x(Length::Fill)
-            .center_y(Length::Fill)
+            .center(Length::Fill)
             .style(|theme| {
                 let palette = theme.extended_palette();
-                container::primary(theme).background(
-                    // color!(0xf2f2f2)
-                    palette.secondary.base.color,
-                )
+                container::primary(theme).background(palette.secondary.base.color)
             });
 
         let theme_picker = container(pick_list(
@@ -266,7 +262,6 @@ impl AppState {
             Header::new(&self.board, self.elapsed_seconds).view(),
             board,
             button_container,
-            // theme_picker
         ];
 
         if let Some(outcome) = self.outcome.as_ref() {
@@ -279,6 +274,7 @@ impl AppState {
                     .style(|theme| modal_content_style(theme, &self.modal_animation, self.now)),
                 AppMsg::DismissModal,
             )
+            .into()
         } else if let Some(wins) = self.scoreboard.as_ref() {
             modal(
                 content,
@@ -287,6 +283,7 @@ impl AppState {
                     .style(|theme| modal_content_style(theme, &self.modal_animation, self.now)),
                 AppMsg::DismissScoreBoard,
             )
+            .into()
         } else {
             content.into()
         }

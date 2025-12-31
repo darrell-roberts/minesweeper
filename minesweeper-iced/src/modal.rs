@@ -4,11 +4,12 @@ use iced::{
     widget::{container, mouse_area, opaque, stack},
 };
 
+/// Create a modal using content over the base elements.
 pub fn modal<'a, Message>(
     base: impl Into<Element<'a, Message>>,
     content: impl Into<Element<'a, Message>>,
     on_blur: Message,
-) -> Element<'a, Message>
+) -> impl Into<Element<'a, Message>>
 where
     Message: Clone + 'a,
 {
@@ -35,5 +36,4 @@ where
             .on_press(on_blur)
         )
     ]
-    .into()
 }

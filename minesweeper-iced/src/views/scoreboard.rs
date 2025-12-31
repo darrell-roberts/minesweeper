@@ -6,15 +6,18 @@ use iced::{
 };
 use minesweeper::history::Win;
 
+/// Scoreboard view.
 pub struct ScoreBoard<'a> {
     win_history: &'a [Win],
 }
 
 impl<'a> ScoreBoard<'a> {
+    /// New scoreboard view.
     pub fn new(win_history: &'a [Win]) -> Self {
         Self { win_history }
     }
 
+    /// Render scoreboard.
     pub fn view<Message>(&self) -> impl Into<Element<'a, Message>>
     where
         Message: 'a,
