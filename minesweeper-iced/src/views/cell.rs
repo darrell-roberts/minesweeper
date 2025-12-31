@@ -3,7 +3,7 @@ use std::time::Instant;
 
 use crate::AppMsg;
 use iced::{
-    Animation, Color, Element, Length,
+    Animation, Color, Element, Length, Theme,
     animation::Easing,
     color,
     widget::{Button, button, container, mouse_area, text},
@@ -65,7 +65,7 @@ impl CellView {
     }
 
     /// Start open mined cell animation.
-    pub fn boom(&mut self) {
+    pub fn detonate(&mut self) {
         self.exposed_animation.go_mut(true, self.now);
     }
 
@@ -93,11 +93,13 @@ impl CellView {
             })
             .center(Length::Fill)
             // Animate the button fading from closed to open color.
-            .style(|theme| {
+            .style(|theme: &Theme| {
                 if self.cell_animation.is_animating(self.now) {
+                    let palette = theme.extended_palette();
                     container::primary(theme).background(Color {
                         a: self.cell_animation.interpolate(1.0, 0.0, self.now),
-                        ..color!(0x5865F2)
+                        // ..color!(0x5865F2)
+                        ..palette.primary.base.color
                     })
                 } else {
                     container::primary(theme).background(Color::WHITE)

@@ -127,7 +127,7 @@ impl AppState {
                     if let (CellState::Closed { .. }, CellState::ExposedMine) =
                         (cell_view.cell.state, cell.state)
                     {
-                        cell_view.boom();
+                        cell_view.detonate();
                     }
                     cell_view.cell = *cell;
                 }

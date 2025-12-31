@@ -19,6 +19,6 @@ fn main() -> iced::Result {
         },
         ..Default::default()
     })
-    .theme(|_app: &AppState| Theme::Light)
+    .theme(|_app: &AppState| Theme::Ferra)
     .run()
 }
