@@ -3,7 +3,7 @@ use std::time::Instant;
 
 use crate::AppMsg;
 use iced::{
-    Animation, Color, Element, Length, Theme,
+    Animation, Color, Element, Length, Shadow, Theme,
     animation::Easing,
     color,
     widget::{Button, button, container, mouse_area, text},
@@ -136,6 +136,11 @@ impl CellView {
                                 } else {
                                     1.0
                                 };
+                                style.shadow = Shadow {
+                                    color: Color::BLACK,
+                                    offset: [2.0, 2.0].into(),
+                                    blur_radius: 0.2,
+                                };
                                 style
                             },
                         ),
@@ -149,6 +154,15 @@ impl CellView {
                 } else {
                     mouse_area(
                         cell_button("")
+                            .style(|theme, status| {
+                                let mut style = button::primary(theme, status);
+                                style.shadow = Shadow {
+                                    color: Color::BLACK,
+                                    offset: [2.0, 2.0].into(),
+                                    blur_radius: 0.2,
+                                };
+                                style
+                            })
                             .on_press_maybe(game_active.then_some(AppMsg::Open(self.pos))),
                     )
                     .on_right_press(if game_active {

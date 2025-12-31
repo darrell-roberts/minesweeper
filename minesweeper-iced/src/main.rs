@@ -1,5 +1,5 @@
 //! A simple minesweeper game.
-use iced::{Theme, window};
+use iced::window;
 use minesweeper_iced::AppState;
 
 fn main() -> iced::Result {
@@ -19,6 +19,6 @@ fn main() -> iced::Result {
         },
         ..Default::default()
     })
-    .theme(|_app: &AppState| Theme::Ferra)
+    .theme(|app: &AppState| app.theme.clone())
     .run()
 }

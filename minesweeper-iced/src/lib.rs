@@ -1,9 +1,9 @@
 //! Minesweeper application state view and updates.
 use iced::{
-    Animation, Color, Element, Length, Subscription, Task,
+    Animation, Color, Element, Length, Subscription, Task, Theme,
     animation::Easing,
-    border, color, time,
-    widget::{Column, Row, button, column, container, row, text},
+    border, time,
+    widget::{Column, Row, button, column, container, pick_list, row, text},
     window,
 };
 use minesweeper::{
@@ -36,10 +36,12 @@ pub struct AppState {
     now: Instant,
     /// Animation for modal.
     modal_animation: Animation<bool>,
+    /// Theme
+    pub theme: Theme,
 }
 
 /// Application messages.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub enum AppMsg {
     /// Open a cell via its position.
     Open(Pos),
@@ -59,6 +61,8 @@ pub enum AppMsg {
     None,
     /// Render for animation. No-op.
     Animate,
+    /// Select theme
+    Theme(Theme),
 }
 
 impl AppState {
@@ -80,6 +84,7 @@ impl AppState {
             scoreboard: None,
             now,
             modal_animation: mk_modal_animation(),
+            theme: Theme::Nord,
         }
     }
 
@@ -185,6 +190,9 @@ impl AppState {
             AppMsg::DismissScoreBoard => {
                 self.scoreboard = None;
             }
+            AppMsg::Theme(theme) => {
+                self.theme = theme;
+            }
             _ => (),
         }
         Task::none()
@@ -229,20 +237,36 @@ impl AppState {
             .padding(10),
         ];
 
-        let button_container = container(button_row)
+        let board = container(Column::with_children(rows).spacing(2))
+            .center_x(Length::Fill)
+            .center_y(Length::Fill)
+            .style(|theme| {
+                let palette = theme.extended_palette();
+                container::primary(theme).background(
+                    // color!(0xf2f2f2)
+                    palette.secondary.base.color,
+                )
+            });
+
+        let theme_picker = container(pick_list(
+            Theme::ALL,
+            Some(self.theme.clone()),
+            |selected| AppMsg::Theme(selected),
+        ))
+        .align_right(Length::Fill);
+
+        let bottom = row![button_row, theme_picker];
+
+        let button_container = container(bottom)
             .width(Length::Fill)
             .center_x(Length::Fill)
             .padding(20);
 
-        let board = container(Column::with_children(rows).spacing(2))
-            .center_x(Length::Fill)
-            .center_y(Length::Fill)
-            .style(|theme| container::primary(theme).background(color!(0xf2f2f2)));
-
         let content = column![
             Header::new(&self.board, self.elapsed_seconds).view(),
             board,
-            button_container
+            button_container,
+            // theme_picker
         ];
 
         if let Some(outcome) = self.outcome.as_ref() {
