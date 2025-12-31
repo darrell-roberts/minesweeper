@@ -92,7 +92,17 @@ impl CellView {
                 text("")
             })
             .center(Length::Fill)
-            .style(|theme| container::primary(theme).background(Color::WHITE))
+            // Animate the button fading from closed to open color.
+            .style(|theme| {
+                if self.cell_animation.is_animating(self.now) {
+                    container::primary(theme).background(Color {
+                        a: self.cell_animation.interpolate(1.0, 0.0, self.now),
+                        ..color!(0x5865F2)
+                    })
+                } else {
+                    container::primary(theme).background(Color::WHITE)
+                }
+            })
             .into(),
 
             CellState::Closed { flagged, .. } => {
