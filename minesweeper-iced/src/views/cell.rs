@@ -77,14 +77,15 @@ impl CellView {
             CellState::Open => container(if self.cell.adjacent_mines > 0 {
                 text(format!("{adjacent_mines}"))
                     .center()
-                    .style(move |_| {
+                    .style(move |theme| {
                         if self.cell_animation.is_animating(self.now) {
                             select_color(
+                                theme,
                                 adjacent_mines,
                                 self.cell_animation.interpolate(0.0, 1.0, self.now),
                             )
                         } else {
-                            select_color(adjacent_mines, 1.0)
+                            select_color(theme, adjacent_mines, 1.0)
                         }
                     })
                     .center()
@@ -94,6 +95,7 @@ impl CellView {
             .center(Length::Fill)
             // Animate the button fading from closed to open color.
             .style(|theme: &Theme| {
+                let palette = theme.extended_palette();
                 if self.cell_animation.is_animating(self.now) {
                     let palette = theme.extended_palette();
                     container::primary(theme).background(Color {
@@ -102,7 +104,8 @@ impl CellView {
                         ..palette.primary.base.color
                     })
                 } else {
-                    container::primary(theme).background(Color::WHITE)
+                    // container::primary(theme).background(Color::WHITE)
+                    container::primary(theme).background(palette.background.weak.color)
                 }
             })
             .into(),
@@ -199,14 +202,16 @@ impl CellView {
 }
 
 /// Set the text color for an open cell with adjacent mines.
-fn select_color(adjacent_mines: u8, opacity: f32) -> text::Style {
+fn select_color(theme: &Theme, adjacent_mines: u8, opacity: f32) -> text::Style {
+    let palette = theme.extended_palette();
+
     text::Style {
         color: Some(Color {
             a: opacity,
             ..match adjacent_mines {
-                1 => Color::BLACK,
-                2 => color!(0x26a269),
-                3 => color!(0xa51d2d),
+                1 => palette.success.base.color,
+                2 => palette.warning.base.color,
+                3 => palette.danger.base.color,
                 _ => Color::from_rgb8(254, 0, 0),
             }
         }),
