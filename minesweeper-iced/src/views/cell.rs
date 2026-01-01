@@ -103,7 +103,6 @@ impl CellView {
                         ..palette.primary.base.color
                     })
                 } else {
-                    // container::primary(theme).background(Color::WHITE)
                     container::primary(theme).background(palette.background.weak.color)
                 }
             })
@@ -138,11 +137,7 @@ impl CellView {
                                 } else {
                                     1.0
                                 };
-                                style.shadow = Shadow {
-                                    color: Color::BLACK,
-                                    offset: [2.0, 2.0].into(),
-                                    blur_radius: 0.2,
-                                };
+                                style.shadow = mk_button_shadow(status);
                                 style
                             },
                         ),
@@ -158,11 +153,7 @@ impl CellView {
                         cell_button("")
                             .style(|theme, status| {
                                 let mut style = button::primary(theme, status);
-                                style.shadow = Shadow {
-                                    color: Color::BLACK,
-                                    offset: [2.0, 2.0].into(),
-                                    blur_radius: 0.2,
-                                };
+                                style.shadow = mk_button_shadow(status);
                                 style
                             })
                             .on_press_maybe(game_active.then_some(AppMsg::Open(self.pos))),
@@ -222,4 +213,16 @@ where
     Message: Clone + 'a,
 {
     button(content).width(35).height(35)
+}
+
+fn mk_button_shadow(status: button::Status) -> Shadow {
+    if matches!(status, button::Status::Pressed) {
+        Default::default()
+    } else {
+        Shadow {
+            color: Color::BLACK,
+            offset: [2.0, 2.0].into(),
+            blur_radius: 0.2,
+        }
+    }
 }

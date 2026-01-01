@@ -1,6 +1,6 @@
 //! Minesweeper application state view and updates.
 use iced::{
-    Animation, Color, Element, Length, Subscription, Task, Theme,
+    Animation, Color, Element, Length, Shadow, Subscription, Task, Theme,
     animation::Easing,
     border, padding, time,
     widget::{Column, Row, button, column, container, pick_list, row, text},
@@ -217,6 +217,15 @@ impl AppState {
                 button("Restart")
                     .style(|theme, status| button::Style {
                         border: border::rounded(10),
+                        shadow: if matches!(status, button::Status::Pressed) {
+                            Default::default()
+                        } else {
+                            Shadow {
+                                color: Color::BLACK,
+                                offset: [2.0, 2.0].into(),
+                                blur_radius: 0.2,
+                            }
+                        },
                         ..button::primary(theme, status)
                     })
                     .on_press(AppMsg::Restart)
@@ -226,6 +235,15 @@ impl AppState {
                 button("Scoreboard")
                     .style(|theme, status| button::Style {
                         border: border::rounded(10),
+                        shadow: if matches!(status, button::Status::Pressed) {
+                            Default::default()
+                        } else {
+                            Shadow {
+                                color: Color::BLACK,
+                                offset: [2.0, 2.0].into(),
+                                blur_radius: 0.2,
+                            }
+                        },
                         ..button::primary(theme, status)
                     })
                     .on_press(AppMsg::ViewScoreBoard),
