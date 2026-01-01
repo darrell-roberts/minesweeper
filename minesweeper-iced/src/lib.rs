@@ -202,7 +202,9 @@ impl AppState {
 
         for cell_view in &self.cells {
             if cell_view.pos.y.get() != y {
-                rows.push(Element::from(Row::with_children(row).spacing(2)));
+                rows.push(Element::from(
+                    Row::with_children(row).spacing(BOARD_SPACING),
+                ));
                 row = Vec::new();
                 y = cell_view.pos.y.get();
             }
@@ -210,7 +212,9 @@ impl AppState {
             row.push(cell_view.view().into());
         }
 
-        rows.push(Element::from(Row::with_children(row).spacing(2)));
+        rows.push(Element::from(
+            Row::with_children(row).spacing(BOARD_SPACING),
+        ));
 
         let button_row = row![
             container(
@@ -239,7 +243,7 @@ impl AppState {
             .padding(padding::left(10).right(10)),
         ];
 
-        let board = container(Column::with_children(rows).spacing(2))
+        let board = container(Column::with_children(rows).spacing(BOARD_SPACING))
             .center(Length::Fill)
             .style(|theme| {
                 let palette = theme.extended_palette();
@@ -334,3 +338,5 @@ fn mk_board() -> Board {
         NonZeroU8::try_from(20).unwrap(),
     )
 }
+
+const BOARD_SPACING: u32 = 5;
