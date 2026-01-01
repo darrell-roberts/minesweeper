@@ -100,7 +100,6 @@ impl CellView {
                     let palette = theme.extended_palette();
                     container::primary(theme).background(Color {
                         a: self.cell_animation.interpolate(1.0, 0.0, self.now),
-                        // ..color!(0x5865F2)
                         ..palette.primary.base.color
                     })
                 } else {
