@@ -2,7 +2,7 @@
 use iced::{
     Animation, Color, Element, Length, Subscription, Task, Theme,
     animation::Easing,
-    border, time,
+    border, padding, time,
     widget::{Column, Row, button, column, container, pick_list, row, text},
     window,
 };
@@ -225,7 +225,7 @@ impl AppState {
                     })
                     .on_press(AppMsg::Restart)
             )
-            .padding(10),
+            .padding(padding::left(10).right(10)),
             container(
                 button("Scoreboard")
                     .style(|theme, status| button::Style {
@@ -234,7 +234,7 @@ impl AppState {
                     })
                     .on_press(AppMsg::ViewScoreBoard),
             )
-            .padding(10),
+            .padding(padding::left(10).right(10)),
         ];
 
         let board = container(Column::with_children(rows).spacing(2))
@@ -247,16 +247,13 @@ impl AppState {
         let theme_picker = container(pick_list(
             Theme::ALL,
             Some(self.theme.clone()),
-            |selected| AppMsg::Theme(selected),
+            AppMsg::Theme,
         ))
         .align_right(Length::Fill);
 
         let bottom = row![button_row, theme_picker];
 
-        let button_container = container(bottom)
-            .width(Length::Fill)
-            .center_x(Length::Fill)
-            .padding(20);
+        let button_container = container(bottom).width(Length::Fill).padding(10);
 
         let content = column![
             Header::new(&self.board, self.elapsed_seconds).view(),
