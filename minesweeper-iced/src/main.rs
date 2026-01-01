@@ -11,7 +11,7 @@ fn main() -> iced::Result {
     )
     .title("Minesweeper")
     .window(window::Settings {
-        size: (900., 900.).into(),
+        size: (1536., 900.).into(),
         #[cfg(target_os = "linux")]
         platform_specific: window::settings::PlatformSpecific {
             application_id: "io.github.darrellroberts.minesweeper".into(),

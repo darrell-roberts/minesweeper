@@ -68,10 +68,7 @@ pub enum AppMsg {
 impl AppState {
     /// Create a new application state.
     fn new() -> Self {
-        let board = Board::new(
-            NonZeroU8::try_from(20).unwrap(),
-            NonZeroU8::try_from(20).unwrap(),
-        );
+        let board = mk_board();
         let now = Instant::now();
         Self {
             cells: board
@@ -169,10 +166,7 @@ impl AppState {
             }
             AppMsg::Restart => {
                 self.elapsed_seconds = 0;
-                self.board = Board::new(
-                    NonZeroU8::try_from(20).unwrap(),
-                    NonZeroU8::try_from(20).unwrap(),
-                );
+                self.board = mk_board();
                 self.cells = self
                     .board
                     .positions()
@@ -323,4 +317,11 @@ fn mk_modal_animation() -> Animation<bool> {
         .easing(Easing::EaseInBack)
         .very_slow()
         .repeat(2)
+}
+
+fn mk_board() -> Board {
+    Board::new(
+        NonZeroU8::try_from(40).unwrap(),
+        NonZeroU8::try_from(20).unwrap(),
+    )
 }
