@@ -108,7 +108,6 @@ impl AppState {
         self.now = instant;
         self.cells.iter_mut().for_each(|cell_view| {
             cell_view.now = instant;
-            cell_view.game_state = *self.board.state();
         });
 
         match message {
@@ -116,6 +115,8 @@ impl AppState {
                 if matches!(self.board.state(), GameState::Active | GameState::New) =>
             {
                 self.board.open_cell(pos);
+
+                let game_state = self.board.state();
 
                 // Update cell state.
                 for (cell_view, (_pos, cell)) in self.cells.iter_mut().zip(self.board.positions()) {
@@ -131,6 +132,7 @@ impl AppState {
                     {
                         cell_view.detonate();
                     }
+                    cell_view.game_state = *game_state;
                     cell_view.cell = *cell;
                 }
 
