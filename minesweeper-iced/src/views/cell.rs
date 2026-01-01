@@ -1,9 +1,9 @@
 //! View for a single cell.
 use std::time::Instant;
 
-use crate::AppMsg;
+use crate::{AppMsg, views::mk_button_shadow};
 use iced::{
-    Animation, Color, Element, Length, Shadow, Theme,
+    Animation, Color, Element, Length, Theme,
     animation::Easing,
     color,
     widget::{Button, button, container, mouse_area, text},
@@ -137,7 +137,7 @@ impl CellView {
                                 } else {
                                     1.0
                                 };
-                                style.shadow = mk_button_shadow(status);
+                                style.shadow = mk_button_shadow(theme, status);
                                 style
                             },
                         ),
@@ -153,7 +153,7 @@ impl CellView {
                         cell_button("")
                             .style(|theme, status| {
                                 let mut style = button::primary(theme, status);
-                                style.shadow = mk_button_shadow(status);
+                                style.shadow = mk_button_shadow(theme, status);
                                 style
                             })
                             .on_press_maybe(game_active.then_some(AppMsg::Open(self.pos))),
@@ -213,16 +213,4 @@ where
     Message: Clone + 'a,
 {
     button(content).width(35).height(35)
-}
-
-fn mk_button_shadow(status: button::Status) -> Shadow {
-    if matches!(status, button::Status::Pressed) {
-        Default::default()
-    } else {
-        Shadow {
-            color: Color::BLACK,
-            offset: [2.0, 2.0].into(),
-            blur_radius: 0.2,
-        }
-    }
 }

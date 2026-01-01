@@ -20,12 +20,13 @@ where
                 container(opaque(content))
                     .center(Length::Fill)
                     .padding(padding::top(10))
-                    .style(move |_theme| {
+                    .style(move |theme| {
+                        let palette = theme.extended_palette();
                         container::Style {
                             background: Some(
                                 Color {
                                     a: 0.5,
-                                    ..Color::BLACK
+                                    ..palette.primary.strong.color
                                 }
                                 .into(),
                             ),

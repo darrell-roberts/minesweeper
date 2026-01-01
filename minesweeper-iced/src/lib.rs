@@ -1,6 +1,6 @@
 //! Minesweeper application state view and updates.
 use iced::{
-    Animation, Color, Element, Length, Shadow, Subscription, Task, Theme,
+    Animation, Color, Element, Length, Subscription, Task, Theme,
     animation::Easing,
     border, padding, time,
     widget::{Column, Row, button, column, container, pick_list, row, text},
@@ -15,7 +15,7 @@ use std::{
     num::NonZeroU8,
     time::{Duration, Instant},
 };
-use views::{CellView, Header, ScoreBoard, cell_view};
+use views::{CellView, Header, ScoreBoard, cell_view, mk_button_shadow};
 
 mod modal;
 mod views;
@@ -215,36 +215,24 @@ impl AppState {
         let button_row = row![
             container(
                 button("Restart")
-                    .style(|theme, status| button::Style {
-                        border: border::rounded(10),
-                        shadow: if matches!(status, button::Status::Pressed) {
-                            Default::default()
-                        } else {
-                            Shadow {
-                                color: Color::BLACK,
-                                offset: [2.0, 2.0].into(),
-                                blur_radius: 0.2,
-                            }
-                        },
-                        ..button::primary(theme, status)
+                    .style(|theme: &Theme, status| {
+                        button::Style {
+                            border: border::rounded(10),
+                            shadow: mk_button_shadow(theme, status),
+                            ..button::primary(theme, status)
+                        }
                     })
                     .on_press(AppMsg::Restart)
             )
             .padding(padding::left(10).right(10)),
             container(
                 button("Scoreboard")
-                    .style(|theme, status| button::Style {
-                        border: border::rounded(10),
-                        shadow: if matches!(status, button::Status::Pressed) {
-                            Default::default()
-                        } else {
-                            Shadow {
-                                color: Color::BLACK,
-                                offset: [2.0, 2.0].into(),
-                                blur_radius: 0.2,
-                            }
-                        },
-                        ..button::primary(theme, status)
+                    .style(|theme: &Theme, status| {
+                        button::Style {
+                            border: border::rounded(10),
+                            shadow: mk_button_shadow(theme, status),
+                            ..button::primary(theme, status)
+                        }
                     })
                     .on_press(AppMsg::ViewScoreBoard),
             )
@@ -312,6 +300,7 @@ fn modal_content_style(
     animation: &Animation<bool>,
     now: Instant,
 ) -> container::Style {
+    let palette = theme.palette();
     container::primary(theme)
         .border(iced::border::rounded(15))
         .background(Color {
@@ -320,7 +309,7 @@ fn modal_content_style(
             } else {
                 0.5
             },
-            ..Color::BLACK
+            ..palette.background
         })
         .color(Color {
             a: if animation.is_animating(now) {
@@ -328,7 +317,7 @@ fn modal_content_style(
             } else {
                 1.0
             },
-            ..Color::WHITE
+            ..palette.text
         })
 }
 
