@@ -10,6 +10,7 @@ use iced::{
 };
 use minesweeper::model::{Cell, CellState, GameState, Pos};
 
+/// Cell view.
 pub struct CellView {
     pub cell: Cell,
     pub pos: Pos,
