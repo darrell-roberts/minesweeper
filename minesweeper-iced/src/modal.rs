@@ -4,11 +4,12 @@ use iced::{
     widget::{container, mouse_area, opaque, stack},
 };
 
+/// Create a modal using content over the base elements.
 pub fn modal<'a, Message>(
     base: impl Into<Element<'a, Message>>,
     content: impl Into<Element<'a, Message>>,
     on_blur: Message,
-) -> Element<'a, Message>
+) -> impl Into<Element<'a, Message>>
 where
     Message: Clone + 'a,
 {
@@ -17,17 +18,15 @@ where
         opaque(
             mouse_area(
                 container(opaque(content))
-                    .align_top(Length::Fill)
-                    .width(Length::Fill)
-                    .center_x(Length::Fill)
-                    .center_y(Length::Fill)
+                    .center(Length::Fill)
                     .padding(padding::top(10))
-                    .style(move |_theme| {
+                    .style(move |theme| {
+                        let palette = theme.extended_palette();
                         container::Style {
                             background: Some(
                                 Color {
                                     a: 0.5,
-                                    ..Color::BLACK
+                                    ..palette.primary.strong.color
                                 }
                                 .into(),
                             ),
@@ -38,5 +37,4 @@ where
             .on_press(on_blur)
         )
     ]
-    .into()
 }

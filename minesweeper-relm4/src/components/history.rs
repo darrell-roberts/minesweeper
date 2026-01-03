@@ -63,8 +63,8 @@ impl SimpleComponent for WinHistoryView {
                     set_css_classes: &["winHistoryHeader"],
                 },
 
-                #[local_ref]
-                win_box -> gtk::Box {
+                // #[local_ref]
+                gtk::Box {
                     set_vexpand: true,
                     set_orientation: gtk::Orientation::Vertical,
                 },
@@ -92,7 +92,7 @@ impl SimpleComponent for WinHistoryView {
             hidden: true,
             win_history,
         };
-        let win_box = model.win_history.widget();
+        let _win_box = model.win_history.widget();
         let widgets = view_output!();
 
         ComponentParts { model, widgets }
@@ -127,7 +127,7 @@ impl FactoryComponent for WinData {
     type ParentWidget = gtk::Box;
 
     view! {
-        root = gtk::Box {
+        gtk::Box {
             set_orientation: gtk::Orientation::Horizontal,
 
             gtk::Box {
