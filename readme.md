@@ -4,7 +4,7 @@
 
 An Iced UI for the minesweeper game.
 
-<img width="1012" alt="Screenshot 2025-01-08 at 9 33 38 AM" src="https://github.com/user-attachments/assets/c5853aa7-5167-4aaf-aefb-7d51212c263b" />
+<img width="1756" height="1068" alt="Screenshot 2026-01-03 at 6 40 22 PM" src="https://github.com/user-attachments/assets/f463dc92-2b09-4eab-ad12-5dea47590b9d" />
 
 # minesweeper-relm4
 
