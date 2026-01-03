@@ -30,7 +30,7 @@ pub fn mk_button_shadow(theme: &Theme, status: button::Status) -> Shadow {
         Shadow {
             color: palette.secondary.strong.color,
             offset: [2.0, 2.0].into(),
-            blur_radius: 2.5,
+            blur_radius: 1.0,
         }
     }
 }

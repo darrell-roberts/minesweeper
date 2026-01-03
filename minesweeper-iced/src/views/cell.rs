@@ -3,9 +3,10 @@ use std::time::Instant;
 
 use crate::{AppMsg, views::mk_button_shadow};
 use iced::{
-    Animation, Color, Element, Length, Theme,
+    Animation, Background, Color, Element, Gradient, Length, Theme,
     animation::Easing,
     color,
+    gradient::Linear,
     widget::{Button, button, container, mouse_area, text},
 };
 use minesweeper::model::{Cell, CellState, GameState, Pos};
@@ -76,7 +77,7 @@ impl CellView {
 
         let content: Element<'_, AppMsg> = match self.cell.state {
             CellState::Open => container(if self.cell.adjacent_mines > 0 {
-                text(format!("{adjacent_mines}"))
+                text!("{adjacent_mines}")
                     .center()
                     .style(move |theme| {
                         if self.cell_animation.is_animating(self.now) {
@@ -98,11 +99,10 @@ impl CellView {
             .style(|theme: &Theme| {
                 let palette = theme.extended_palette();
                 if self.cell_animation.is_animating(self.now) {
-                    let palette = theme.extended_palette();
-                    container::primary(theme).background(Color {
-                        a: self.cell_animation.interpolate(1.0, 0.0, self.now),
-                        ..palette.primary.base.color
-                    })
+                    container::primary(theme).background(
+                        mk_cell_background(theme, button::Status::Active)
+                            .scale_alpha(self.cell_animation.interpolate(1.0, 0.0, self.now)),
+                    )
                 } else {
                     container::primary(theme).background(palette.background.weak.color)
                 }
@@ -116,23 +116,14 @@ impl CellView {
                         cell_button(text("🚩").shaping(text::Shaping::Advanced).center()).style(
                             |theme, status| {
                                 let mut style = button::primary(theme, status);
-                                let background =
-                                    style.background.map(|background| match background {
-                                        iced::Background::Color(mut color) => {
-                                            color.a = if self.cell_animation.is_animating(self.now)
-                                            {
-                                                self.cell_animation.interpolate(0.0, 1.0, self.now)
-                                            } else {
-                                                1.0
-                                            };
-
-                                            iced::Background::Color(color)
-                                        }
-                                        iced::Background::Gradient(gradient) => {
-                                            iced::Background::Gradient(gradient)
-                                        }
-                                    });
-                                style.background = background;
+                                let background = mk_cell_background(theme, status).scale_alpha(
+                                    if self.cell_animation.is_animating(self.now) {
+                                        self.cell_animation.interpolate(0.0, 1.0, self.now)
+                                    } else {
+                                        1.0
+                                    },
+                                );
+                                style.background = Some(background);
                                 style.text_color.a = if self.cell_animation.is_animating(self.now) {
                                     self.cell_animation.interpolate(0.0, 1.0, self.now)
                                 } else {
@@ -153,7 +144,8 @@ impl CellView {
                     mouse_area(
                         cell_button("")
                             .style(|theme, status| {
-                                let mut style = button::primary(theme, status);
+                                let mut style = button::primary(theme, status)
+                                    .with_background(mk_cell_background(theme, status));
                                 style.shadow = mk_button_shadow(theme, status);
                                 style
                             })
@@ -214,4 +206,22 @@ where
     Message: Clone + 'a,
 {
     button(content).width(35).height(35)
+}
+
+fn mk_cell_background(theme: &Theme, status: button::Status) -> Background {
+    let palette = theme.extended_palette();
+    let primary = palette.primary.base.color;
+    let secondary = palette.secondary.base.color;
+
+    Background::Gradient(Gradient::Linear(
+        Linear::new(2)
+            .add_stop(0.2, primary)
+            .add_stop(1.0, secondary)
+            .scale_alpha(match status {
+                button::Status::Active => 1.0,
+                button::Status::Hovered => 0.8,
+                button::Status::Pressed => 0.5,
+                button::Status::Disabled => 0.5,
+            }),
+    ))
 }
