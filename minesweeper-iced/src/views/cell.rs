@@ -211,12 +211,14 @@ where
 fn mk_cell_background(theme: &Theme, status: button::Status) -> Background {
     let palette = theme.extended_palette();
     let primary = palette.primary.base.color;
-    let secondary = palette.secondary.base.color;
+    let secondary = palette.primary.weak.color;
 
     Background::Gradient(Gradient::Linear(
-        Linear::new(2)
+        Linear::new(2.5)
+            .add_stop(0.1, primary)
+            .add_stop(0.4, secondary)
             .add_stop(0.2, primary)
-            .add_stop(1.0, secondary)
+            .add_stop(0.6, secondary)
             .scale_alpha(match status {
                 button::Status::Active => 1.0,
                 button::Status::Hovered => 0.8,

@@ -81,7 +81,7 @@ impl AppState {
             scoreboard: None,
             now,
             modal_animation: mk_modal_animation(),
-            theme: Theme::Nord,
+            theme: Theme::TokyoNight,
         }
     }
 
