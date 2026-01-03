@@ -1,5 +1,5 @@
 //! A simple minesweeper game.
-use iced::{Theme, window};
+use iced::window;
 use minesweeper_iced::AppState;
 
 fn main() -> iced::Result {
@@ -11,7 +11,7 @@ fn main() -> iced::Result {
     )
     .title("Minesweeper")
     .window(window::Settings {
-        size: (900., 900.).into(),
+        size: (1644., 924.).into(),
         #[cfg(target_os = "linux")]
         platform_specific: window::settings::PlatformSpecific {
             application_id: "io.github.darrellroberts.minesweeper".into(),
@@ -19,6 +19,6 @@ fn main() -> iced::Result {
         },
         ..Default::default()
     })
-    .theme(|_app: &AppState| Theme::Light)
+    .theme(|app: &AppState| app.theme.clone())
     .run()
 }

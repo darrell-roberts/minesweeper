@@ -9,6 +9,10 @@ edition = "2024"
 iced = { version = "0.14", features = ["lazy", "tokio", "advanced"] }
 minesweeper = { path = "../minesweeper" }
 
+
+[[example]]
+name = "gradient_shadow"
+
 [package.metadata.deb]
 maintainer = "Darrell Roberts"
 copyright = "2024, Darrell Roberts"

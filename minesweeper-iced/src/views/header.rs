@@ -6,6 +6,7 @@ use iced::{
 };
 use minesweeper::model::Board;
 
+/// Header view.
 pub struct Header {
     elapsed_seconds: u64,
     opened: usize,
@@ -14,6 +15,7 @@ pub struct Header {
 }
 
 impl Header {
+    /// Create the header view.
     pub fn new(board: &Board, elapsed_seconds: u64) -> Self {
         Self {
             elapsed_seconds,
@@ -25,6 +27,7 @@ impl Header {
 }
 
 impl Header {
+    /// Render header
     pub fn view<'a, Message>(&self) -> Element<'a, Message>
     where
         Message: 'a,

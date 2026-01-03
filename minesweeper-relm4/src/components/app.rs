@@ -89,7 +89,7 @@ impl SimpleComponent for AppModel {
             set_orientation: gtk::Orientation::Vertical,
             set_spacing: 5,
 
-            #[name = "header"]
+            // #[name = "header"]
             gtk::Box {
               set_halign: gtk::Align::Center,
               set_orientation: gtk::Orientation::Horizontal,

@@ -1,9 +1,9 @@
 //! Minesweeper application state view and updates.
 use iced::{
-    Animation, Color, Element, Length, Subscription, Task,
+    Animation, Color, Element, Length, Subscription, Task, Theme,
     animation::Easing,
-    border, color, time,
-    widget::{Column, Row, button, column, container, row, text},
+    border, padding, time,
+    widget::{Column, Row, button, column, container, pick_list, row, text},
     window,
 };
 use minesweeper::{
@@ -15,40 +15,60 @@ use std::{
     num::NonZeroU8,
     time::{Duration, Instant},
 };
-use views::{CellView, Header, ScoreBoard, cell_view};
+use views::{CellView, Header, ScoreBoard, cell_view, mk_button_shadow};
 
 mod modal;
 mod views;
 
+/// Application state.
 pub struct AppState {
+    /// Game board.
     pub board: Board,
+    /// Active play timer.
     elapsed_seconds: u64,
+    /// Win outcome.
     outcome: Option<String>,
+    /// Scoreboard when viewing historic wins.
     scoreboard: Option<WinHistory>,
+    /// Game cells.
     cells: Vec<CellView>,
+    /// Current instant.
     now: Instant,
+    /// Animation for modal.
     modal_animation: Animation<bool>,
+    /// Theme
+    pub theme: Theme,
 }
 
-#[derive(Debug, Copy, Clone)]
+/// Application messages.
+#[derive(Debug, Clone)]
 pub enum AppMsg {
+    /// Open a cell via its position.
     Open(Pos),
+    /// Flag a cell via its position.
     Flag(Pos),
+    /// Timer tick.
     Tick,
+    /// Restart the game.
     Restart,
+    /// Close the open modal.
     DismissModal,
+    /// View the scoreboard.
     ViewScoreBoard,
+    /// Dismiss the scoreboard.
     DismissScoreBoard,
+    /// No-op.
     None,
+    /// Render for animation. No-op.
     Animate,
+    /// Select theme
+    Theme(Theme),
 }
 
 impl AppState {
-    pub fn new() -> Self {
-        let board = Board::new(
-            NonZeroU8::try_from(20).unwrap(),
-            NonZeroU8::try_from(20).unwrap(),
-        );
+    /// Create a new application state.
+    fn new() -> Self {
+        let board = mk_board();
         let now = Instant::now();
         Self {
             cells: board
@@ -61,9 +81,11 @@ impl AppState {
             scoreboard: None,
             now,
             modal_animation: mk_modal_animation(),
+            theme: Theme::TokyoNight,
         }
     }
 
+    /// Application subscriptions for timer and animations.
     pub fn subscription(&self) -> Subscription<AppMsg> {
         // Check if any of our animations are active.
         let is_animating = self.cells.iter().any(|cell| cell.is_animating(self.now))
@@ -81,11 +103,11 @@ impl AppState {
         ])
     }
 
+    /// Update game application view state.
     pub fn update(&mut self, message: AppMsg, instant: Instant) -> Task<AppMsg> {
         self.now = instant;
         self.cells.iter_mut().for_each(|cell_view| {
             cell_view.now = instant;
-            cell_view.game_state = *self.board.state();
         });
 
         match message {
@@ -93,6 +115,8 @@ impl AppState {
                 if matches!(self.board.state(), GameState::Active | GameState::New) =>
             {
                 self.board.open_cell(pos);
+
+                let game_state = self.board.state();
 
                 // Update cell state.
                 for (cell_view, (_pos, cell)) in self.cells.iter_mut().zip(self.board.positions()) {
@@ -106,8 +130,9 @@ impl AppState {
                     if let (CellState::Closed { .. }, CellState::ExposedMine) =
                         (cell_view.cell.state, cell.state)
                     {
-                        cell_view.boom();
+                        cell_view.detonate();
                     }
+                    cell_view.game_state = *game_state;
                     cell_view.cell = *cell;
                 }
 
@@ -143,10 +168,7 @@ impl AppState {
             }
             AppMsg::Restart => {
                 self.elapsed_seconds = 0;
-                self.board = Board::new(
-                    NonZeroU8::try_from(20).unwrap(),
-                    NonZeroU8::try_from(20).unwrap(),
-                );
+                self.board = mk_board();
                 self.cells = self
                     .board
                     .positions()
@@ -164,11 +186,15 @@ impl AppState {
             AppMsg::DismissScoreBoard => {
                 self.scoreboard = None;
             }
+            AppMsg::Theme(theme) => {
+                self.theme = theme;
+            }
             _ => (),
         }
         Task::none()
     }
 
+    /// Render the game view.
     pub fn view(&self) -> iced::Element<'_, AppMsg> {
         let mut y = 1;
         let mut rows = Vec::new();
@@ -176,51 +202,69 @@ impl AppState {
 
         for cell_view in &self.cells {
             if cell_view.pos.y.get() != y {
-                rows.push(Element::from(Row::with_children(row).spacing(2)));
+                rows.push(Element::from(
+                    Row::with_children(row).spacing(BOARD_SPACING),
+                ));
                 row = Vec::new();
                 y = cell_view.pos.y.get();
             }
 
-            row.push(cell_view.view());
+            row.push(cell_view.view().into());
         }
 
-        rows.push(Element::from(Row::with_children(row).spacing(2)));
+        rows.push(Element::from(
+            Row::with_children(row).spacing(BOARD_SPACING),
+        ));
 
         let button_row = row![
             container(
                 button("Restart")
-                    .style(|theme, status| button::Style {
-                        border: border::rounded(10),
-                        ..button::primary(theme, status)
+                    .style(|theme: &Theme, status| {
+                        button::Style {
+                            border: border::rounded(10),
+                            shadow: mk_button_shadow(theme, status),
+                            ..button::primary(theme, status)
+                        }
                     })
                     .on_press(AppMsg::Restart)
             )
-            .padding(10),
+            .padding(padding::left(10).right(10)),
             container(
                 button("Scoreboard")
-                    .style(|theme, status| button::Style {
-                        border: border::rounded(10),
-                        ..button::primary(theme, status)
+                    .style(|theme: &Theme, status| {
+                        button::Style {
+                            border: border::rounded(10),
+                            shadow: mk_button_shadow(theme, status),
+                            ..button::primary(theme, status)
+                        }
                     })
                     .on_press(AppMsg::ViewScoreBoard),
             )
-            .padding(10),
+            .padding(padding::left(10).right(10)),
         ];
 
-        let button_container = container(button_row)
-            .width(Length::Fill)
-            .center_x(Length::Fill)
-            .padding(20);
+        let board = container(Column::with_children(rows).spacing(BOARD_SPACING))
+            .center(Length::Fill)
+            .style(|theme| {
+                let palette = theme.extended_palette();
+                container::primary(theme).background(palette.secondary.base.color)
+            });
 
-        let board = container(Column::with_children(rows).spacing(2))
-            .center_x(Length::Fill)
-            .center_y(Length::Fill)
-            .style(|theme| container::primary(theme).background(color!(0xf2f2f2)));
+        let theme_picker = container(pick_list(
+            Theme::ALL,
+            Some(self.theme.clone()),
+            AppMsg::Theme,
+        ))
+        .align_right(Length::Fill);
+
+        let bottom = row![button_row, theme_picker];
+
+        let button_container = container(bottom).width(Length::Fill).padding(10);
 
         let content = column![
             Header::new(&self.board, self.elapsed_seconds).view(),
             board,
-            button_container
+            button_container,
         ];
 
         if let Some(outcome) = self.outcome.as_ref() {
@@ -233,6 +277,7 @@ impl AppState {
                     .style(|theme| modal_content_style(theme, &self.modal_animation, self.now)),
                 AppMsg::DismissModal,
             )
+            .into()
         } else if let Some(wins) = self.scoreboard.as_ref() {
             modal(
                 content,
@@ -241,6 +286,7 @@ impl AppState {
                     .style(|theme| modal_content_style(theme, &self.modal_animation, self.now)),
                 AppMsg::DismissScoreBoard,
             )
+            .into()
         } else {
             content.into()
         }
@@ -258,6 +304,7 @@ fn modal_content_style(
     animation: &Animation<bool>,
     now: Instant,
 ) -> container::Style {
+    let palette = theme.palette();
     container::primary(theme)
         .border(iced::border::rounded(15))
         .background(Color {
@@ -266,7 +313,7 @@ fn modal_content_style(
             } else {
                 0.5
             },
-            ..Color::BLACK
+            ..palette.background
         })
         .color(Color {
             a: if animation.is_animating(now) {
@@ -274,7 +321,7 @@ fn modal_content_style(
             } else {
                 1.0
             },
-            ..Color::WHITE
+            ..palette.text
         })
 }
 
@@ -284,3 +331,12 @@ fn mk_modal_animation() -> Animation<bool> {
         .very_slow()
         .repeat(2)
 }
+
+fn mk_board() -> Board {
+    Board::new(
+        NonZeroU8::try_from(40).unwrap(),
+        NonZeroU8::try_from(20).unwrap(),
+    )
+}
+
+const BOARD_SPACING: u32 = 5;
