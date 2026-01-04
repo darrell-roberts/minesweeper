@@ -1,6 +1,6 @@
 //! Minesweeper application state view and updates.
 use iced::{
-    Animation, Color, Element, Length, Subscription, Task, Theme,
+    Animation, Color, Element, Length, Shadow, Subscription, Task, Theme,
     animation::Easing,
     border, padding, time,
     widget::{Column, Row, button, column, container, pick_list, row, text},
@@ -322,6 +322,11 @@ fn modal_content_style(
                 1.0
             },
             ..palette.text
+        })
+        .shadow(Shadow {
+            color: iced::color!(0x2e2e2e),
+            offset: [8.0, 8.0].into(),
+            blur_radius: 5.0,
         })
 }
 
