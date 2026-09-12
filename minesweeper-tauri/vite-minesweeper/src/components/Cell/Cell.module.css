@@ -133,3 +133,17 @@
         transform: scale(1);
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    .open {
+        background-color: #2e2e2e;
+    }
+
+    .one {
+        color: gray
+    }
+
+    .container {
+        box-shadow: 2px 2px #262626;
+    }
+}

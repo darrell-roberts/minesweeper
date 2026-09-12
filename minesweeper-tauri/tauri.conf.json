@@ -42,7 +42,7 @@
   "productName": "Minesweeper",
   "mainBinaryName": "Minesweeper",
   "version": "0.1.0",
-  "identifier": "com.dr.dev",
+  "identifier": "com.github.darrell-roberts.minesweeper-tauri",
   "plugins": {},
   "app": {
     "windows": [

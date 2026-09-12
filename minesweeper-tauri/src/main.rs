@@ -3,18 +3,56 @@
     windows_subsystem = "windows"
 )]
 
-use app::{
-    commands::{flag, get_win_history, new_game, open, platform, resume},
-    game::Game,
-    AppGame, TimeEvent, __cmd__flag, __cmd__get_win_history, __cmd__new_game, __cmd__open,
-    __cmd__platform, __cmd__resume, format_elapsed,
-};
+use commands::*;
+use game::Game;
 use minesweeper::model::GameState;
+use serde::Serialize;
 use std::{
     sync::{Arc, RwLock},
     time::Duration,
 };
 use tauri::{Emitter, Manager};
+
+pub mod commands;
+pub mod game;
+pub mod history;
+
+/// Payload for the time event.
+#[derive(Serialize, Clone)]
+pub struct TimeEvent {
+    /// Formatted game time duration.
+    pub duration: String,
+}
+
+pub type AppGame = Arc<RwLock<Game>>;
+
+/// Displayable elapsed time.
+pub fn format_elapsed(seconds: u64) -> String {
+    match seconds {
+        0..=59 => format!("{seconds} seconds"),
+        60..=3599 => format!(
+            "{} minute(s) {} seconds",
+            seconds.div_euclid(60),
+            seconds.rem_euclid(60)
+        ),
+        3600.. => format!("{} hours", seconds.div_euclid(3600)),
+    }
+}
+
+fn game_time_elapsed(game: &Arc<RwLock<Game>>) -> Option<String> {
+    let guard = game.read().ok()?;
+
+    if guard.paused.is_some() || !matches!(guard.board.state(), GameState::Active) {
+        return None;
+    }
+
+    guard
+        .start_time?
+        .elapsed()
+        .as_secs()
+        .checked_sub(guard.paused_time)
+        .map(format_elapsed)
+}
 
 fn main() {
     let game: AppGame = Arc::new(RwLock::new(Game::default()));
@@ -23,26 +61,10 @@ fn main() {
         .setup(move |app| {
             let main_window = app.get_webview_window("main").unwrap();
             std::thread::spawn(move || loop {
-                if let Some((state, duration, paused)) = {
-                    game.read()
-                        .map(|g| {
-                            g.start_time
-                                .and_then(|st| st.elapsed().as_secs().checked_sub(g.paused_time))
-                                .map(|elapsed| {
-                                    (
-                                        *g.board.state(),
-                                        format_elapsed(elapsed),
-                                        g.paused.is_some(),
-                                    )
-                                })
-                        })
-                        .unwrap()
-                } {
-                    if !paused && matches!(state, GameState::Active) {
-                        main_window
-                            .emit("time-event", TimeEvent { duration })
-                            .unwrap_or_else(|e| eprintln!("Failed to emit time event {e}"));
-                    }
+                if let Some(duration) = game_time_elapsed(&game) {
+                    main_window
+                        .emit("time-event", TimeEvent { duration })
+                        .unwrap_or_else(|e| eprintln!("Failed to emit time event {e}"));
                 }
 
                 std::thread::sleep(Duration::from_secs(1));

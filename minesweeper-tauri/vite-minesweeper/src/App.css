@@ -20,9 +20,9 @@
 
 .buttons {
     background-image: linear-gradient(to bottom right, #e6004c, #660022 80%);
-    color: white;
+    /*color: white;*/
     border-radius: 4px;
-    box-shadow: 2px 2px darkgray;
+    /*box-shadow: 2px 2px darkgray;*/
     font-size: 14px;
     opacity: 0.8;
     margin-right: 20px;
@@ -64,4 +64,14 @@ span {
     justify-content: center;
     padding-bottom: 10px;
     padding-top: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .board {
+        background-color: black;
+    }
+
+    .buttons {
+        box-shadow: 2px 2px #262626;
+    }
 }
