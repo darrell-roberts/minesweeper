@@ -125,3 +125,13 @@
         transform: scale(1);
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    .modal {
+        background-color: #2d2d2d;
+    }
+
+    .winComponent {
+        background-color: black;
+    }
+}

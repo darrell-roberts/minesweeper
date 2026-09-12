@@ -96,3 +96,9 @@
         transform: rotate(180deg);
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    .modal {
+        background-color: #2d2d2d;
+    }
+}

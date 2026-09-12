@@ -2,7 +2,6 @@
 name = "app"
 version = "0.1.0"
 description = "Minsweeper Game in Tauri"
-authors = ["you"]
 license = "Apache-2.0 OR MIT"
 repository = ""
 default-run = "app"
