@@ -10,7 +10,6 @@
     gap: 5px;
     background-color: whitesmoke;
     padding: 5px;
-    border-radius: 8px;
     cursor: pointer;
 }
 
@@ -19,10 +18,8 @@
 }
 
 .buttons {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%);
-    /*color: white;*/
+    background-image: linear-gradient(to bottom right, var(--button-gradient-start), var(--button-gradient-end) 80%);
     border-radius: 4px;
-    /*box-shadow: 2px 2px darkgray;*/
     font-size: 14px;
     opacity: 0.8;
     margin-right: 20px;
@@ -54,7 +51,6 @@ span {
 }
 
 .boardContainer {
-    /* min-height: 615px; */
     height: 100%;
     flex: 1;
 }
@@ -69,9 +65,5 @@ span {
 @media (prefers-color-scheme: dark) {
     .board {
         background-color: black;
-    }
-
-    .buttons {
-        box-shadow: 2px 2px #262626;
     }
 }
