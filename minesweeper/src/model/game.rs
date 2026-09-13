@@ -76,9 +76,9 @@ impl Board {
             self.state = GameState::Active;
         }
 
-        let mut opened_positions = vec![];
-        if let Some(c) = self.cells.get_mut(&pos) {
-            match c.state {
+        let mut opened_positions = Vec::new();
+        if let Some(cell) = self.cells.get_mut(&pos) {
+            match cell.state {
                 CellState::Closed {
                     mined: true,
                     flagged: false,
@@ -90,9 +90,9 @@ impl Board {
                     mined: false,
                     flagged: false,
                 } => {
-                    c.state = CellState::Open;
-                    opened_positions.push((pos, *c));
-                    if c.adjacent_mines == 0 {
+                    cell.state = CellState::Open;
+                    opened_positions.push((pos, *cell));
+                    if cell.adjacent_mines == 0 {
                         opened_positions.extend(self.expand(pos));
                     }
                 }

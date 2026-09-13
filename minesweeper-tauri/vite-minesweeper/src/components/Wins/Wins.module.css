@@ -20,7 +20,7 @@
     padding: 5px;
     border-radius: 4px;
     color: white;
-    box-shadow: 5px 5px 10px gray;
+    box-shadow: 5px 5px 10px var(--box-shadow-color);
 }
 
 .date {
@@ -28,7 +28,7 @@
     color: white;
     border-radius: 4px;
     padding: 5px;
-    box-shadow: 5px 5px 10px gray;
+    box-shadow: 5px 5px 10px var(--box-shadow-color);
 }
 
 .modal {
@@ -40,7 +40,7 @@
     background-color: rgb(236, 236, 200);
     opacity: .95;
     border-radius: 8px;
-    box-shadow: 10px 10px 15px gray;
+    box-shadow: 10px 10px 15px var(--box-shadow-color);
     width: 95%;
     height: 70%;
     visibility: hidden;

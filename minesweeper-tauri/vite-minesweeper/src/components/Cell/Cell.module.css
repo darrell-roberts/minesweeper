@@ -1,14 +1,9 @@
 .container {
-    /* width: 25px; */
-    /* height: 25px; */
     width: 2rem;
     height: 2rem;
     padding: 0;
     justify-content: start;
     font-size: 0.8em;
-    box-shadow:
-        -2px -2px rgba(255, 255, 255, 0.856),
-        2px 2px gray;
 }
 
 .container:active {
@@ -20,13 +15,13 @@
 }
 
 .closed {
-    background-image: linear-gradient(to bottom right, #e6004c, #660022 80%);
-    box-shadow: 2px 2px gray;
+    background-image: linear-gradient(to bottom right, var(--button-gradient-start), var(--button-gradient-end) 80%);
+    box-shadow: 2px 2px var(--box-shadow-color);
 }
 
 .flagged {
     background-image: linear-gradient(45deg, orange, wheat);
-    box-shadow: 2px 2px gray;
+    box-shadow: 2px 2px var(--box-shadow-color);
     color: darkorange;
     font-weight: bold;
     animation-name: flagged;
@@ -46,18 +41,7 @@
     background-color: red;
     animation-name: exposed;
     animation-duration: 2s;
-    /* animation-iteration-count: 3; */
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .open {
-    background-color: #242424;
-  }
-
-  .container {
-    color: white;
-  }
-} */
 
 .one {
     color: blue;
@@ -105,15 +89,15 @@
     from {
         background-image: linear-gradient(
             to bottom right,
-            #e6004c,
-            #660022 80%,
+            var(--button-gradient-start),
+            var(--button-gradient-end) 80%,
             gray
         );
         transform: scale(0.75);
     }
 
     to {
-        background-image: image(white);
+        background-image: image(var(background-color));
         transform: scale(0.25);
     }
 }
@@ -122,8 +106,8 @@
     from {
         background-image: linear-gradient(
             to bottom right,
-            #e6004c,
-            #660022 80%,
+            var(--button-gradient-start),
+            var(--button-gradient-end) 80%,
             gray
         );
         transform: scale(0.75);
@@ -141,9 +125,5 @@
 
     .one {
         color: gray
-    }
-
-    .container {
-        box-shadow: 2px 2px #262626;
     }
 }
