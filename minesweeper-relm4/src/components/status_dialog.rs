@@ -1,4 +1,11 @@
-use relm4::{gtk, gtk::prelude::*, ComponentParts, ComponentSender, SimpleComponent};
+//! Pop-up window when game status ends
+use relm4::{
+    adw::StyleManager,
+    gtk::{self, prelude::*},
+    ComponentParts, ComponentSender, SimpleComponent,
+};
+
+use crate::apply_color_scheme;
 
 pub struct StatusDialogModel {
     hidden: bool,
@@ -18,6 +25,7 @@ impl SimpleComponent for StatusDialogModel {
     type Init = bool;
 
     view! {
+      #[name = "window"]
       gtk::Window {
         set_modal: true,
         #[watch]
@@ -59,6 +67,14 @@ impl SimpleComponent for StatusDialogModel {
         };
 
         let widgets = view_output!();
+
+        let window = widgets.window.clone();
+        let style_manager = StyleManager::default();
+        apply_color_scheme(&window, style_manager.is_dark());
+        style_manager.connect_dark_notify(move |style_manager| {
+            apply_color_scheme(&window, style_manager.is_dark());
+        });
+
         ComponentParts { model, widgets }
     }
 

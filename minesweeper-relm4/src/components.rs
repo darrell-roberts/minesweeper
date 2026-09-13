@@ -1,3 +1,4 @@
+//! Relm4 components
 pub mod app;
 pub mod history;
 pub mod positions;

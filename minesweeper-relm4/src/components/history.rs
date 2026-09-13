@@ -1,9 +1,13 @@
-use crate::format_elapsed;
+//! Game history dialog window.
+use crate::{apply_color_scheme, format_elapsed};
 use chrono::{DateTime, Local};
 use minesweeper::history::{load_wins, Win};
 use relm4::{
-    factory::FactoryVecDeque, gtk, gtk::prelude::*, prelude::FactoryComponent, ComponentParts,
-    SimpleComponent,
+    adw::StyleManager,
+    factory::FactoryVecDeque,
+    gtk::{self, prelude::*},
+    prelude::FactoryComponent,
+    ComponentParts, SimpleComponent,
 };
 
 #[derive(Debug)]
@@ -44,6 +48,7 @@ impl SimpleComponent for WinHistoryView {
     type Init = ();
 
     view! {
+        #[name = "window"]
         gtk::Window {
             set_modal: true,
             set_default_width: 400,
@@ -94,6 +99,13 @@ impl SimpleComponent for WinHistoryView {
         };
         let _win_box = model.win_history.widget();
         let widgets = view_output!();
+
+        let window = widgets.window.clone();
+        let style_manager = StyleManager::default();
+        apply_color_scheme(&window, style_manager.is_dark());
+        style_manager.connect_dark_notify(move |style_manager| {
+            apply_color_scheme(&window, style_manager.is_dark());
+        });
 
         ComponentParts { model, widgets }
     }

@@ -1,4 +1,6 @@
+//! Simple Gtk4 minesweeper game.
 use minesweeper::model::Board;
+use relm4::gtk::{prelude::WidgetExt as _, Window};
 use std::num::NonZeroU8;
 
 mod components;
@@ -26,3 +28,7 @@ fn format_elapsed(seconds: u64) -> String {
 
 pub static FLAG: &str = "🚩";
 pub static BOMB: &str = "💣";
+
+fn apply_color_scheme(window: &Window, is_dark: bool) {
+    window.add_css_class(if is_dark { "dark" } else { "light" });
+}

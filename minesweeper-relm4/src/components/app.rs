@@ -1,18 +1,23 @@
+//! Game application state and main window.
 use super::{
     history::{HistoryMsg, HistoryOut, WinHistoryView},
     status_dialog::{StatusDialogModel, StatusMsg},
     timer::{GameTimer, GameTimerInput, GameTimerOutput},
 };
 use crate::{
-    board, components::positions::PositionOutput, format_elapsed, types::Position, BOMB, FLAG,
+    apply_color_scheme, board, components::positions::PositionOutput, format_elapsed,
+    types::Position, BOMB, FLAG,
 };
 use minesweeper::{
     history::save_win,
     model::{Board, GameState, Pos},
 };
 use relm4::{
-    factory::FactoryVecDeque, gtk, gtk::prelude::*, Component, ComponentController, ComponentParts,
-    ComponentSender, Controller, SimpleComponent, WorkerController,
+    adw::StyleManager,
+    factory::FactoryVecDeque,
+    gtk::{self, prelude::*},
+    Component, ComponentController, ComponentParts, ComponentSender, Controller, SimpleComponent,
+    WorkerController,
 };
 use std::collections::HashMap;
 
@@ -81,6 +86,7 @@ impl SimpleComponent for AppModel {
     type Init = Board;
 
     view! {
+        #[name = "window"]
         gtk::Window {
           set_title: Some("Minesweeper"),
           set_default_width: 250,
@@ -229,6 +235,13 @@ impl SimpleComponent for AppModel {
 
         let factory_board = model.positions.widget();
         let widgets = view_output!();
+
+        let window = widgets.window.clone();
+        let style_manager = StyleManager::default();
+        apply_color_scheme(&window, style_manager.is_dark());
+        style_manager.connect_dark_notify(move |style_manager| {
+            apply_color_scheme(&window, style_manager.is_dark());
+        });
 
         ComponentParts { model, widgets }
     }
