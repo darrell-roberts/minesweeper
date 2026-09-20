@@ -68,8 +68,8 @@ impl SimpleComponent for WinHistoryView {
                     set_css_classes: &["winHistoryHeader"],
                 },
 
-                // #[local_ref]
-                gtk::Box {
+                #[local_ref]
+                win_box -> gtk::Box {
                     set_vexpand: true,
                     set_orientation: gtk::Orientation::Vertical,
                 },
@@ -87,17 +87,18 @@ impl SimpleComponent for WinHistoryView {
         root: Self::Root,
         sender: relm4::ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
-        let wins = load_wins().map(|w| {
-            FactoryVecDeque::from_iter(w.wins.into_iter().map(WinData), gtk::Box::default())
-        });
+        let win_history = FactoryVecDeque::from_iter(
+            load_wins()
+                .into_iter()
+                .flat_map(|win| win.wins.into_iter().map(WinData)),
+            Default::default(),
+        );
 
-        let win_history = wins
-            .unwrap_or_else(|| FactoryVecDeque::from_iter(std::iter::empty(), gtk::Box::default()));
         let model = WinHistoryView {
             hidden: true,
             win_history,
         };
-        let _win_box = model.win_history.widget();
+        let win_box = model.win_history.widget();
         let widgets = view_output!();
 
         let window = widgets.window.clone();

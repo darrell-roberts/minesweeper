@@ -199,9 +199,7 @@ impl SimpleComponent for AppModel {
                 PositionOutput::Flag(p) => AppMsg::Flag(p),
             });
 
-        for (&pos, &cell) in board.positions() {
-            positions.guard().push_back((pos, cell));
-        }
+        positions.extend(board.positions().map(|(&pos, &cell)| (pos, cell)));
 
         let pos_map = positions
             .iter()
