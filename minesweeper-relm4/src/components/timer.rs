@@ -1,3 +1,4 @@
+//! A background worker that emits time intervals.
 use relm4::Worker;
 use std::{
     sync::atomic::{AtomicBool, Ordering},

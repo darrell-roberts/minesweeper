@@ -1,3 +1,4 @@
+//! Cell positions on the board
 use crate::{types::Position, BOMB, FLAG};
 use minesweeper::model::{Cell, CellState, Pos};
 use relm4::{

@@ -1,9 +1,13 @@
-use crate::format_elapsed;
+//! Game history dialog window.
+use crate::{apply_color_scheme, format_elapsed};
 use chrono::{DateTime, Local};
 use minesweeper::history::{load_wins, Win};
 use relm4::{
-    factory::FactoryVecDeque, gtk, gtk::prelude::*, prelude::FactoryComponent, ComponentParts,
-    SimpleComponent,
+    adw::StyleManager,
+    factory::FactoryVecDeque,
+    gtk::{self, prelude::*},
+    prelude::FactoryComponent,
+    ComponentParts, SimpleComponent,
 };
 
 #[derive(Debug)]
@@ -44,6 +48,7 @@ impl SimpleComponent for WinHistoryView {
     type Init = ();
 
     view! {
+        #[name = "window"]
         gtk::Window {
             set_modal: true,
             set_default_width: 400,
@@ -63,8 +68,8 @@ impl SimpleComponent for WinHistoryView {
                     set_css_classes: &["winHistoryHeader"],
                 },
 
-                // #[local_ref]
-                gtk::Box {
+                #[local_ref]
+                win_box -> gtk::Box {
                     set_vexpand: true,
                     set_orientation: gtk::Orientation::Vertical,
                 },
@@ -82,18 +87,26 @@ impl SimpleComponent for WinHistoryView {
         root: Self::Root,
         sender: relm4::ComponentSender<Self>,
     ) -> relm4::ComponentParts<Self> {
-        let wins = load_wins().map(|w| {
-            FactoryVecDeque::from_iter(w.wins.into_iter().map(WinData), gtk::Box::default())
-        });
+        let win_history = FactoryVecDeque::from_iter(
+            load_wins()
+                .into_iter()
+                .flat_map(|win| win.wins.into_iter().map(WinData)),
+            Default::default(),
+        );
 
-        let win_history = wins
-            .unwrap_or_else(|| FactoryVecDeque::from_iter(std::iter::empty(), gtk::Box::default()));
         let model = WinHistoryView {
             hidden: true,
             win_history,
         };
-        let _win_box = model.win_history.widget();
+        let win_box = model.win_history.widget();
         let widgets = view_output!();
+
+        let window = widgets.window.clone();
+        let style_manager = StyleManager::default();
+        apply_color_scheme(&window, style_manager.is_dark());
+        style_manager.connect_dark_notify(move |style_manager| {
+            apply_color_scheme(&window, style_manager.is_dark());
+        });
 
         ComponentParts { model, widgets }
     }

@@ -4,9 +4,39 @@ version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0 OR MIT"
 
+[package.metadata.deb]
+maintainer = "Darrell Roberts"
+copyright = "2024, Darrell Roberts"
+license-file = "../LICENSE"
+extended-description = """MineSweeper"""
+section = "games"
+priority = "optional"
+assets = [
+  [
+    "target/release/minesweeper-relm4",
+    "usr/bin/",
+    "755",
+  ],
+  [
+    "../assets/io.github.darrellroberts.minesweeper-gtk4.desktop",
+    "usr/share/applications/",
+    "644",
+  ],
+  [
+    "../assets/icons/hicolor/32x32/apps/io.github.darrellroberts.minesweeper.png",
+    "usr/share/icons/hicolor/32x32/apps/",
+    "644",
+  ],
+  [
+    "../assets/icons/hicolor/128x128/apps/io.github.darrellroberts.minesweeper.png",
+    "usr/share/icons/hicolor/128x128/apps/",
+    "644",
+  ],
+]
+
 [dependencies]
-relm4 = "0.10"
-relm4-components = "0.10"
-minesweeper = { path = "../minesweeper" }
-serde = { version = "1.0", features = ["derive"] }
 chrono = { version = "0.4", features = ["serde"] }
+minesweeper = { path = "../minesweeper" }
+relm4 = { version = "0.11", features = ["libadwaita"] }
+relm4-components = "0.11"
+serde = { version = "1.0", features = ["derive"] }

@@ -1,3 +1,15 @@
+:root {
+    --background-color: white;
+}
+
+window.dark {
+    background-color: black;
+}
+
+window.light {
+    background-color: white;
+}
+
 container {
     padding: 0;
 }
@@ -23,15 +35,30 @@ container {
 }
 
 .open {
-    background-image: image(white);
     box-shadow: none;
     color: black;
     animation-name: opened;
     animation-duration: 250ms;
 }
 
+window.light .open {
+    background-image: image(white);
+}
+
+winodow.dark .open {
+    background-image: image(black);
+}
+
 .one {
     color: blue;
+}
+
+window.light .one {
+    color: blue;
+}
+
+window.dark .one {
+    color: #4d94ff;
 }
 
 .two {
@@ -47,12 +74,19 @@ container {
 }
 
 .exposed {
-    background-image: image(whitesmoke);
     font-weight: bold;
     color: red;
     animation-name: exposed;
     animation-duration: 1s;
     animation-iteration-count: 5;
+}
+
+window.light .exposed {
+    background-image: image(whitesmoke);
+}
+
+window.dark .exposed {
+    background-image: image(black);
 }
 
 .flagged {
@@ -71,7 +105,14 @@ container {
         #660022 80%,
         gray
     );
+}
+
+window.light .closed {
     box-shadow: 2px 2px gray;
+}
+
+window.dark .closed {
+    box-shadow: 2px 2px black;
 }
 
 label.win {
@@ -90,15 +131,30 @@ label.lose {
 
 grid {
     padding: 15px 15px 15px 15px;
+}
+
+window.dark grid {
+    background-color: #2e2e2e;
+}
+
+window.light grid {
     background-color: whitesmoke;
 }
 
 .status_dialog {
     padding: 15px 15px 15px 15px;
-    color: white;
-    background-color: black;
     font-size: 20px;
     border-radius: 10px;
+}
+
+window.light .status_dialog {
+    background-color: black;
+    color: white;
+}
+
+window.dark .status_dialog {
+    background-color: #2e2e2e;
+    color: grey;
 }
 
 .button {
@@ -115,11 +171,14 @@ grid {
     border-radius: 8px;
     color: white;
     padding: 10px;
+}
+
+window.light .header {
     box-shadow: 2px 2px gray;
 }
 
 .winHistory {
-    font-size: 16px;
+    font-size: 1rem;
     background-image: linear-gradient(to right, wheat, lightgray);
     color: black;
     border-radius: 8px;
@@ -130,13 +189,13 @@ grid {
 }
 
 .winHistoryHeader {
-    font-size: 20px;
+    font-size: 2rem;
     color: white;
     margin: 25px;
 }
 
 .winHistoryRank {
-    font-size: 20px;
+    font-size: 1.5rem;
     min-width: 40px;
     color: white;
 }
@@ -177,7 +236,7 @@ grid {
     }
 
     100% {
-        background-image: image(whitesmoke);
+        background-image: image(var(--background-color));
         color: red;
         transform: rotate(180deg);
     }
@@ -195,7 +254,7 @@ grid {
     }
 
     to {
-        background-image: image(white);
+        background-image: image(var(--background-color));
         transform: scale(0.25);
     }
 }
