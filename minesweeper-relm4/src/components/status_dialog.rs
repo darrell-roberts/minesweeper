@@ -50,7 +50,8 @@ impl SimpleComponent for StatusDialogModel {
             },
             gtk::Button {
                set_label: "Close",
-               connect_clicked => StatusMsg::Close
+               connect_clicked => StatusMsg::Close,
+               set_css_classes: &["close_button"],
             },
         }
       }
