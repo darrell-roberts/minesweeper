@@ -129,6 +129,10 @@ label.lose {
     margin-top: 50px;
 }
 
+window.light .statusMessage {
+    color: black;
+}
+
 grid {
     padding: 15px 15px 15px 15px;
 }
@@ -148,8 +152,13 @@ window.light grid {
 }
 
 window.light .status_dialog {
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
+}
+
+window.light .close_button {
+    color: black;
+    background-color: lightgray;
 }
 
 window.dark .status_dialog {
